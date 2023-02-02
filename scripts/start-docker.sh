@@ -2,21 +2,18 @@
 # Start the docker container for vscode-server
 # And then renturn the address, port and container Id
 # Usage: ./start-docker.sh
-docker run -d \
+docker run \
   --name=code-server \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Europe/London \
-  -e PASSWORD= `#optional` \
-  -e HASHED_PASSWORD= `#optional` \
-  -e SUDO_PASSWORD=root `#optional` \
-  -e SUDO_PASSWORD_HASH= `#optional` \
-  -e DEFAULT_WORKSPACE=/config/workspace `#optional` \
+  -e PASSWORD=  \
+  -e HASHED_PASSWORD= \
+  -e SUDO_PASSWORD=  \
+  -e SUDO_PASSWORD_HASH= \
+  -e DEFAULT_WORKSPACE=/config/workspace \
   -p 8443:8443 \
-  -v config:/config \
+  -p 3000-3003:3000-3003 \
+  -p 9222:9222 \
   --restart unless-stopped \
-  lscr.io/linuxserver/code-server:latest
-
-echo "Container ID: $(docker ps -aqf "name=code-server")"
-echo "Address: $(curl -s ifconfig.me)"
-echo "Port: 8443"
+  codercm/playground

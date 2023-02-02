@@ -1,0 +1,6 @@
+[2023-02-02T21:53:56.314Z] info  code-server 4.9.1 f7989a4dfcf21085e52157a01924d79d708bcc05
+[2023-02-02T21:53:56.315Z] info  Using user-data-dir ~/data
+[2023-02-02T21:53:56.341Z] info  Using config file ~/.config/code-server/config.yaml
+[2023-02-02T21:53:56.342Z] info  HTTP server listening on http://0.0.0.0:8443/ 
+[2023-02-02T21:53:56.342Z] info    - Authentication is disabled 
+[2023-02-02T21:53:56.342Z] info    - Not serving HTTPS 
