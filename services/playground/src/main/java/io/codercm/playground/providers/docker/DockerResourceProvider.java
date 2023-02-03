@@ -53,6 +53,8 @@ public class DockerResourceProvider implements ResourceProvider {
     }
 
     private PlaygroundDto toPlayground(Container container) {
-        return null;
+        return PlaygroundDto.builder()
+                .name(DockerUtils.getContainerName(container))
+                .build();
     }
 }

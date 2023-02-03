@@ -1,18 +1,42 @@
 package io.codercm.playground.playground.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
-@Entity
+@Entity(name = "playground")
 public class Playground {
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
+    @Column(name= "name")
     private String name;
+    @Column(name= "description")
     private String description;
+    /**
+     * The Runner Id in this case represents the Id of the platform where the playground is running. (container, vm, etc)
+     */
+    @Column(name= "runner_id")
     private String runnerId;
+    @Column(name= "volume_id")
     private String volumeId;
-    private String instanceUrl;
+
+    @Column(name= "host")
+    private String host;
+    @Column(name= "port")
+    private int port;
+    /**
+     * The Playground App Port is the port where the playground app is running. Inside the container.
+     */
+    @Column(name= "playground_app_port")
+    private int playgroundAppPort;
+    @Column(name= "status")
+    @Enumerated(EnumType.STRING)
     private PlaygroundStatus status;
 }
