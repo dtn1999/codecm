@@ -1,11 +1,19 @@
 package io.codercm.playground.playground.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
 @Entity(name = "playground")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Playground {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -24,8 +32,6 @@ public class Playground {
      */
     @Column(name= "runner_id")
     private String runnerId;
-    @Column(name= "volume_id")
-    private String volumeId;
 
     @Column(name= "host")
     private String host;
@@ -39,4 +45,8 @@ public class Playground {
     @Column(name= "status")
     @Enumerated(EnumType.STRING)
     private PlaygroundStatus status;
+
+    // Relationships
+    @OneToOne(mappedBy = "playground")
+    private PlaygroundStorage storage;
 }

@@ -18,7 +18,7 @@ public class PlaygroundDto {
      * The Runner Id in this case represents the Id of the platform where the playground is running. (container, vm, etc)
      */
     private String runnerId;
-    private String volumeId;
+    private PlaygroundStorageDto storage;
 
     private String host;
     private int port;
