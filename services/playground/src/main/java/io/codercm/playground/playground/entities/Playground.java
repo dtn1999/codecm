@@ -47,6 +47,7 @@ public class Playground {
     private PlaygroundStatus status;
 
     // Relationships
-    @OneToOne(mappedBy = "playground")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "storage_id", referencedColumnName = "id")
     private PlaygroundStorage storage;
 }

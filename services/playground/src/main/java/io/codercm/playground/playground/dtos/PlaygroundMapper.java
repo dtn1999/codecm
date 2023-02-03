@@ -11,7 +11,19 @@ public class PlaygroundMapper {
     private final ModelMapper modelMapper;
 
     public PlaygroundDto toDto(Playground playground) {
-        return modelMapper.map(playground, PlaygroundDto.class);
+        return PlaygroundDto.builder()
+                .id(playground.getId())
+                .host(playground.getHost())
+                .port(playground.getPort())
+                .playgroundAppPort(playground.getPlaygroundAppPort())
+                .status(playground.getStatus())
+                .storage(PlaygroundStorageDto.builder()
+                        .id(playground.getStorage().getId())
+                        .volumeId(playground.getStorage().getVolumeId())
+                        .volumeName(playground.getStorage().getVolumeName())
+                        .size(playground.getStorage().getSize())
+                        .build())
+                .build();
     }
 
     public Playground toEntity(PlaygroundDto playgroundDto) {

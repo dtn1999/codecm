@@ -28,6 +28,6 @@ public class PlaygroundStorage {
     @Column(unique = true)
     private String volumeId;
     private int size;
-    @OneToOne
+    @OneToOne(mappedBy = "storage", fetch = FetchType.LAZY)
     private Playground playground;
 }

@@ -48,7 +48,7 @@ public class DockerResourceProvider implements ResourceProvider {
     @Override
     public CreateRunnerResponse createPlayground(@NonNull String volumeId, int codeServerPort, int playgroundAppPort) {
         HostConfig hostConfig = HostConfig.newHostConfig()
-                .withPortBindings(PortBinding.parse(String.format("%d:%d", codeServerPort, 8080)),
+                .withPortBindings(PortBinding.parse(String.format("%d:%d", codeServerPort, 8443)),
                         PortBinding.parse(String.format("%d:%d", playgroundAppPort, 3000)))
                 .withBinds(Bind.parse(String.format("%s:/config", volumeId)));
 
