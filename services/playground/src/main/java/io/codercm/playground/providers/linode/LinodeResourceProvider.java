@@ -36,7 +36,7 @@ public class LinodeResourceProvider implements ResourceProvider {
         requestBody.put("region", linodeRegion);
         try{
             ResponseEntity<JsonNode> response = linodeWebClient.post()
-                    .uri("/volumes")
+                    .uri("/v4/volumes")
                     .body(BodyInserters.fromValue(requestBody))
                     .retrieve()
                     .toEntity(JsonNode.class)

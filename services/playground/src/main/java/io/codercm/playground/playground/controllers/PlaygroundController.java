@@ -3,7 +3,7 @@ package io.codercm.playground.playground.controllers;
 import io.codercm.playground.common.entities.ResponsePayload;
 import io.codercm.playground.playground.dtos.PlaygroundDto;
 import io.codercm.playground.playground.services.PlaygroundService;
-import io.codercm.playground.providers.linode.LinodeResourceProvider;
+import io.codercm.playground.providers.digitalocean.DigitalOceanProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +15,16 @@ import java.util.List;
 @RequestMapping("/api/v1/playgrounds")
 public class PlaygroundController {
     private final PlaygroundService playgroundService;
-    private final LinodeResourceProvider linodeResourceProvider;;
-
+    private final DigitalOceanProvider digitalOceanProvider;
     public PlaygroundController(PlaygroundService playgroundService,
-                                @Qualifier("linodeResourceProvider") LinodeResourceProvider linodeResourceProvider) {
+                                @Qualifier("digitalOceanResourceProvider") DigitalOceanProvider digitalOceanProvider) {
         this.playgroundService = playgroundService;
-        this.linodeResourceProvider = linodeResourceProvider;
+        this.digitalOceanProvider = digitalOceanProvider;
     }
 
-    @GetMapping("/linode")
-    public ResponseEntity linode() {
-        linodeResourceProvider.createStorage("test");
-       return null;
+    @GetMapping("/digitalocean")
+    public ResponseEntity<?> digitalOcean() {
+       return ResponseEntity.ok(digitalOceanProvider.createStorage("test"));
     }
     @GetMapping("/")
     public ResponseEntity<ResponsePayload<List<PlaygroundDto>, ?>> getAllPlaygrounds() {
