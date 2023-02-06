@@ -1,4 +1,4 @@
-ARG BASE=debian:11
+ARG BASE=amd64/debian:bullseye
 FROM $BASE
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
