@@ -7,9 +7,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class DigitalOceanConfig {
-    @Value("${playground.digitalocean.base-url}")
+    @Value("${playground.provider.digitalocean.base-url}")
     private String digitalOceanBaseUri;
-    @Value("${playground.digitalocean.access-token:-}")
+    @Value("${playground.provider.digitalocean.access-token:-}")
     private String digitalOceanAccessToken;
 
     @Bean(name = "digitalOceanWebClient")

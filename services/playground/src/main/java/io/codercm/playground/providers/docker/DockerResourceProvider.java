@@ -8,8 +8,6 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
 import io.codercm.playground.playground.dtos.PlaygroundDto;
-import io.codercm.playground.playground.dtos.PlaygroundStorageDto;
-import io.codercm.playground.playground.entities.PlaygroundStatus;
 import io.codercm.playground.providers.ResourceProvider;
 import io.codercm.playground.providers.entities.CreateRunnerResponse;
 import io.codercm.playground.providers.entities.CreateStorageResponse;
@@ -19,13 +17,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service(value = "dockerResourceProvider")
 @RequiredArgsConstructor
 public class DockerResourceProvider implements ResourceProvider {
     private final DockerClient dockerClient;
-    @Value(value = "${playground.docker.base-image}")
+    @Value(value = "${playground.provider.docker.base-image}")
     private String image;
 
     private PlaygroundDto toPlayground(Container container) {

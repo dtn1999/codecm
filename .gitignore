@@ -81,3 +81,14 @@ bin/
 
 # typescript
 **.tsbuildinfo
+**dorequest
+**docker/release
+
+
+# docker
+*.swp
+**.DS_store
+**linux.*
+**alpine.*
+**debian.*
+**ubuntu.*

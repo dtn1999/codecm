@@ -6,7 +6,6 @@ import io.codercm.playground.providers.ResourceProvider;
 import io.codercm.playground.providers.entities.CreateRunnerResponse;
 import io.codercm.playground.providers.entities.CreateStorageResponse;
 import lombok.NonNull;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ import java.util.Map;
 @Service("linodeResourceProvider")
 public class LinodeResourceProvider implements ResourceProvider {
     private final WebClient linodeWebClient;
-    @Value("${playground.linode.region}")
+    @Value("${playground.provider.linode.region}")
     private String linodeRegion;
 
     public LinodeResourceProvider(@Qualifier("linodeWebClient") WebClient linodeWebClient) {

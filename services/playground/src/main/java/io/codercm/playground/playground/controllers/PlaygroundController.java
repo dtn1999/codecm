@@ -24,7 +24,7 @@ public class PlaygroundController {
 
     @GetMapping("/digitalocean")
     public ResponseEntity<?> digitalOcean() {
-       return ResponseEntity.ok(digitalOceanProvider.createStorage("test"));
+       return ResponseEntity.ok(digitalOceanProvider.createPlayground("test", 8080, 8081));
     }
     @GetMapping("/")
     public ResponseEntity<ResponsePayload<List<PlaygroundDto>, ?>> getAllPlaygrounds() {

@@ -8,9 +8,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class LinodeConfig {
 
-    @Value("${playground.linode.base-url}")
+    @Value("${playground.provider.linode.base-url}")
     private String linodeBaseUri;
-    @Value("${playground.linode.access-token:-}")
+    @Value("${playground.provider.linode.access-token:-}")
     private String linodeAccessToken;
     @Bean(name = "linodeWebClient")
     public WebClient linodeWebClient() {
