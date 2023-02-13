@@ -16,13 +16,14 @@ The following [excalidraw](https://excalidraw.com/#json=XljIHBPM4A7imo_lDipCT,X3
 ### Technologies
 
 The project uses the following technologies:
-- [Nextjs]
-- [trpc]
-- [Quarkus]
-- [Tuborepo]
-- [Gradle]
-- [Docker]
-- [Digitalocean]
+- [Nextjs](https://nextjs.org/)
+- [trpc](https://trpc.io/)
+- [Quarkus](https://quarkus.io/)
+- [Spring boot](https://spring.io/)
+- [Tuborepo](https://turbo.build/)
+- [Gradle](https://gradle.org/)
+- [Docker](https://www.docker.com/)
+- [Digitalocean](https://www.digitalocean.com/)
 
 
 ### Application Features
