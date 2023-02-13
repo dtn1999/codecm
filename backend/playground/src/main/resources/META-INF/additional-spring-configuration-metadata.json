@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "playground.docker.base-image",
+      "type": "java.lang.String",
+      "description": "Description for playground.docker.base-image."
+    },
+    {
+      "name": "playground.linode.type",
+      "type": "java.lang.String",
+      "description": "Description for playground.linode.type."
+    }
+  ] }
