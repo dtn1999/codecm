@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 public class DBInitializer implements CommandLineRunner {
 
-   private final TemplateRepository templateRepository;
+    private final TemplateRepository templateRepository;
+
     @Override
     public void run(String... args) throws Exception {
         Template nuxt = Template.builder()
@@ -43,11 +44,8 @@ public class DBInitializer implements CommandLineRunner {
                 .githubUrl("https://github.com/ixartz/Next-JS-Landing-Page-Starter-Template.git")
                 .build();
 
-        templateRepository.saveAll(List.of(
-                vueJs,
-                nuxt,
-                nextJSPayment,
-                nextJsLanding
-        ));
+        Stream.of(nuxt, vueJs, nextJSPayment, nextJsLanding)
+                .filter(template -> !templateRepository.existsByName(template.getName()))
+                .forEach(templateRepository::save);
     }
 }

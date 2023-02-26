@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,6 +15,19 @@
     "jsx": "preserve",
     "incremental": true,
     "noUncheckedIndexedAccess": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@we/components": ["components"],
+      "@we/components/*": ["components/*"],
+      "@we/hooks": ["hooks"],
+      "@we/hooks/*": ["hooks/*"],
+      "@we/services": ["services"],
+      "@we/services/*": ["services/*"],
+      "@we/utils": ["utils"],
+      "@we/utils/*": ["utils/*"],
+      "@we/types": ["types"],
+      "@we/types/*": ["./types/*"]
+    },
     "plugins": [
       {
         "name": "next"
@@ -34,7 +43,5 @@
     "next.config.mjs",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
