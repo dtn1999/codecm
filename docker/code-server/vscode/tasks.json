@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "start",
+            "type": "shell",
+            "command": "#!/bin/bash\n\nif [ -f \"package.json\" ]; then\n  if grep -q '\"start\":' package.json; then\n    yarn && yarn start\n  else\n    yarn install\n  fi\nelse\n  echo \"No package.json file found.\"\nfi",
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "runOptions": {
+                "runOn": "folderOpen",
+            }
+        }
+    ]
+}

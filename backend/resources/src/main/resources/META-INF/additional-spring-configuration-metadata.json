@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "playground.provider.digitalocean.base-image",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.digitalocean.base-image."
+    },
+    {
+      "name": "playground.provider.docker.base-image",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.docker.base-image."
+    },
+    {
+      "name": "playground.provider.digitalocean.region",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.digitalocean.region."
+    },
+    {
+      "name": "playground.provider.digitalocean.access-token",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.digitalocean.access-token."
+    }
+  ] }

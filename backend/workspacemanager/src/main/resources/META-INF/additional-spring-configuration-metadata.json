@@ -1,0 +1,53 @@
+{
+  "properties": [
+    {
+      "name": "playground.provider.docker.base-image",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.docker.base-image."
+    },
+    {
+      "name": "playground.provider.linode.base-url",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.linode.base-url."
+    },
+    {
+      "name": "playground.provider.linode.access-token",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.linode.access-token."
+    },
+    {
+      "name": "playground.provider.linode.region",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.linode.region."
+    },
+    {
+      "name": "playground.provider.linode.type",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.linode.type."
+    },
+    {
+      "name": "playground.provider.digitalocean.base-image",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.digitalocean.base-image."
+    },
+    {
+      "name": "playground.provider.digitalocean.region",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.digitalocean.region."
+    },
+    {
+      "name": "playground.provider.digitalocean.base-url",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.digitalocean.base-url."
+    },
+    {
+      "name": "playground.provider.digitalocean.access-token",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.digitalocean.access-token."
+    },
+    {
+      "name": "playground.provider.docker.volumes-path",
+      "type": "java.lang.String",
+      "description": "Description for playground.provider.docker.volumes-path."
+    }
+  ] }
