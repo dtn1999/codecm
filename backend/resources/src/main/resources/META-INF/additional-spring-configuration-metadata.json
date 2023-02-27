@@ -24,5 +24,10 @@
       "name": "we.elearning.security.cors.origins",
       "type": "java.lang.String",
       "description": "Description for we.elearning.security.cors.origins."
+    },
+    {
+      "name": "we.elearning.security.auth0.audience",
+      "type": "java.lang.String",
+      "description": "Description for we.elearning.security.auth0.audience."
     }
   ] }

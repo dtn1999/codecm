@@ -1,5 +1,6 @@
 server:
   port: 8005
+# spring.security.oauth2.resourceserver.jwt.issuer-uri: http://localhost:8000
 spring:
   config:
     import: optional:file:.env[.properties]
@@ -9,8 +10,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${ISSUER_URI:http://localhost:8000}
-          jwk-set-uri: ${JWK_SET_URI:http://localhost:8000/.well-known/jwks.json}
+          issuer-uri: ${ISSUER_URI:https://dev-8qocg6o6c1fu6cxj.us.auth0.com}
+          jwk-set-uri: ${JWK_SET_URI:https://dev-8qocg6o6c1fu6cxj.us.auth0.com/.well-known/jwks.json}
+          audiences:
+            - ${AUTH0_AUDIENCE:J5Oduhw9alhb9oelLvMlQ7MvjqnIftwi}
   # Datasource configuration
   datasource:
     driver-class-name: org.h2.Driver
@@ -25,10 +28,13 @@ spring:
     hibernate:
       ddl-auto: update
 # Application custom properties
+#
 we:
   elearning:
     security:
       cors:
         origins: ${CORS_ORIGINS:http://localhost:3000}
+      auth0:
+        audience: ${AUTH0_AUDIENCE:J5Oduhw9alhb9oelLvMlQ7MvjqnIftwi}
     workspace-manager:
       base-url: ${WORKSPACE_MANAGER_BASE_URL:http://localhost:8000}
