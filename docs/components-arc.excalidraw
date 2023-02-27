@@ -1,0 +1,112 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "4q905fcjYfPaTE6Ot2oOV",
+      "type": "rectangle",
+      "x": 317.8857421875,
+      "y": -243.864990234375,
+      "width": 286.32537841796875,
+      "height": 183.46478271484375,
+      "angle": 0,
+      "strokeColor": "#000000",
+      "backgroundColor": "transparent",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "q4UTmmW_rTxdl5DTRYxoK"
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1560210600,
+      "version": 222,
+      "versionNonce": 928744664,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1677492686799,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "MjSxthf-VSspe1dQ6HE6k",
+      "type": "rectangle",
+      "x": 468.8082275390625,
+      "y": -179.7303466796875,
+      "width": 120,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#000000",
+      "backgroundColor": "transparent",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "q4UTmmW_rTxdl5DTRYxoK"
+      ],
+      "roundness": {
+        "type": 3
+      },
+      "seed": 80284072,
+      "version": 228,
+      "versionNonce": 565040296,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "ji8SSaioSyOeMXQ0V3KC8"
+        }
+      ],
+      "updated": 1677492686799,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "ji8SSaioSyOeMXQ0V3KC8",
+      "type": "text",
+      "x": 482.7982711791992,
+      "y": -160.7303466796875,
+      "width": 92.01991271972656,
+      "height": 24,
+      "angle": 0,
+      "strokeColor": "#000000",
+      "backgroundColor": "transparent",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "q4UTmmW_rTxdl5DTRYxoK"
+      ],
+      "roundness": null,
+      "seed": 1646262744,
+      "version": 79,
+      "versionNonce": 2017798616,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1677492686799,
+      "link": null,
+      "locked": false,
+      "text": "NextAuth",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "MjSxthf-VSspe1dQ6HE6k",
+      "originalText": "NextAuth"
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

@@ -19,5 +19,10 @@
       "name": "playground.provider.digitalocean.access-token",
       "type": "java.lang.String",
       "description": "Description for playground.provider.digitalocean.access-token."
+    },
+    {
+      "name": "we.elearning.security.cors.origins",
+      "type": "java.lang.String",
+      "description": "Description for we.elearning.security.cors.origins."
     }
   ] }

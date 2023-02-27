@@ -6,6 +6,7 @@ import com.we.elearning.templates.dtos.TemplateDto;
 import com.we.elearning.templates.dtos.TemplateMapper;
 import com.we.elearning.templates.entities.Template;
 import com.we.elearning.templates.repositories.TemplateRepository;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -50,7 +51,7 @@ public class TemplatesService {
      *
      * @return
      */
-    public ApiResponse<TemplateDto, ?> createTemplate(@NotNull TemplateDto templateDto) {
+    public ApiResponse<TemplateDto, ?> createTemplate(TemplateDto templateDto) {
         Template template = templateRepository.save(TemplateMapper.INSTANCE.toTemplate(templateDto));
         return ResponseBuilder.success(TemplateMapper.INSTANCE.toTemplateDto(template));
     }

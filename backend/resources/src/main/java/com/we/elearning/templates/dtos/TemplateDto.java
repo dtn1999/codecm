@@ -22,5 +22,5 @@ public class TemplateDto {
     private String description;
     private String imageUrl;
     @NotNull
-    private String githubUrl;
+    private String githubRepoUrl;
 }

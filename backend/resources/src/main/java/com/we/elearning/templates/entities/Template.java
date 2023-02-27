@@ -32,5 +32,5 @@ public class Template {
     private String imageUrl;
     @Column(unique = true,name = "GITHUB_URL")
     @NotNull
-    private String githubUrl;
+    private String githubRepoUrl;
 }

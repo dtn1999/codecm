@@ -8,6 +8,7 @@ import com.we.elearning.playgrounds.dtos.PlaygroundMapper;
 import com.we.elearning.playgrounds.entities.Playground;
 import com.we.elearning.playgrounds.exceptions.PlaygroundNotCreatedException;
 import com.we.elearning.playgrounds.repositories.PlaygroundRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class PlaygroundService {
     private final PlaygroundRepository playgroundRepository;
     private final WebClient workspaceManagerWebClient;
@@ -68,13 +70,19 @@ public class PlaygroundService {
         Map<String, Object> createWorkspaceRequest = Map.of(
                 "githubRepoUrl", createPlaygroundDto.getGithubRepoUrl()
         );
-        ResponseEntity<ApiResponse<Map<String, Object>, Object>> createWorkspaceResponse = workspaceManagerWebClient.post()
-                .uri("/api/v1/workspacemanager/workspaces")
-                .bodyValue(createWorkspaceRequest)
-                .retrieve()
-                .toEntity(new ParameterizedTypeReference<ApiResponse<Map<String, Object>, Object>>() {
-                })
-                .block();
+        ResponseEntity<ApiResponse<Map<String, Object>, Object>> createWorkspaceResponse;
+        try {
+            createWorkspaceResponse = workspaceManagerWebClient.post()
+                    .uri("/api/v1/workspacemanager/workspaces")
+                    .bodyValue(createWorkspaceRequest)
+                    .retrieve()
+                    .toEntity(new ParameterizedTypeReference<ApiResponse<Map<String, Object>, Object>>() {
+                    })
+                    .block();
+        } catch (Exception e) {
+            log.error("Failed to create workspace", e);
+            throw new PlaygroundNotCreatedException("Failed to create workspace");
+        }
         if (Objects.nonNull(createWorkspaceResponse) && createWorkspaceResponse.getStatusCode().is2xxSuccessful()) {
             String workspaceHost = (String) createWorkspaceResponse.getBody().getData().get("host");
             int workspacePort = (int) createWorkspaceResponse.getBody().getData().get("port");
@@ -92,8 +100,9 @@ public class PlaygroundService {
                     .build();
             PlaygroundDto playgroundDto = PlaygroundMapper.INSTANCE.toPlaygroundDto(playgroundRepository.save(playground));
             return ResponseBuilder.success(playgroundDto);
+        }else {
+            throw new PlaygroundNotCreatedException("Failed to create workspace");
         }
-        throw new PlaygroundNotCreatedException("Failed to create workspace");
     }
 
 

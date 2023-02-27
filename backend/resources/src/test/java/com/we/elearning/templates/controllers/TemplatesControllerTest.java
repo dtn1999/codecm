@@ -60,13 +60,13 @@ class TemplatesControllerTest {
                         .id(1L)
                         .description("description1")
                         .name("name1")
-                        .githubUrl("githubUrl1")
+                        .githubRepoUrl("githubUrl1")
                         .build(),
                 TemplateDto.builder()
                         .id(2L)
                         .description("description2")
                         .name("name2")
-                        .githubUrl("githubUrl2")
+                        .githubRepoUrl("githubUrl2")
                         .build()
         );
 
@@ -94,7 +94,7 @@ class TemplatesControllerTest {
                 .id(1L)
                 .description("description1")
                 .name("name1")
-                .githubUrl("githubUrl1")
+                .githubRepoUrl("githubUrl1")
                 .build();
         // when
         when(templatesService.getTemplateById(1L)).thenReturn(ResponseBuilder.success(templateDto));
@@ -147,7 +147,7 @@ class TemplatesControllerTest {
         TemplateDto templateDto = TemplateDto.builder()
                 .description("description1")
                 .name("name1")
-                .githubUrl("githubUrl1")
+                .githubRepoUrl("githubUrl1")
                 .build();
         Template template = TemplateMapper.INSTANCE.toTemplate(templateDto);
         template.setId(1L);

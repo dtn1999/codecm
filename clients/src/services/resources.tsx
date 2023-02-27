@@ -19,7 +19,7 @@ export class ResourceClient {
   public async getAll<O>(request: GetAllRequest): Promise<ApiResponse<O, any>> {
     const { resourceType, path } = request;
     const { data, status } = await this.axiosClient.get<ApiResponse<O, any>>(
-      `${resourceType}/${path}`
+      `${resourceType}`
     );
     return data;
   }
@@ -28,7 +28,7 @@ export class ResourceClient {
   ): Promise<ApiResponse<O, any>> {
     const { resourceType, path, id } = request;
     const { data, status } = await this.axiosClient.get<ApiResponse<O, any>>(
-      `${resourceType}/${path}/${id}`
+      `${resourceType}${path.startsWith("/") ? "" : `/${path}`}/${id}`
     );
     return data;
   }
@@ -37,7 +37,7 @@ export class ResourceClient {
   ): Promise<ApiResponse<O, any>> {
     const { resourceType, path, data: requestPayload } = request;
     const { data, status } = await this.axiosClient.post<ApiResponse<O, any>>(
-      `${resourceType}/${path}`,
+      `${resourceType}`,
       requestPayload
     );
     return data;

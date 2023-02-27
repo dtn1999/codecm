@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const requestPayload = JSON.parse(req.body);
-  console.log(requestPayload);
+  console.log("request ", requestPayload);
   try {
     let data: ApiResponse<unknown, unknown>;
     const { type, resourceType, path, payload, id } = requestPayload;

@@ -2,40 +2,27 @@ import React from "react";
 import { NextPage } from "next";
 import { Layout } from "../components/Layouts/Layout";
 import { TemplateCard } from "../components/Card/TemplateCard";
-
-const templates = [
-  {
-    name: "React",
-    href: "/playgrounds/react",
-    description: "React playground with Vite",
-    image: {
-      url: "https://wsrv.nl/?url=https%3A%2F%2Fcodedamn.com%2Fassets%2Fimages%2Fsvg%2Freact.svg&w=48&q=70&output=webp",
-    },
-  },
-  {
-    name: "Vue3",
-    description: "Vue3 playground with Vite",
-    image: {
-      url: "https://wsrv.nl/?url=https%3A%2F%2Fcodedamn.com%2Fassets%2Fimages%2Fsvg%2Fvue.svg&amp;w=48&amp;q=70&amp;output=webp",
-    },
-  },
-  {
-    name: "Next.js",
-    description: "Next.js playground with Vite",
-    image: {
-      url: "https://wsrv.nl/?url=https%3A%2F%2Fcodedamn.com%2Fassets%2Fimages%2Fsvg%2Fnext.svg&amp;w=48&amp;q=70&amp;output=webp",
-    },
-  },
-  {
-    name: "From GitHub",
-    description: "Create a playground from a GitHub repository",
-    image: {
-      url: "https://wsrv.nl/?url=https%3A%2F%2Fcodedamn.com%2Fassets%2Fsvg%2Fgithub_icon.svg&amp;w=48&amp;q=70&amp;output=webp",
-    },
-  },
-];
+import { Template } from "@we/services/types";
 
 const PlaygroundsPage: NextPage = () => {
+  const [templates, setTemplates] = React.useState<Template[]>([]);
+  const fetchAllTemplates = async () => {
+    const response = await fetch("/api/resources", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "get-all",
+        resourceType: "templates",
+      }),
+    });
+    const {
+      data: { data: templates },
+    } = await response.json();
+    console.log("templates", templates);
+    setTemplates(templates);
+  };
+  React.useEffect(() => {
+    fetchAllTemplates();
+  }, []);
   return (
     <Layout>
       <section className="px-5 pt-20 pb-8 sm:mx-auto">
@@ -60,7 +47,7 @@ const PlaygroundsPage: NextPage = () => {
       </section>
     </Layout>
   );
-}
-const e = ""
+};
+const e = "";
 
 export default PlaygroundsPage;

@@ -19,6 +19,7 @@
     "cpu-features": "^0.0.4",
     "eruda": "^2.11.2",
     "next": "^13.2.1",
+    "next-auth": "^4.19.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-merge-refs": "^2.0.1",
@@ -26,7 +27,8 @@
     "ssh2": "^1.11.0",
     "superjson": "1.9.1",
     "xterm": "^5.1.0",
-    "zod": "^3.20.2"
+    "zod": "^3.20.2",
+    "zustand": "^4.3.3"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

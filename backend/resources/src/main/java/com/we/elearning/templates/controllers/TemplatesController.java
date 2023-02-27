@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/resources/templates")
+@CrossOrigin(origins = "${we.elearning.security.cors.origins}")
 @RequiredArgsConstructor
 public class TemplatesController {
     private final TemplatesService templatesService;

@@ -18,6 +18,7 @@ dependencies {
     implementation ('org.springframework.boot:spring-boot-starter-webflux', {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-netty'
     })
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     // Containers/VMs providers
