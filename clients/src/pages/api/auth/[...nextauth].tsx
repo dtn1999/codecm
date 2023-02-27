@@ -7,6 +7,7 @@ export const authOptions: AuthOptions = {
       clientId: String(process.env.OAUTH0_ID),
       clientSecret: String(process.env.OAUTH0_SECRET),
       issuer: String(process.env.OAUTH0_ISSUER),
+      
     }),
   ],
   callbacks: {
