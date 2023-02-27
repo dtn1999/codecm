@@ -35,12 +35,12 @@ public class ResourcesApplicationSecurityConfig {
 
 
     @Bean
-    public ReactiveJwtDecoder jwtDecoder(OAuth2ResourceServerProperties properties,
+    public ReactiveJwtDecoder jwtDecoder(@Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}") final String issuer,
                                          @Value("${we.elearning.security.auth0.audience}") final String audience) {
-        NimbusReactiveJwtDecoder jwtDecoder = (NimbusReactiveJwtDecoder)ReactiveJwtDecoders.fromOidcIssuerLocation("https://dev-8qocg6o6c1fu6cxj.us.auth0.com/");
+        NimbusReactiveJwtDecoder jwtDecoder = (NimbusReactiveJwtDecoder)ReactiveJwtDecoders.fromOidcIssuerLocation(issuer);
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<Jwt>(
                 new AudienceValidator(audience),
-                new JwtIssuerValidator(properties.getJwt().getIssuerUri())
+                new JwtIssuerValidator(issuer)
         );
         jwtDecoder.setJwtValidator(validator);
         return jwtDecoder;
