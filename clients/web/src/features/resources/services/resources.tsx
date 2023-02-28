@@ -33,7 +33,7 @@ export class ResourceClient {
   ): Promise<ApiResponse<O, any>> {
     const { resourceType, path, id } = request;
     const { data, status } = await this.axiosClient.get<ApiResponse<O, any>>(
-      `${resourceType}${path.startsWith("/") ? "" : `/${path}`}/${id}`
+      `${resourceType}/${id}`
     );
     return data;
   }
@@ -52,7 +52,7 @@ export class ResourceClient {
   ): Promise<ApiResponse<O, any>> {
     const { resourceType, path, id, data: requestPayload } = request;
     const { data, status } = await this.axiosClient.put<ApiResponse<O, any>>(
-      `${resourceType}/${path}/${id}`,
+      `${resourceType}/${id}`,
       requestPayload
     );
     return data;
@@ -62,7 +62,7 @@ export class ResourceClient {
   ): Promise<ApiResponse<O, any>> {
     const { resourceType, path, id } = request;
     const { data, status } = await this.axiosClient.delete<ApiResponse<O, any>>(
-      `${resourceType}/${path}/${id}`
+      `${resourceType}/${id}`
     );
     return data;
   }
