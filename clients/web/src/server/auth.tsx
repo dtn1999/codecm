@@ -49,10 +49,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     Auth0Provider({
       clientId: String(process.env.AUTH0_CLIENT_ID),
       clientSecret: String(process.env.AUTH0_CLIENT_SECRET),

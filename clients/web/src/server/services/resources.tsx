@@ -1,3 +1,4 @@
+import { env } from "@we/env.mjs";
 import {
   ApiResponse,
   CreateRequest,
@@ -12,14 +13,8 @@ export class ResourceClient {
   private readonly axiosClient: AxiosInstance;
 
   constructor(accessToken?: string) {
-    const { RESOURCES_SERVER_URL } = process.env;
-    if (!RESOURCES_SERVER_URL) {
-      throw new Error(
-        "RESOURCES_SERVER_URL is required by ResourceClient to access the resources server but it is not defined"
-      );
-    }
     this.axiosClient = axios.create({
-      baseURL: String(RESOURCES_SERVER_URL),
+      baseURL: String(env.RESOURCES_SERVER_URL),
       headers: {
         Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
       },

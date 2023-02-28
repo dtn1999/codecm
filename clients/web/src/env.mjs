@@ -6,6 +6,7 @@ import { z } from "zod";
  */
 const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
+  RESOURCES_SERVER_URL: z.string().min(1),
   NEXTAUTH_SECRET:
     process.env.NODE_ENV === "production"
       ? z.string().min(1)
@@ -15,11 +16,14 @@ const server = z.object({
     // Since NextAuth.js automatically uses the VERCEL_URL if present.
     (str) => process.env.VERCEL_URL ?? str,
     // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-    process.env.VERCEL ? z.string().min(1) : z.string().url(),
+    process.env.VERCEL ? z.string().min(1) : z.string().url()
   ),
-  // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
-  DISCORD_CLIENT_ID: z.string(),
-  DISCORD_CLIENT_SECRET: z.string(),
+  AUTH0_SECRET: z.string().min(1),
+  AUTH0_ISSUER: z.string().min(1),
+  AUTH0_AUTHORIZATION_URL: z.string().min(1),
+  AUTH0_CLIENT_ID: z.string().min(1),
+  AUTH0_CLIENT_SECRET: z.string().min(1),
+  AUTH0_AUDIENCE: z.string().min(1),
 });
 
 /**
@@ -38,10 +42,15 @@ const client = z.object({
  */
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
+  RESOURCES_SERVER_URL: process.env.RESOURCES_SERVER_URL,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+  AUTH0_ISSUER: process.env.AUTH0_ISSUER,
+  AUTH0_AUTHORIZATION_URL: process.env.AUTH0_AUTHORIZATION_URL,
+  AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+  AUTH0_SECRET: process.env.AUTH0_SECRET,
+  AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
+  AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
@@ -68,7 +77,7 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
   if (parsed.success === false) {
     console.error(
       "❌ Invalid environment variables:",
-      parsed.error.flatten().fieldErrors,
+      parsed.error.flatten().fieldErrors
     );
     throw new Error("Invalid environment variables");
   }
@@ -82,7 +91,7 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
         throw new Error(
           process.env.NODE_ENV === "production"
             ? "❌ Attempted to access a server-side environment variable on the client"
-            : `❌ Attempted to access server-side environment variable '${prop}' on the client`,
+            : `❌ Attempted to access server-side environment variable '${prop}' on the client`
         );
       return target[/** @type {keyof typeof target} */ (prop)];
     },
