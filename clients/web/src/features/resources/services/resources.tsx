@@ -22,8 +22,8 @@ export class ResourceClient {
   }
 
   public async getAll<O>(request: GetAllRequest): Promise<ApiResponse<O, any>> {
-    const { resourceType, path } = request;
-    const { data, status } = await this.axiosClient.get<ApiResponse<O, any>>(
+    const { resourceType } = request;
+    const { data } = await this.axiosClient.get<ApiResponse<O, any>>(
       `${resourceType}`
     );
     return data;
@@ -31,8 +31,8 @@ export class ResourceClient {
   public async getById<O, ID>(
     request: GetByIdRequest<ID>
   ): Promise<ApiResponse<O, any>> {
-    const { resourceType, path, id } = request;
-    const { data, status } = await this.axiosClient.get<ApiResponse<O, any>>(
+    const { resourceType, id } = request;
+    const { data } = await this.axiosClient.get<ApiResponse<O, any>>(
       `${resourceType}/${id}`
     );
     return data;
@@ -40,8 +40,8 @@ export class ResourceClient {
   public async create<O, R>(
     request: CreateRequest<R>
   ): Promise<ApiResponse<O, any>> {
-    const { resourceType, path, data: requestPayload } = request;
-    const { data, status } = await this.axiosClient.post<ApiResponse<O, any>>(
+    const { resourceType, data: requestPayload } = request;
+    const { data } = await this.axiosClient.post<ApiResponse<O, any>>(
       `${resourceType}`,
       requestPayload
     );
@@ -50,8 +50,8 @@ export class ResourceClient {
   public async update<O, R, ID>(
     request: UpdateRequest<R, ID>
   ): Promise<ApiResponse<O, any>> {
-    const { resourceType, path, id, data: requestPayload } = request;
-    const { data, status } = await this.axiosClient.put<ApiResponse<O, any>>(
+    const { resourceType, id, data: requestPayload } = request;
+    const { data } = await this.axiosClient.put<ApiResponse<O, any>>(
       `${resourceType}/${id}`,
       requestPayload
     );
@@ -60,8 +60,8 @@ export class ResourceClient {
   public async delete<O, ID>(
     request: DeleteRequest<ID>
   ): Promise<ApiResponse<O, any>> {
-    const { resourceType, path, id } = request;
-    const { data, status } = await this.axiosClient.delete<ApiResponse<O, any>>(
+    const { resourceType, id } = request;
+    const { data } = await this.axiosClient.delete<ApiResponse<O, any>>(
       `${resourceType}/${id}`
     );
     return data;
