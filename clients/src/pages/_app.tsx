@@ -1,16 +1,16 @@
 import { type AppType } from "next/app";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-import { api } from "../utils/api";
+import { SessionProvider } from "next-auth/react";
+import { trpc } from "../utils/api";
 
 import "../styles/globals.css";
 import "react-reflex/styles.css";
 
 const MyApp: AppType<any> = ({ Component, pageProps }) => {
   return (
-    <UserProvider>
+    <SessionProvider session={pageProps.session}>
       <Component {...pageProps} />{" "}
-    </UserProvider>
+    </SessionProvider>
   );
 };
 
-export default api.withTRPC(MyApp);
+export default trpc.withTRPC(MyApp);

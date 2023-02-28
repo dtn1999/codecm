@@ -1,32 +1,14 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import React from "react";
-import { type NextPage } from "next";
-import Head from "next/head";
-import dynamic from "next/dynamic";
-import Link from "next/link";
+import { NextPage } from "next";
+import { Layout } from "../../components/Layouts/Layout";
+import { BootPlaygroundIcon } from "@we/components/Icons/BootPlaygroundIcon";
+import { ExploreLearningPath } from "@we/components/Icons/ExploreLearningPath";
+import { TodoTasksIcon } from "@we/components/Icons/TodoTasksIcon";
 
-import { api } from "../utils/api";
-import type { Playground } from "../server/lib/axios";
-import Button from "../components/Button";
-import {
-  ReflexContainer,
-  ReflexSplitter,
-  ReflexElement,
-  ReflexHandle,
-} from "react-reflex";
-import { Layout } from "../components/Layouts/Layout";
-import { BootPlaygroundIcon } from "../components/Icons/BootPlaygroundIcon";
-import { ExploreLearningPath } from "../components/Icons/ExploreLearningPath";
-import { TodoTasksIcon } from "../components/Icons/TodoTasksIcon";
-
-const Devtools = dynamic(() => import("../components/Devtools"), {
-  ssr: false,
-});
-
-const Home: NextPage = () => {
+const PlaygroundsPage: NextPage = () => {
   return (
     <Layout>
-      <main className="mx-auto w-full max-w-screen-2xl flex-grow pb-11 sm:pb-0">
+      <div className="mx-auto w-full max-w-screen-2xl flex-grow pb-11 sm:pb-0">
         <div className="grid gap-6 p-4 py-6 lg:grid-cols-12">
           <div className="flex grow flex-col gap-10 lg:col-span-8">
             <div className="flex items-center justify-between">
@@ -170,9 +152,10 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </Layout>
   );
 };
+const e = "";
 
-export default Home;
+export default PlaygroundsPage;
