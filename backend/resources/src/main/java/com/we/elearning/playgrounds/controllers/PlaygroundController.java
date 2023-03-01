@@ -4,11 +4,15 @@ import com.we.elearning.common.dtos.ApiResponse;
 import com.we.elearning.playgrounds.dtos.CreatePlaygroundDto;
 import com.we.elearning.playgrounds.dtos.PlaygroundDto;
 import com.we.elearning.playgrounds.services.PlaygroundService;
+import com.we.elearning.security.Auth0UserInfoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +23,8 @@ import java.util.List;
 @Slf4j
 public class PlaygroundController {
     private final PlaygroundService playgroundService;
-
     @GetMapping("")
-    public ResponseEntity<ApiResponse<List<PlaygroundDto>, ?>> getAllPlaygrounds() {
+    public ResponseEntity<ApiResponse<List<PlaygroundDto>, ?>> getAllPlaygrounds(BearerTokenAuthentication authentication){
         log.info("getting all playgrounds");
         return ResponseEntity.ok(playgroundService.getAllPlaygrounds());
     }

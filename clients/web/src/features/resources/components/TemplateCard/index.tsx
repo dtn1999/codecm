@@ -1,16 +1,17 @@
 import React from "react";
 import Image from "next/image";
+import { Template } from "@we/types/schemas";
 
-interface TemplateCardProps {
-  name: string;
-  description: string;
-  imageUrl: string;
+interface TemplateCardProps extends Template {
   onClick: () => void;
 }
 
 export const TemplateCard: React.FC<TemplateCardProps> = React.memo(
-  ({ name, description, imageUrl }) => (
-    <div className="group flex cursor-pointer flex-col justify-between rounded-lg border bg-white p-3 transition duration-150 ease-in-out hover:border-indigo-500 hover:shadow">
+  ({ name, description, imageUrl, onClick }) => (
+    <div
+      onClick={onClick}
+      className="group flex cursor-pointer flex-col justify-between rounded-lg border bg-white p-3 transition duration-150 ease-in-out hover:border-indigo-500 hover:shadow"
+    >
       <div className="flex items-center gap-4 truncate">
         <div className="flex-shrink-0">
           <div className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-gray-100 text-white group-hover:bg-gray-200/70">

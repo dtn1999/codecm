@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.myjeeva.digitalocean:digitalocean-api-client:2.17'
     // Utils
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation "me.paulschwarz:spring-dotenv:3.0.0"
     runtimeOnly 'com.h2database:h2'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     compileOnly 'org.projectlombok:lombok'

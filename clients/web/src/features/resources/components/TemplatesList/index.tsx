@@ -4,11 +4,16 @@ import { TemplateCard } from "../TemplateCard";
 
 export const TemplatesList: React.FC = React.memo(() => {
   const { data, error } = trpc.templatesRouter.getAll.useQuery();
+  const handleCardClick = () => {};
   console.log(data, error);
   return (
     <div className="grid gap-4 pt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       {data?.templates.map((template) => (
-        <TemplateCard key={template.id} {...template} />
+        <TemplateCard
+          key={template.id}
+          onClick={handleCardClick}
+          {...template}
+        />
       ))}
       <div
         className="group flex cursor-pointer flex-col justify-between rounded-lg border bg-white p-3 transition duration-150 ease-in-out hover:border-indigo-500 hover:shadow"

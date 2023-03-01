@@ -29,6 +29,10 @@ export const CreatePlaygroundInputSchema = z.object({
   githubRepoUrl: z.string(),
 });
 
+export const GetAllTemplatesResponseSchema = z.object({
+  templates: z.array(TemplateSchema),
+});
+
 /*******************************************************************************
  * Types definitions
  *****************************************************************************/

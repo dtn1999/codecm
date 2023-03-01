@@ -5,18 +5,21 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@we/server/api/trpc";
+import { GetAllTemplatesResponseSchema, Template } from "@we/types/schemas";
 
 export const templatesRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx: { resourceClient } }) => {
-    const { data: templates, success } = await resourceClient.getAll({
-      resourceType: "templates",
-      path: "",
-    });
-    console.log(templates);
-    return {
-      templates,
-    };
-  }),
+  getAll: publicProcedure
+    .output(GetAllTemplatesResponseSchema)
+    .query(async ({ ctx: { resourceClient } }): Promise<any> => {
+      const { data: templates, success } = await resourceClient.getAll({
+        resourceType: "templates",
+        path: "",
+      });
+      console.log(templates);
+      return {
+        templates,
+      };
+    }),
   getById: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(({ input }) => {
