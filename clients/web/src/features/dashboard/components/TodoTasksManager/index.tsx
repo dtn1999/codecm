@@ -17,7 +17,7 @@ export const TodoTasksManager: React.FC = React.memo(() => {
           </span>
           <button
             type="button"
-            className="focus:ring-primary-500 bg-primary-600 hover:bg-primary-700 inline-flex flex-shrink-0 items-center gap-2 rounded-lg border border-transparent px-3 py-2 text-sm font-semibold text-white shadow focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none dark:ring-offset-gray-900"
+            className="focus:ring-primary-500 bg-primary-600 hover:bg-primary-700 inline-flex flex-shrink-0 items-center gap-2 rounded-lg border border-transparent bg-gradient-to-r from-indigo-500 to-cyan-600 px-3 py-2 text-sm font-semibold text-white shadow focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none dark:ring-offset-gray-900"
           >
             Add a new activity
           </button>
