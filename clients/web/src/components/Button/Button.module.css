@@ -23,7 +23,7 @@
 }
 
 .primary {
-  @apply border-primary border-transparent bg-teal-700 text-white hover:bg-teal-700/90 hover:decoration-0;
+  @apply border-transparent bg-teal-700 text-white hover:bg-teal-700/90 hover:decoration-0;
 }
 
 .slim {

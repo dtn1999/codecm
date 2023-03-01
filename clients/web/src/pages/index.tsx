@@ -25,7 +25,7 @@ const Home: NextPage = () => {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    className="focus:ring-primary-500 -m-2 inline-flex flex-shrink-0 flex-shrink-0 items-center gap-2 rounded-lg border border-none border-transparent bg-transparent p-2 text-sm font-semibold text-gray-800 text-opacity-90 hover:text-opacity-100 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none dark:text-gray-200 dark:ring-offset-gray-900 sm:translate-y-px md:hidden"
+                    className="focus:ring-primary-500 -m-2 inline-flex flex-shrink-0 items-center gap-2 rounded-lg border border-none border-transparent bg-transparent p-2 text-sm font-semibold text-gray-800 text-opacity-90 hover:text-opacity-100 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none dark:text-gray-200 dark:ring-offset-gray-900 sm:translate-y-px md:hidden"
                   >
                     <span className="sr-only">Open menu</span>
                     <svg

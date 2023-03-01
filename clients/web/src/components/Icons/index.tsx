@@ -3,6 +3,7 @@ import { BuildProjectIcon } from "./BuildProjectIcon";
 import { CertificatesIcon } from "./CertificatesIcon";
 import { CoursesIcon } from "./CoursesIcon";
 import { DashboardIcon } from "./DashboardIcon";
+import { DashboardProjectsSectionIcon } from "./DashboardProjectsSectionIcon";
 import { ExploreCoursesIcon } from "./ExploreCoursesIcon";
 import { ExploreLearningPathsIcon } from "./ExploreLearningPathsIcon";
 import { LearningPathsIcon } from "./LearningPathsIcon";
@@ -23,5 +24,6 @@ export {
   PlaygroundsIcon,
   SearchIcon,
   TodoTasksIcon,
-  ProjectsIcon
+  ProjectsIcon,
+  DashboardProjectsSectionIcon,
 };
