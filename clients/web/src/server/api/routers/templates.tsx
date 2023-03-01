@@ -7,13 +7,16 @@ import {
 } from "@we/server/api/trpc";
 
 export const templatesRouter = createTRPCRouter({
-  getAll: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input, ctx: { resourceClient } }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
+  getAll: publicProcedure.query(async ({ ctx: { resourceClient } }) => {
+    const { data: templates, success } = await resourceClient.getAll({
+      resourceType: "templates",
+      path: "",
+    });
+    console.log(templates);
+    return {
+      templates,
+    };
+  }),
   getById: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(({ input }) => {

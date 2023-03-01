@@ -22,7 +22,7 @@ public class ResourcesApplicationSecurityConfig {
                 .csrf()
                     .disable()
                 .authorizeExchange()
-                    .pathMatchers("/actuator/**")
+                    .pathMatchers("/actuator/**", "/api/v1/resources/templates")
                             .permitAll()
                     .anyExchange()
                         .authenticated()

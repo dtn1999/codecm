@@ -57,14 +57,14 @@ class TemplatesServiceTest {
                         .id(1L)
                         .description("description1")
                         .name("name1")
-                        .githubUrl("githubUrl1")
+                        .githubRepoUrl("githubUrl1")
                         .imageUrl("imageUrl1")
                         .build(),
                 Template.builder()
                         .id(2L)
                         .description("description2")
                         .name("name2")
-                        .githubUrl("githubUrl2")
+                        .githubRepoUrl("githubUrl2")
                         .imageUrl("imageUrl2")
                         .build()
         );
@@ -86,7 +86,7 @@ class TemplatesServiceTest {
                 .id(1L)
                 .description("description1")
                 .name("name1")
-                .githubUrl("githubUrl1")
+                .githubRepoUrl("githubUrl1")
                 .imageUrl("imageUrl1")
                 .build();
         ApiResponse<TemplateDto, ?> expected = ResponseBuilder
@@ -122,7 +122,7 @@ class TemplatesServiceTest {
                 .id(1L)
                 .description("description1")
                 .name("name1")
-                .githubUrl("githubUrl1")
+                .githubRepoUrl("githubUrl1")
                 .imageUrl("imageUrl1")
                 .build();
         TemplateDto templateDto = TemplateMapper.INSTANCE.toTemplateDto(template);
@@ -159,7 +159,7 @@ class TemplatesServiceTest {
                 .id(id)
                 .description("description1")
                 .name("name1")
-                .githubUrl("githubUrl1")
+                .githubRepoUrl("githubUrl1")
                 .imageUrl("imageUrl1")
                 .build();
         TemplateDto updatedTemplateDto = TemplateDto.builder()

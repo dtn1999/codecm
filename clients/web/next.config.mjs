@@ -21,7 +21,13 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ["wsrv.nl", "avatars.githubusercontent.com"],
+    domains: [
+      "wsrv.nl",
+      "avatars.githubusercontent.com",
+      "i0.wp.com",
+      "a.storyblok.com",
+      "isotropic.co",
+    ],
   },
 };
 export default config;
