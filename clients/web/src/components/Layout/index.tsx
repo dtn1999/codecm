@@ -1,5 +1,5 @@
 import React from "react";
-import { Header } from "@we/components/Layout/Header";
+import { DashboardHeader } from "@we/components/Layout/DashboardHeader";
 import { SideBar } from "@we/components/Layout/SideBar";
 import { ContainerComponentProps } from "@we/types/ui";
 
@@ -18,7 +18,7 @@ export const Layout: React.FC<ContainerComponentProps> = React.memo(
             id="layout-content-container"
             className="flex w-full flex-1 flex-col"
           >
-            <Header />
+            <DashboardHeader />
             {children}
             <div className=""></div>
           </div>
