@@ -1,6 +1,5 @@
 import React from "react";
-import { NextPage } from "next";
-import { Layout } from "@we/components/Layout";
+import { Layout } from "@we/components";
 import {
   BootPlaygroundIcon,
   ExploreLearningPathsIcon,

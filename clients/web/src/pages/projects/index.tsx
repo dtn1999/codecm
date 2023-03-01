@@ -1,6 +1,6 @@
 import React from "react";
 import { NextPageWithLayout } from "@we/types/ui";
-import { Layout } from "@we/components/Layout";
+import { Layout } from "@we/components";
 
 const ProjectsPage: NextPageWithLayout = () => {
   return (

@@ -1,4 +1,4 @@
-import { Layout } from "@we/components/Layout";
+import { Layout } from "@we/components";
 import { NextPageWithLayout } from "@we/types/ui";
 import React from "react";
 

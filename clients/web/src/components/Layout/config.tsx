@@ -16,7 +16,7 @@ export const NAV_SECTIONS = [
       },
       {
         name: "My Projects",
-        href: "/projects",
+        href: "/my-projects",
         icon: <ProjectsIcon />,
       },
     ],
@@ -26,7 +26,7 @@ export const NAV_SECTIONS = [
     children: [
       {
         name: "Build Projects",
-        href: "/build-projects",
+        href: "/projects",
         icon: <BuildProjectIcon />,
       },
       {

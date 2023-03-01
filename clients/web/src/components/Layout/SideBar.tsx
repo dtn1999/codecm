@@ -9,7 +9,7 @@ export const SideBar = React.memo(() => (
       href="/"
     >
       <div className="inline-flex items-center gap-2 lg:hidden xl:inline-flex">
-        <span className="text-xl font-semibold">codecamgen</span>
+        <span className="text-xl font-semibold">we</span>
       </div>
     </a>
     <form className="relative mb-1 px-3 md:hidden">
