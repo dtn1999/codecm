@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BootPlaygroundIcon } from "@we/components/Icons";
 import React from "react";
 
@@ -6,12 +7,12 @@ export const PlaygroundsSection: React.FC = React.memo(() => {
     <div className="flex grow flex-col gap-10 lg:col-span-8">
       <div className="flex items-center justify-between">
         <span className="text-2xl font-bold">Playground</span>
-        <a
+        <Link
           className="text-sm text-gray-500 underline-offset-2 opacity-100 transition-opacity duration-500 hover:underline dark:text-gray-400"
           href="/playgrounds"
         >
           See all
-        </a>
+        </Link>
       </div>
       <div className="flex w-full flex-col items-center gap-8 rounded-2xl border border-gray-100 bg-gray-50 px-8 py-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8 lg:flex-row">
         <div className="w-40 translate-y-3">
