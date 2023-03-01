@@ -10,10 +10,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${ISSUER_URI:https://dev-8qocg6o6c1fu6cxj.us.auth0.com/}
-          jwk-set-uri: ${JWK_SET_URI:https://dev-8qocg6o6c1fu6cxj.us.auth0.com/.well-known/jwks.json}
+          issuer-uri: ${ISSUER_URI:https://we-elearning.us.auth0.com/}
+          jwk-set-uri: ${JWK_SET_URI:https://we-elearning.us.auth0.com/.well-known/jwks.json}
           audiences:
-            - ${AUTH0_AUDIENCE:http://localhost:8005/api/v1/resources}
+            - ${AUTH0_AUDIENCE:https://api.we-elearning.com/api/v1/}
   # Datasource configuration
   datasource:
     driver-class-name: org.h2.Driver
@@ -35,6 +35,6 @@ we:
       cors:
         origins: ${CORS_ORIGINS:http://localhost:3000}
       auth0:
-        audience: ${AUTH0_AUDIENCE:http://localhost:8005/api/v1/resources}
+        audience: ${AUTH0_AUDIENCE:https://api.we-elearning.com/api/v1/}
     workspace-manager:
       base-url: ${WORKSPACE_MANAGER_BASE_URL:http://localhost:8000}
