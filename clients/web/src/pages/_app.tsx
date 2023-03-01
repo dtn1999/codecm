@@ -1,20 +1,22 @@
-import { type AppType } from "next/app";
-import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 
 import { api } from "@we/utils/api";
 
 import "@we/styles/globals.css";
+import { AppPropsWithLayoutAndSession } from "@we/types/ui";
 
-const MyApp: AppType<{ session: Session | null }> = ({
+function MyApp({
   Component,
-  pageProps: { session, ...pageProps },
-}) => {
-  return (
+  session,
+  pageProps,
+}: AppPropsWithLayoutAndSession) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+  return getLayout(
     <SessionProvider session={session}>
       <Component {...pageProps} />
     </SessionProvider>
   );
-};
+}
 
-export default api.withTRPC(MyApp);
+// TODO: fix this type
+export default api.withTRPC(MyApp as any);

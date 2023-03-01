@@ -31,7 +31,7 @@ export const ExploreLearningPathsIcon: React.FC = React.memo(() => (
     <path
       d="M6 91.9767H123.563"
       stroke="#F4F4F5"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-miterlimit="10"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -141,39 +141,39 @@ export const ExploreLearningPathsIcon: React.FC = React.memo(() => (
       d="M106.925 29.5593H84.6058C83.9155 29.5593 83.3019 28.9472 83.3019 28.2585V25.7334C83.3019 25.0447 83.9155 24.4326 84.6058 24.4326H106.925C107.615 24.4326 108.229 25.0447 108.229 25.7334V28.2585C108.306 29.0237 107.692 29.5593 106.925 29.5593Z"
       fill="#E4E4E7"
       stroke="#E4E4E7"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-miterlimit="10"
     ></path>
     <path
       d="M97.4911 38.2825H84.299C83.7621 38.2825 83.3019 37.8234 83.3019 37.2878V34.1505C83.3019 33.6149 83.7621 33.1558 84.299 33.1558H97.4144C97.9513 33.1558 98.4115 33.6149 98.4115 34.1505V37.2878C98.4882 37.8234 98.028 38.2825 97.4911 38.2825Z"
       fill="#E4E4E7"
       stroke="#E4E4E7"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-miterlimit="10"
     ></path>
     <path
       d="M107.539 38.2825H101.786C101.403 38.2825 101.096 37.9764 101.096 37.5939V33.8444C101.096 33.4618 101.403 33.1558 101.786 33.1558H107.539C107.922 33.1558 108.229 33.4618 108.229 33.8444V37.5939C108.306 37.8999 107.922 38.2825 107.539 38.2825Z"
       fill="#E4E4E7"
       stroke="#E4E4E7"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-miterlimit="10"
     ></path>
     <path
       d="M83.3019 44.098H108.306"
       stroke="#E4E4E7"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-miterlimit="10"
     ></path>
     <path
       d="M83.3019 48.0003H108.306"
       stroke="#E4E4E7"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-miterlimit="10"
     ></path>
     <path
       d="M83.3019 51.9029H95.9572"
       stroke="#E4E4E7"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-miterlimit="10"
     ></path>
     <defs>

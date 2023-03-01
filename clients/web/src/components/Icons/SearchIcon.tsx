@@ -4,7 +4,7 @@ export const SearchIcon = React.memo(() => (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 16 16"
     className="h-3.5 w-3.5"
     aria-hidden="true"
