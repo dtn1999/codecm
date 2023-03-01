@@ -8,12 +8,16 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.support.WebClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class ResourcesApplicationSecurityConfig {
+    @Value("${we.elearning.security.auth0.user-info-url}")
+    private String introspectionUri;
+
     @Bean
-    public SecurityWebFilterChain configure(ServerHttpSecurity httpSecurity,
-                                            @Value("${we.elearning.security.auth0.user-info-url}") final String introspectionUri) throws Exception {
+    public SecurityWebFilterChain configure(ServerHttpSecurity httpSecurity) {
         httpSecurity
                 .cors()
                 .and()
@@ -28,13 +32,16 @@ public class ResourcesApplicationSecurityConfig {
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.opaqueToken( opaqueTokenSpec ->
                                 opaqueTokenSpec.introspector(
-                                        new UserInfoOpaqueTokenIntrospect(auth0UserInfoService(introspectionUri))))
+                                        new UserInfoOpaqueTokenIntrospect(auth0UserInfoService())))
                 )
                 ;
         return httpSecurity.build();
     }
 
-    private Auth0UserInfoService auth0UserInfoService(String auth0UserInfoUrl) {
-        return new Auth0UserInfoService(WebClient.create(auth0UserInfoUrl));
+    public Auth0UserInfoService auth0UserInfoService() {
+        return HttpServiceProxyFactory
+                .builder(WebClientAdapter.forClient(WebClient.create(introspectionUri)))
+                .build()
+                .createClient(Auth0UserInfoService.class);
     }
 }
