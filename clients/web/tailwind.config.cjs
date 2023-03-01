@@ -2,7 +2,16 @@
 const config = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: "#595959",
+        },
+        background: {
+          DEFAULT: "#0F0F0F",
+        },
+      },
+    },
   },
   plugins: [],
 };

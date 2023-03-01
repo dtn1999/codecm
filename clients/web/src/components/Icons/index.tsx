@@ -7,6 +7,7 @@ import { DashboardProjectsSectionIcon } from "./DashboardProjectsSectionIcon";
 import { ExploreCoursesIcon } from "./ExploreCoursesIcon";
 import { ExploreLearningPathsIcon } from "./ExploreLearningPathsIcon";
 import { LearningPathsIcon } from "./LearningPathsIcon";
+import { MenuIcon } from "./MenuIcon";
 import { PlaygroundsIcon } from "./PlaygroundsIcon";
 import { ProjectsIcon } from "./ProjectsIcon";
 import { SearchIcon } from "./SearchIcon";
@@ -26,4 +27,5 @@ export {
   TodoTasksIcon,
   ProjectsIcon,
   DashboardProjectsSectionIcon,
+  MenuIcon,
 };
