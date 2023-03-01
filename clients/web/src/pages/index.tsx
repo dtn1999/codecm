@@ -1,15 +1,9 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
-
-import { api } from "@we/utils/api";
-import { MenuIcon } from "@we/components/Icons";
 import { Header } from "@we/components";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>

@@ -1,6 +1,6 @@
 import { SessionProvider } from "next-auth/react";
 
-import { api } from "@we/utils/api";
+import { trpc } from "@we/utils/api";
 
 import "@we/styles/globals.css";
 import { AppPropsWithLayoutAndSession } from "@we/types/ui";
@@ -19,4 +19,4 @@ function MyApp({
 }
 
 // TODO: fix this type
-export default api.withTRPC(MyApp as any);
+export default trpc.withTRPC(MyApp as any);
