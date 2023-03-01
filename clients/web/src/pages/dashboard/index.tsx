@@ -11,8 +11,11 @@ import {
   ProjectsSection,
   TodoTasksManager,
 } from "@we/features/dashboard/components";
+import { useSession } from "next-auth/react";
 
 const DashboardPage: NextPageWithLayout = () => {
+  const { data: sessionData } = useSession();
+  console.log(sessionData);
   return (
     <div className="mx-auto w-full max-w-screen-2xl flex-grow px-4 py-10 pb-11 sm:pb-0">
       <div className="grid grid-cols-3 gap-16">

@@ -132,4 +132,8 @@ public class PlaygroundService {
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException(exceptionMessage));
     }
+
+    public ApiResponse<PlaygroundDto, ?> restorePlayground(Long playgroundId) {
+        return null;
+    }
 }

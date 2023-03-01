@@ -6,6 +6,7 @@ import com.we.elearning.playgrounds.dtos.PlaygroundDto;
 import com.we.elearning.playgrounds.services.PlaygroundService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +16,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/resources/playgrounds")
 @RequiredArgsConstructor
+@Slf4j
 public class PlaygroundController {
     private final PlaygroundService playgroundService;
 
     @GetMapping("")
     public ResponseEntity<ApiResponse<List<PlaygroundDto>, ?>> getAllPlaygrounds() {
+        log.info("getting all playgrounds");
         return ResponseEntity.ok(playgroundService.getAllPlaygrounds());
     }
 
     @GetMapping("/{playgroundId}")
     public ResponseEntity<ApiResponse<PlaygroundDto, ?>> getPlaygroundById(@PathVariable("playgroundId") final Long playgroundId) {
+        log.info("getting playground by id: {}", playgroundId);
         return ResponseEntity.ok(playgroundService.getPlaygroundById(playgroundId));
     }
 
     @PostMapping("")
     public ResponseEntity<ApiResponse<PlaygroundDto, ?>> createPlayground(@Valid @RequestBody final CreatePlaygroundDto createPlaygroundDto) {
+        log.info("creating playground with the following properties: {}", createPlaygroundDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(playgroundService.createPlayground(createPlaygroundDto));
@@ -37,6 +42,12 @@ public class PlaygroundController {
 
     @DeleteMapping("/{playgroundId}")
     public ResponseEntity<ApiResponse<?, ?>> deletePlayground(@PathVariable("playgroundId") final Long playgroundId) {
+        log.info("deleting playground with id: {}", playgroundId);
         return ResponseEntity.ok(playgroundService.deletePlayground(playgroundId));
+    }
+
+    public ResponseEntity<ApiResponse<?, ?>> restorePlayground(@PathVariable("playgroundId") final Long playgroundId) {
+        log.info("restoring playground with id: {}", playgroundId);
+        return ResponseEntity.ok(playgroundService.restorePlayground(playgroundId));
     }
 }

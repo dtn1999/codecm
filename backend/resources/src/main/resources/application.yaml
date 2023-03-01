@@ -13,7 +13,7 @@ spring:
           issuer-uri: ${ISSUER_URI:https://we-elearning.us.auth0.com/}
           jwk-set-uri: ${JWK_SET_URI:https://we-elearning.us.auth0.com/.well-known/jwks.json}
           audiences:
-            - ${AUTH0_AUDIENCE:https://api.we-elearning.com/api/v1/}
+            - ${AUTH0_AUDIENCE:http://api.we-elearning.com/api/v1/}
   # Datasource configuration
   datasource:
     driver-class-name: org.h2.Driver
