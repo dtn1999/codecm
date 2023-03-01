@@ -155,8 +155,8 @@ export const TodoTasksIcon: React.FC = React.memo(() => (
         y2="8.98136"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#D4D4D8"></stop>
-        <stop offset="1" stop-color="#A1A1AA"></stop>
+        <stop stopColor="#D4D4D8"></stop>
+        <stop offset="1" stopColor="#A1A1AA"></stop>
       </linearGradient>
       <linearGradient
         id="paint1_linear_1761_113209"
@@ -166,8 +166,8 @@ export const TodoTasksIcon: React.FC = React.memo(() => (
         y2="56.0907"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#D4D4D8"></stop>
-        <stop offset="1" stop-color="#B9B9BC"></stop>
+        <stop stopColor="#D4D4D8"></stop>
+        <stop offset="1" stopColor="#B9B9BC"></stop>
       </linearGradient>
     </defs>
   </svg>

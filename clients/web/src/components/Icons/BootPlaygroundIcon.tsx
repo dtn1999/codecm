@@ -207,8 +207,8 @@ export const BootPlaygroundIcon: React.FC = React.memo(() => (
         y2="72.0618"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F4F4F5"></stop>
-        <stop offset="0.9964" stop-color="#F9FAFD"></stop>
+        <stop stopColor="#F4F4F5"></stop>
+        <stop offset="0.9964" stopColor="#F9FAFD"></stop>
       </linearGradient>
       <linearGradient
         id="paint1_linear_1761_18982"
@@ -218,8 +218,8 @@ export const BootPlaygroundIcon: React.FC = React.memo(() => (
         y2="68.8131"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F4F4F5"></stop>
-        <stop offset="0.9964" stop-color="#F9FAFD"></stop>
+        <stop stopColor="#F4F4F5"></stop>
+        <stop offset="0.9964" stopColor="#F9FAFD"></stop>
       </linearGradient>
       <linearGradient
         id="paint2_linear_1761_18982"
@@ -229,8 +229,8 @@ export const BootPlaygroundIcon: React.FC = React.memo(() => (
         y2="74.9639"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F4F4F5"></stop>
-        <stop offset="0.9964" stop-color="#F9FAFD"></stop>
+        <stop stopColor="#F4F4F5"></stop>
+        <stop offset="0.9964" stopColor="#F9FAFD"></stop>
       </linearGradient>
     </defs>
   </svg>

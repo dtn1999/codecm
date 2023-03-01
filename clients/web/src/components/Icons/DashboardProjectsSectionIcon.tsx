@@ -351,8 +351,8 @@ export const DashboardProjectsSectionIcon: React.FC = () => (
         y2="99.5154"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F4F4F5"></stop>
-        <stop offset="0.9964" stop-color="#F9FAFD"></stop>
+        <stop stopColor="#F4F4F5"></stop>
+        <stop offset="0.9964" stopColor="#F9FAFD"></stop>
       </linearGradient>
       <linearGradient
         id="paint1_linear_382_40178"
@@ -362,8 +362,8 @@ export const DashboardProjectsSectionIcon: React.FC = () => (
         y2="109.905"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F4F4F5"></stop>
-        <stop offset="0.9964" stop-color="#F9FAFD"></stop>
+        <stop stopColor="#F4F4F5"></stop>
+        <stop offset="0.9964" stopColor="#F9FAFD"></stop>
       </linearGradient>
     </defs>
   </svg>

@@ -287,8 +287,8 @@ export const ExploreLearningPathsIcon: React.FC = React.memo(() => (
         y2="67.314"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="white"></stop>
-        <stop offset="0.9964" stop-color="#F4F4F5"></stop>
+        <stop stopColor="white"></stop>
+        <stop offset="0.9964" stopColor="#F4F4F5"></stop>
       </linearGradient>
       <linearGradient
         id="paint1_linear_1761_113272"
@@ -298,8 +298,8 @@ export const ExploreLearningPathsIcon: React.FC = React.memo(() => (
         y2="57.0496"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F4F4F5"></stop>
-        <stop offset="0.9964" stop-color="#F9FAFD"></stop>
+        <stop stopColor="#F4F4F5"></stop>
+        <stop offset="0.9964" stopColor="#F9FAFD"></stop>
       </linearGradient>
     </defs>
   </svg>
