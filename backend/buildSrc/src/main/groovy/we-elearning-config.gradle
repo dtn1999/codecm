@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+}
+
+apply from: './dependencies.gradle'
+
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation "org.mapstruct:mapstruct:${ver.mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${ver.mapstructProcessorVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${ver.lombokMapstructBindingVersion}"
+    // Test
+    testImplementation "org.assertj:assertj-core:${ver.assertjVersion}"
+}

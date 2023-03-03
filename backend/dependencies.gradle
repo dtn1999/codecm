@@ -1,5 +1,13 @@
 ext.ver = [
         // spring related dependencies
-        // tests
         // utils
+        'mapstructVersion': '1.5.3.Final',
+        'mapstructProcessorVersion': '1.5.3.Final',
+        'lombokMapstructBindingVersion': '0.2.0',
+        // tests
+        'testcontainersVersion': "1.17.6",
+        'springDotenvVerstion': '3.0.0',
+        'assertjVersion': '3.24.2',
+        'okhttpVersion': '4.10.0',
+        'mockwebserverVersion': '4.10.0',
 ]
