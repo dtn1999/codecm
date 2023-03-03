@@ -1,11 +1,11 @@
 package com.we.elearning.workspacemanager.entities;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Table(name = "WORKSPACE_VOLUMES")
 @Entity

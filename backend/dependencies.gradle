@@ -1,5 +1,7 @@
 ext.ver = [
-        // spring related dependencies
+        //
+        'dockerJavaVersion': '3.2.14',
+        'jGitVersion': '6.4.0.202211300538-r',
         // utils
         'mapstructVersion': '1.5.3.Final',
         'mapstructProcessorVersion': '1.5.3.Final',

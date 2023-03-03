@@ -1,5 +1,5 @@
 rootProject.name = 'backend'
 include 'common'
-//include 'resources'
-//include 'workspacemanager'
+include 'resources'
+include 'workspacemanager'
 
