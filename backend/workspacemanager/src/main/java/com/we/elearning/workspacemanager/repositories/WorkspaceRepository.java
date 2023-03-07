@@ -1,14 +1,14 @@
 package com.we.elearning.workspacemanager.repositories;
 
 import com.we.elearning.workspacemanager.entities.Workspace;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.we.elearning.workspacemanager.entities.WorkspaceStatus;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface WorkspaceRepository extends JpaRepository<Workspace, Long> {
-    List<Workspace> findByPort(int port);
-    Optional<Workspace> findByRunnerId(String runnerId);
+public interface WorkspaceRepository extends ReactiveCrudRepository<Workspace, Long> {
+    Flux<Workspace> findByPort(int port);
+    Mono<Boolean>  existsByPortAndStatus(int port, WorkspaceStatus status);
 }

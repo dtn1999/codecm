@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class WorkspaceManagerController {
     private final WorkspaceManagerService workspaceManagerService;
 
     @PostMapping("/workspaces")
-    public ResponseEntity<ApiResponse<WorkspaceDto, ?>> createWorkspace(@Valid @RequestBody final CreateWorkspaceDto createWorkspaceDto) {
+    public ResponseEntity<Mono<ApiResponse<WorkspaceDto, ?>>> createWorkspace(@Valid @RequestBody final CreateWorkspaceDto createWorkspaceDto) {
         log.info("createWorkspace: {}", createWorkspaceDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -29,7 +30,7 @@ public class WorkspaceManagerController {
     }
 
     @PostMapping("/workspaces/{workspaceId}")
-    public ResponseEntity<ApiResponse<?,?>> deleteWorkspace(@PathVariable("workspaceId") final Long workspaceId) {
+    public ResponseEntity<Mono<ApiResponse<?,?>>> deleteWorkspace(@PathVariable("workspaceId") final Long workspaceId) {
         log.info("deleteWorkspace: {}", workspaceId);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -37,7 +38,7 @@ public class WorkspaceManagerController {
     }
 
     @GetMapping("/workspaces")
-    public ResponseEntity<ApiResponse<List<WorkspaceDto>, ?>> getAllWorkspaces() {
+    public ResponseEntity<Mono<ApiResponse<List<WorkspaceDto>, ?>>> getAllWorkspaces() {
         log.info("getAllWorkspaces");
         return ResponseEntity
                 .status(HttpStatus.OK)

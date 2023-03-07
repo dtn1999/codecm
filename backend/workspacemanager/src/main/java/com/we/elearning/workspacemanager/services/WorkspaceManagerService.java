@@ -6,12 +6,12 @@ import com.we.elearning.workspacemanager.dots.WorkspaceDto;
 import com.we.elearning.workspacemanager.dots.WorkspaceMapper;
 import com.we.elearning.workspacemanager.entities.Workspace;
 import com.we.elearning.workspacemanager.entities.WorkspaceStatus;
-import com.we.elearning.workspacemanager.entities.WorkspaceVolume;
 import com.we.elearning.workspacemanager.repositories.WorkspaceRepository;
 import com.we.elearning.workspacemanager.services.providers.ResourceProvider;
-import com.we.elearning.workspacemanager.utils.GitUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -25,49 +25,57 @@ public class WorkspaceManagerService {
 
 
     /**
-     * TODO: add proper documentation
-     * @return
+     * This method is used to create a workspace. It takes as input a GitHub repo url that will be used to
+     * provision the workspace. It will create a workspace volume and clone the repo into the volume.
+     *
+     * @param githubRepoUrl the GitHub repo url
+     * @return an ApiResponse containing the newly created workspace dto
      */
-    public ApiResponse<WorkspaceDto, ?> createWorkspace(String githubRepoUrl) {
-        //1. Get a random free port for code server
-        int availableWorkspacePort = workspacePortService.getAvailableWorkspacePort();
-        //2. Create a workspace volume
-        WorkspaceVolume workspaceVolume = workspaceVolumeService.createWorkspaceVolume(100);
-        Workspace workspace = resourceProvider.createWorkspace(availableWorkspacePort, workspaceVolume.getName(), githubRepoUrl);
-        workspace.setStatus(WorkspaceStatus.RUNNING);
-        //3. Save workspace to database
-        Workspace savedWorkspace = workspaceRepository.save(workspace);
-        //4. Return workspace Dto
-        return ResponseBuilder.success(WorkspaceMapper.INSTANCE.toWorkspaceDto(savedWorkspace));
+    public Mono<ApiResponse<WorkspaceDto, Object>> createWorkspace(String githubRepoUrl) {
+        return Flux.zip(
+                        workspacePortService.getAvailableWorkspacePort(),
+                        workspaceVolumeService.createWorkspaceVolume(100)
+                ).flatMap(tuple -> {
+                    Workspace workspace = resourceProvider
+                            .createWorkspace(tuple.getT1(), tuple.getT2().getName(), githubRepoUrl);
+                    workspace.setStatus(WorkspaceStatus.RUNNING);
+                    return workspaceRepository.save(workspace);
+                })
+                .map(WorkspaceMapper.INSTANCE::toWorkspaceDto)
+                .map(ResponseBuilder::success)
+                .last();
     }
 
     /**
-     * TODO: add proper documentation
-     * @param workspaceId
-     * @return
+     * This method is used to stop a workspace. It takes as input the workspace id and will stop the workspace
+     * and delete the resources used by it.
+     *
+     * @param workspaceId the workspace id
+     * @return a successful ApiResponse with no data
      */
-    public ApiResponse<?, ?> deleteWorkspace(Long workspaceId) {
-        //1. Get workspace by workspaceId
-        workspaceRepository.findById(workspaceId)
-                .ifPresent(workspace -> {
+    public Mono<ApiResponse<?, ?>> deleteWorkspace(Long workspaceId) {
+        return workspaceRepository.findById(workspaceId)
+                .map(workspace -> {
+                    //1. Get workspace by workspaceId
                     workspace.setStatus(WorkspaceStatus.STOPPED);
                     //2. Delete workspace
                     resourceProvider.deleteWorkspace(workspace.getRunnerId());
                     //3. Delete workspace
                     workspaceRepository.delete(workspace);
-                });
-        return ResponseBuilder.success();
+                    return ResponseBuilder.success();
+                })
+                ;
     }
 
     /**
-     * TODO: add proper documentation
-     * @return
+     * This method is used to get all workspaces.
+     *
+     * @return a successful ApiResponse with a list of workspace dtos
      */
-    public ApiResponse<List<WorkspaceDto>, ?> getAllWorkspaces() {
-        List<WorkspaceDto> workspaceDtos = workspaceRepository.findAll()
-                .stream()
+    public Mono<ApiResponse<List<WorkspaceDto>, ?>> getAllWorkspaces() {
+        return workspaceRepository.findAll()
                 .map(WorkspaceMapper.INSTANCE::toWorkspaceDto)
-                .toList();
-        return ResponseBuilder.success(workspaceDtos);
+                .collectList()
+                .map(ResponseBuilder::success);
     }
 }

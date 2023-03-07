@@ -5,6 +5,8 @@ import com.we.elearning.workspacemanager.repositories.WorkspaceVolumeRepository;
 import com.we.elearning.workspacemanager.utils.HashUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class WorkspaceVolumeService {
@@ -17,16 +19,20 @@ public class WorkspaceVolumeService {
         this.volumeNameLength = volumeNameLength;
     }
 
-    public WorkspaceVolume createWorkspaceVolume(int size) {
-        String name = HashUtils.getHash(String.valueOf(System.currentTimeMillis()), volumeNameLength);
-        while (workspaceVolumeRepository.existsByName(name)) {
-            name = HashUtils.getHash(String.valueOf(System.currentTimeMillis()), volumeNameLength);
-        }
-        return workspaceVolumeRepository.save(
-                WorkspaceVolume.builder()
-                        .name(name)
-                        .size(size)
-                        .build()
-        );
+    public Mono<WorkspaceVolume> createWorkspaceVolume(int size) {
+        return Flux.generate(() -> HashUtils.getHash(String.valueOf(System.currentTimeMillis()), volumeNameLength),
+                        (state, sink) -> {
+                    Boolean isNameInUse = workspaceVolumeRepository.existsByName(state).block();
+                    return Boolean.TRUE.equals(isNameInUse) ?
+                            HashUtils.getHash(String.valueOf(System.currentTimeMillis()), volumeNameLength) : state;
+                })
+                .cast(String.class)
+                .last()
+                .flatMap(name -> workspaceVolumeRepository.save(
+                        WorkspaceVolume.builder()
+                                .name(name)
+                                .size(size)
+                                .build()
+                ));
     }
 }
