@@ -17,14 +17,14 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class ResourcesControllerAdvisor {
     @ExceptionHandler({NoSuchElementException.class})
-    public ResponseEntity<ApiResponse<?, ?>> handleElementNotFoundException(NoSuchElementException exception) {
+    public ResponseEntity<ApiResponse> handleElementNotFoundException(NoSuchElementException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ResponseBuilder.error(exception.getMessage(), exception.getMessage()));
     }
 
     @ExceptionHandler({PlaygroundNotCreatedException.class})
-    public ResponseEntity<ApiResponse<?, ?>> handlePlaygroundNotCreatedException(NoSuchElementException exception) {
+    public ResponseEntity<ApiResponse> handlePlaygroundNotCreatedException(NoSuchElementException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ResponseBuilder.error(exception.getMessage(),
@@ -32,7 +32,7 @@ public class ResourcesControllerAdvisor {
     }
 
     @ExceptionHandler(WebExchangeBindException.class)
-    public ResponseEntity<ApiResponse<?, ?>> handleBadRequestException(WebExchangeBindException exception) {
+    public ResponseEntity<ApiResponse> handleBadRequestException(WebExchangeBindException exception) {
         Map<String, String> errors = new HashMap<>();
         String message = "Make sure you have filled all the required fields with valid values";
         exception.getBindingResult().getAllErrors().forEach((error) -> {
@@ -46,7 +46,7 @@ public class ResourcesControllerAdvisor {
     }
 
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<ApiResponse<?, ?>> handleRuntimeException(NoSuchElementException exception) {
+    public ResponseEntity<ApiResponse> handleRuntimeException(NoSuchElementException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ResponseBuilder.error(exception.getMessage()));
