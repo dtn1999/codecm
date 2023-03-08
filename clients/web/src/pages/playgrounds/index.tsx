@@ -1,5 +1,6 @@
 import { Layout } from "@we/components";
 import { TemplatesList } from "@we/features/resources/components";
+import { PlaygroundsList } from "@we/features/resources/components/PlaygroundsList";
 import { NextPageWithLayout } from "@we/types/ui";
 import React from "react";
 
@@ -21,7 +22,7 @@ const PlaygroundPage: NextPageWithLayout = () => {
           <h1 className="border-b border-gray-200 text-left text-lg font-semibold uppercase">
             Manage playgrounds
           </h1>
-          <div className="mx-auto grid max-w-[1800] gap-4 pt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"></div>
+          <PlaygroundsList />
         </div>
       </section>
     </div>

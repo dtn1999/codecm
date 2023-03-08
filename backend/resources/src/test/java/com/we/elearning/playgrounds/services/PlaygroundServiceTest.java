@@ -21,6 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -203,8 +204,8 @@ class PlaygroundServiceTest {
 
         when(playgroundRepository.save(playground)).thenReturn(savedPlayground);
         // then
-        ApiResponse result = playgroundService.createPlayground(createPlaygroundDto);
-        assertThat(result).isEqualTo(expected);
+        Mono<ApiResponse> result = playgroundService.createPlayground(createPlaygroundDto, null);
+        assertThat(result.block()).isEqualTo(expected);
 
         RecordedRequest recordedRequest = mockWorkspacemanagerServer.takeRequest();
         assertThat(recordedRequest.getMethod()).isEqualTo("POST");
@@ -238,7 +239,7 @@ class PlaygroundServiceTest {
                 .addHeader("Content-Type", "application/json")
         );
         // then
-        assertThatExceptionOfType(PlaygroundNotCreatedException.class).isThrownBy(() -> playgroundService.createPlayground(createPlaygroundDto));
+        assertThatExceptionOfType(PlaygroundNotCreatedException.class).isThrownBy(() -> playgroundService.createPlayground(createPlaygroundDto, null));
         RecordedRequest recordedRequest = mockWorkspacemanagerServer.takeRequest();
         assertThat(recordedRequest.getMethod()).isEqualTo("POST");
         assertThat(recordedRequest.getPath()).isEqualTo("/api/v1/workspacemanager/workspaces");

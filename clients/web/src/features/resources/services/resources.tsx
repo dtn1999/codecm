@@ -58,11 +58,11 @@ export class ResourceClient {
     const { resourceType, data: requestPayload } = request;
     const { data } = await this.axiosClient.post<ApiResponse<O, any>>(
       `${resourceType}`,
+      requestPayload,
       {
         headers: {
           Authorization: token ? `Bearer ${token}` : undefined,
         },
-        data: requestPayload,
       }
     );
     return data;
@@ -74,11 +74,11 @@ export class ResourceClient {
     const { resourceType, id, data: requestPayload } = request;
     const { data } = await this.axiosClient.put<ApiResponse<O, any>>(
       `${resourceType}/${id}`,
+      requestPayload,
       {
         headers: {
           Authorization: token ? `Bearer ${token}` : undefined,
         },
-        data: requestPayload,
       }
     );
     return data;
@@ -89,7 +89,8 @@ export class ResourceClient {
   ): Promise<ApiResponse<O, any>> {
     const { resourceType, id } = request;
     const { data } = await this.axiosClient.delete<ApiResponse<O, any>>(
-      `${resourceType}/${id}`, {
+      `${resourceType}/${id}`,
+      {
         headers: {
           Authorization: token ? `Bearer ${token}` : undefined,
         },

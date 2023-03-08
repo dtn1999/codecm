@@ -10,10 +10,16 @@ import com.we.elearning.playgrounds.dtos.PlaygroundMapper;
 import com.we.elearning.playgrounds.entities.Playground;
 import com.we.elearning.playgrounds.repositories.PlaygroundRepository;
 import com.we.elearning.playgrounds.webclients.WorkspaceManagerService;
+import com.we.elearning.security.Auth0UserInfoDto;
+import com.we.elearning.security.OAuth2AuthenticatedPrincipalImpl;
+import com.we.elearning.security.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +30,7 @@ import java.util.NoSuchElementException;
 public class PlaygroundService {
     private final PlaygroundRepository playgroundRepository;
     private final WorkspaceManagerService workspaceService;
+
     public PlaygroundService(PlaygroundRepository playgroundRepository,
                              WorkspaceManagerService workspaceService) {
         this.playgroundRepository = playgroundRepository;
@@ -58,6 +65,7 @@ public class PlaygroundService {
                 .toList();
         return ResponseBuilder.success(playgroundDtos);
     }
+
     /**
      * TODO: Implement this method
      *
@@ -79,28 +87,25 @@ public class PlaygroundService {
      * @param createPlaygroundDto
      * @return
      */
-    public ApiResponse createPlayground(CreatePlaygroundDto createPlaygroundDto) {
+    @Transactional
+    public Mono<ApiResponse> createPlayground(CreatePlaygroundDto createPlaygroundDto,
+                                              @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
         Map<String, Object> createWorkspaceRequest = Map.of(
                 "githubRepoUrl", createPlaygroundDto.getGithubRepoUrl()
         );
         return workspaceService.createWorkspace(createWorkspaceRequest)
+                .publishOn(Schedulers.boundedElastic())
                 .map(response -> {
-                    JsonNode responseBody = new ObjectMapper().valueToTree(response.getData());
-                    String workspaceHost = responseBody.get("host").asText();
-                    int workspacePort = responseBody.get("port").asInt();
-                    String workspaceInstanceUrl = String.format("http://%s:%s", workspaceHost, workspacePort);
-                    Long workspaceId = responseBody.get("id").asLong();
-                    Playground playground = Playground.builder()
-                            .name(createPlaygroundDto.getName())
-                            .description(createPlaygroundDto.getDescription())
-                            .githubRepoUrl(createPlaygroundDto.getGithubRepoUrl())
-                            .workspaceId(workspaceId)
-                            .instanceUrl(workspaceInstanceUrl)
-                            .build();
-                    Playground savedPlayground = playgroundRepository.save(playground);
-                    return ResponseBuilder.success(PlaygroundMapper.INSTANCE.toPlaygroundDto(savedPlayground));
+                    if (response.isSuccess()) {
+                        return handleSuccessResponse((OAuth2AuthenticatedPrincipalImpl) principal, createPlaygroundDto, response);
+                    } else {
+                        throw new RuntimeException("Failed to create workspace");
+                    }
                 })
-                .block();
+                .onErrorMap(throwable -> {
+                    return new RuntimeException("Failed to create workspace");
+                })
+                ;
     }
 
 
@@ -115,7 +120,7 @@ public class PlaygroundService {
         return playgroundRepository.findById(playgroundId)
                 .stream().map(playground -> workspaceService.deleteWorkspace(playground.getWorkspaceId())
                         .map(response -> {
-                            if(response.isSuccess()) {
+                            if (response.isSuccess()) {
                                 playgroundRepository.delete(playground);
                                 return ResponseBuilder.success();
                             } else {
@@ -130,4 +135,25 @@ public class PlaygroundService {
     public ApiResponse restorePlayground(Long playgroundId) {
         return null;
     }
+
+    @Transactional(rollbackFor = RuntimeException.class)
+    public ApiResponse handleSuccessResponse(OAuth2AuthenticatedPrincipalImpl principal,
+                                             CreatePlaygroundDto request, ApiResponse response) {
+        JsonNode responseBody = new ObjectMapper().valueToTree(response.getData());
+        String workspaceHost = responseBody.get("host").asText();
+        int workspacePort = responseBody.get("port").asInt();
+        String workspaceInstanceUrl = String.format("http://%s:%s", workspaceHost, workspacePort);
+        Long workspaceId = responseBody.get("id").asLong();
+        Playground playground = Playground.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .githubRepoUrl(request.getGithubRepoUrl())
+                .workspaceId(workspaceId)
+                .instanceUrl(workspaceInstanceUrl)
+                .userId(principal.getAttribute("sub"))
+                .build();
+        Playground savedPlayground = playgroundRepository.save(playground);
+        return ResponseBuilder.success(PlaygroundMapper.INSTANCE.toPlaygroundDto(savedPlayground));
+    }
+
 }

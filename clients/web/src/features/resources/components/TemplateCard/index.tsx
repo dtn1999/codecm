@@ -1,15 +1,15 @@
 import React from "react";
 import Image from "next/image";
-import { Template } from "@we/types/schemas";
+import { CreatePlaygroundInput, Template } from "@we/types/schemas";
 
 interface TemplateCardProps extends Template {
-  onClick: () => void;
+  onClick: (requestPayload: CreatePlaygroundInput) => void;
 }
 
 export const TemplateCard: React.FC<TemplateCardProps> = React.memo(
-  ({ name, description, imageUrl, onClick }) => (
+  ({ name, description, imageUrl, onClick, githubRepoUrl }) => (
     <div
-      onClick={onClick}
+      onClick={() => onClick({ name, description, githubRepoUrl })}
       className="group flex cursor-pointer flex-col justify-between rounded-lg border bg-white p-3 transition duration-150 ease-in-out hover:border-indigo-500 hover:shadow"
     >
       <div className="flex items-center gap-4 truncate">

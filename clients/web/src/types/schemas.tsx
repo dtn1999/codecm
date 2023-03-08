@@ -36,13 +36,22 @@ export const GetAllTemplatesResponseSchema = z.object({
 export const GetAllPlaygroundsResponseSchema = z.object({
   playgrounds: z.array(PlaygroundSchema),
 });
+
+export const CreatePlaygroundResponseSchema = z.object({
+  playground: PlaygroundSchema,
+});
+
 /*******************************************************************************
  * Types definitions
  *****************************************************************************/
 // From schemas
 export type Template = z.infer<typeof TemplateSchema>;
 export type Playground = z.infer<typeof PlaygroundSchema>;
+export type GetAllTemplatesResponse = z.infer<typeof GetAllTemplatesResponseSchema>;
+export type GetAllPlaygroundsResponse = z.infer<typeof GetAllPlaygroundsResponseSchema>;
 export type CreatePlaygroundInput = z.infer<typeof CreatePlaygroundInputSchema>;
+export type CreatePlaygroundResponse = z.infer<typeof CreatePlaygroundResponseSchema>;
+
 // Services Types
 export type ResourceType = "templates" | "playgrounds";
 export interface GetAllRequest {

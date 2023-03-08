@@ -1,11 +1,15 @@
+import { CreatePlaygroundInput } from "@we/types/schemas";
 import { trpc } from "@we/utils/api";
 import React from "react";
 import { TemplateCard } from "../TemplateCard";
 
 export const TemplatesList: React.FC = React.memo(() => {
   const { data, error } = trpc.templatesRouter.getAll.useQuery();
-  const {} = trpc.playgroundsRouter.getAll.useQuery();
-  const handleCardClick = () => {};
+  const { mutateAsync } = trpc.playgroundsRouter.create.useMutation();
+  const handleCardClick = async (request: CreatePlaygroundInput) => {
+    const { playground } = await mutateAsync(request);
+    window.open(playground.instanceUrl, "_blank", "noopener,noreferrer");
+  };
   console.log(data, error);
   return (
     <div className="grid gap-4 pt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">

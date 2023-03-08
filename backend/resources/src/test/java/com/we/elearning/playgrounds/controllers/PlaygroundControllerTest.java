@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -145,7 +146,7 @@ class PlaygroundControllerTest {
                 .workspaceId(1L)
                 .build();
         // when
-        when(playgroundService.createPlayground(createPlaygroundDto)).thenReturn(ResponseBuilder.success(playgroundDto));
+        when(playgroundService.createPlayground(createPlaygroundDto, null)).thenReturn(Mono.just(ResponseBuilder.success(playgroundDto)));
         // then
         webTestClient
                 .post()
@@ -157,7 +158,7 @@ class PlaygroundControllerTest {
                 .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(playgroundDto));
-        verify(playgroundService).createPlayground(createPlaygroundDto);
+        verify(playgroundService).createPlayground(createPlaygroundDto, null);
     }
 
     @Test
@@ -188,7 +189,7 @@ class PlaygroundControllerTest {
                     assertThat(responseBody.getData()).isNull();
                     assertThat(responseBody.getError()).isNotNull();
                 });
-        verify(playgroundService, never()).createPlayground(createPlaygroundDto);
+        verify(playgroundService, never()).createPlayground(createPlaygroundDto, null);
     }
 
     @Test
@@ -201,7 +202,7 @@ class PlaygroundControllerTest {
                 .githubRepoUrl("https://github.com/username/repo1.git")
                 .build();
         // when
-        when(playgroundService.createPlayground(createPlaygroundDto)).thenThrow(new PlaygroundNotCreatedException("Playground not created"));
+        when(playgroundService.createPlayground(createPlaygroundDto, null)).thenThrow(new PlaygroundNotCreatedException("Playground not created"));
         // then
         webTestClient
                 .post()

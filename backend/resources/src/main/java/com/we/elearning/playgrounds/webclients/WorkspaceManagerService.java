@@ -12,10 +12,10 @@ import java.util.Map;
 
 @Service
 public interface WorkspaceManagerService {
-    @PostExchange("v1/workspacemanager/workspaces")
+    @PostExchange("api/v1/workspaces")
     Mono<ApiResponse> createWorkspace(@RequestBody Map<String, Object> request);
-    @DeleteExchange("v1/workspacemanager/workspaces/{workspaceId}")
+    @DeleteExchange("api/v1/workspaces/{workspaceId}")
     Mono<ApiResponse> deleteWorkspace(@PathVariable("workspaceId") final Long workspaceId);
-    @PostExchange("v1/workspacemanager/workspaces/{workspaceId}/restore")
+    @PostExchange("api/v1/workspaces/{workspaceId}/restore")
     Mono<ApiResponse> restoreWorkspace(@PathVariable("workspaceId") final Long workspaceId);
 }

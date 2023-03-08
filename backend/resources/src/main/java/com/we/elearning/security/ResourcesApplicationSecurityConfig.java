@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
-import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
@@ -24,7 +22,7 @@ public class ResourcesApplicationSecurityConfig {
                 .csrf()
                     .disable()
                 .authorizeExchange()
-                    .pathMatchers("/actuator/**", "/api/v1/resources/templates")
+                    .pathMatchers("/actuator/**", "/api/v1/templates")
                             .permitAll()
                     .anyExchange()
                         .authenticated()
@@ -38,10 +36,11 @@ public class ResourcesApplicationSecurityConfig {
         return httpSecurity.build();
     }
 
-    public Auth0UserInfoService auth0UserInfoService() {
+    @Bean
+    public Auth0UserInfoServiceClient auth0UserInfoService() {
         return HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(WebClient.create(introspectionUri)))
                 .build()
-                .createClient(Auth0UserInfoService.class);
+                .createClient(Auth0UserInfoServiceClient.class);
     }
 }

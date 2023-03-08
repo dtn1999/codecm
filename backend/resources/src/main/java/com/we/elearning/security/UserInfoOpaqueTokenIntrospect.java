@@ -6,16 +6,16 @@ import org.springframework.security.oauth2.server.resource.introspection.Reactiv
 import reactor.core.publisher.Mono;
 
 public class UserInfoOpaqueTokenIntrospect implements ReactiveOpaqueTokenIntrospector {
-    private final Auth0UserInfoService auth0UserInfoService;
+    private final Auth0UserInfoServiceClient auth0UserInfoServiceClient;
 
-    public UserInfoOpaqueTokenIntrospect(Auth0UserInfoService auth0UserInfoService) {
-        this.auth0UserInfoService = auth0UserInfoService;
+    public UserInfoOpaqueTokenIntrospect(Auth0UserInfoServiceClient auth0UserInfoServiceClient) {
+        this.auth0UserInfoServiceClient = auth0UserInfoServiceClient;
     }
 
     @Override
     @SneakyThrows
     public Mono<OAuth2AuthenticatedPrincipal> introspect(String token) {
-        return auth0UserInfoService.getAuth0UserInfo(String.format("Bearer %s", token))
+        return auth0UserInfoServiceClient.getAuth0UserInfo(String.format("Bearer %s", token))
                 .map(OAuth2AuthenticatedPrincipalImpl::new);
     }
 }

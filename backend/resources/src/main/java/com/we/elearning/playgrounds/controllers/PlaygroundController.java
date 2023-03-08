@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1/playgrounds")
@@ -31,11 +32,11 @@ public class PlaygroundController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> createPlayground(@Valid @RequestBody final CreatePlaygroundDto createPlaygroundDto) {
+    public Mono<ResponseEntity<ApiResponse>> createPlayground(@Valid @RequestBody final CreatePlaygroundDto createPlaygroundDto,
+                                                              @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
         log.info("creating playground with the following properties: {}", createPlaygroundDto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(playgroundService.createPlayground(createPlaygroundDto));
+        return playgroundService.createPlayground(createPlaygroundDto, principal)
+                .map(ResponseEntity::ok);
     }
 
     @DeleteMapping("/{playgroundId}")

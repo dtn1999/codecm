@@ -1,5 +1,6 @@
 package com.we.elearning.security;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
@@ -7,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@Data
 public class OAuth2AuthenticatedPrincipalImpl implements OAuth2AuthenticatedPrincipal {
     private final Auth0UserInfoDto auth0UserInfoDto;
     public OAuth2AuthenticatedPrincipalImpl(Auth0UserInfoDto auth0UserInfoDto) {
