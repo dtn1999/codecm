@@ -6,7 +6,7 @@ import { ContainerComponentProps } from "@we/types/ui";
 export const Layout: React.FC<ContainerComponentProps> = React.memo(
   ({ children }) => {
     return (
-      <div className="relative bg-white text-black dark:bg-gray-900 dark:text-white">
+      <div className="relative bg-[#0E0E0E] text-black dark:bg-gray-900 dark:text-white">
         <div className="relative flex flex-1">
           <div
             id="layout-desktop-sidebar-container"

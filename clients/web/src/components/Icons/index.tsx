@@ -1,9 +1,12 @@
 import { BootPlaygroundIcon } from "./BootPlaygroundIcon";
 import { BuildProjectIcon } from "./BuildProjectIcon";
 import { CertificatesIcon } from "./CertificatesIcon";
+import CloseIcon from "./CloseIcon";
 import { CoursesIcon } from "./CoursesIcon";
 import { DashboardIcon } from "./DashboardIcon";
 import { DashboardProjectsSectionIcon } from "./DashboardProjectsSectionIcon";
+import DeleteIcon from "./DeleteIcon";
+import EditIcon from "./EditIcon";
 import { ExploreCoursesIcon } from "./ExploreCoursesIcon";
 import { ExploreLearningPathsIcon } from "./ExploreLearningPathsIcon";
 import { LearningPathsIcon } from "./LearningPathsIcon";
@@ -28,4 +31,7 @@ export {
   ProjectsIcon,
   DashboardProjectsSectionIcon,
   MenuIcon,
+  EditIcon,
+  DeleteIcon,
+  CloseIcon,
 };
