@@ -1,8 +1,9 @@
+
 import { trpc } from "@we/utils/api";
 import React from "react";
 import { TemplateCard } from "../TemplateCard";
 
-export const TemplatesList: React.FC = React.memo(() => {
+export const PlaygroundsList: React.FC = React.memo(() => {
   const { data, error } = trpc.templatesRouter.getAll.useQuery();
   const {} = trpc.playgroundsRouter.getAll.useQuery();
   const handleCardClick = () => {};

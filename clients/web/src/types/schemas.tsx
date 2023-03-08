@@ -33,6 +33,9 @@ export const GetAllTemplatesResponseSchema = z.object({
   templates: z.array(TemplateSchema),
 });
 
+export const GetAllPlaygroundsResponseSchema = z.object({
+  playgrounds: z.array(PlaygroundSchema),
+});
 /*******************************************************************************
  * Types definitions
  *****************************************************************************/
