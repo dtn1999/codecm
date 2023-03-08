@@ -25,19 +25,19 @@ import java.util.List;
 public class PlaygroundController {
     private final PlaygroundService playgroundService;
     @GetMapping("")
-    public ResponseEntity<ApiResponse<List<PlaygroundDto>, ?>> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal){
+    public ResponseEntity<ApiResponse> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal){
         log.info("getting all playgrounds");
         return ResponseEntity.ok(playgroundService.getAllPlaygrounds());
     }
 
     @GetMapping("/{playgroundId}")
-    public ResponseEntity<ApiResponse<PlaygroundDto, ?>> getPlaygroundById(@PathVariable("playgroundId") final Long playgroundId) {
+    public ResponseEntity<ApiResponse> getPlaygroundById(@PathVariable("playgroundId") final Long playgroundId) {
         log.info("getting playground by id: {}", playgroundId);
         return ResponseEntity.ok(playgroundService.getPlaygroundById(playgroundId));
     }
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse<PlaygroundDto, ?>> createPlayground(@Valid @RequestBody final CreatePlaygroundDto createPlaygroundDto) {
+    public ResponseEntity<ApiResponse> createPlayground(@Valid @RequestBody final CreatePlaygroundDto createPlaygroundDto) {
         log.info("creating playground with the following properties: {}", createPlaygroundDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -45,12 +45,12 @@ public class PlaygroundController {
     }
 
     @DeleteMapping("/{playgroundId}")
-    public ResponseEntity<ApiResponse<?, ?>> deletePlayground(@PathVariable("playgroundId") final Long playgroundId) {
+    public ResponseEntity<ApiResponse> deletePlayground(@PathVariable("playgroundId") final Long playgroundId) {
         log.info("deleting playground with id: {}", playgroundId);
         return ResponseEntity.ok(playgroundService.deletePlayground(playgroundId));
     }
 
-    public ResponseEntity<ApiResponse<?, ?>> restorePlayground(@PathVariable("playgroundId") final Long playgroundId) {
+    public ResponseEntity<ApiResponse> restorePlayground(@PathVariable("playgroundId") final Long playgroundId) {
         log.info("restoring playground with id: {}", playgroundId);
         return ResponseEntity.ok(playgroundService.restorePlayground(playgroundId));
     }

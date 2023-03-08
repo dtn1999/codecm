@@ -22,20 +22,20 @@ public class TemplatesController {
     private final TemplatesService templatesService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<TemplateDto>, ?>> getAllTemplates() {
+    public ResponseEntity<ApiResponse> getAllTemplates() {
         log.info("getting all templates");
         return ResponseEntity.ok(templatesService.getAllTemplates());
     }
 
     @GetMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<TemplateDto, ?>> getTemplateById(
+    public ResponseEntity<ApiResponse> getTemplateById(
             @PathVariable("templateId") @Min(1L) final Long templateId) {
         log.info("getting template with id: {}", templateId);
         return ResponseEntity.ok(templatesService.getTemplateById(templateId));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<TemplateDto, ?>> createTemplate(
+    public ResponseEntity<ApiResponse> createTemplate(
             @Valid @RequestBody final TemplateDto templateDto) {
         log.info("creating template with following properties: {}", templateDto);
         return ResponseEntity
@@ -44,14 +44,14 @@ public class TemplatesController {
     }
 
     @PutMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<?, ?>> updateTemplate(@PathVariable("templateId") @Min(1L) final Long templateId,
+    public ResponseEntity<ApiResponse> updateTemplate(@PathVariable("templateId") @Min(1L) final Long templateId,
                                                             @Valid @RequestBody final TemplateDto templateDto) {
         log.info("updating template with id: {} with following properties: {}", templateId, templateDto);
         return ResponseEntity.ok(templatesService.updateTemplate(templateId, templateDto));
     }
 
     @DeleteMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<?, ?>> deleteTemplate(
+    public ResponseEntity<ApiResponse> deleteTemplate(
             @PathVariable("templateId") @Min(1L) final Long templateId) {
         log.info("deleting template with id: {}", templateId);
         return ResponseEntity.ok(templatesService.deleteTemplate(templateId));
