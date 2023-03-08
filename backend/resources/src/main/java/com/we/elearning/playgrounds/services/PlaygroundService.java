@@ -1,35 +1,31 @@
 package com.we.elearning.playgrounds.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.we.elearning.common.dtos.ApiResponse;
 import com.we.elearning.common.dtos.ResponseBuilder;
 import com.we.elearning.playgrounds.dtos.CreatePlaygroundDto;
 import com.we.elearning.playgrounds.dtos.PlaygroundDto;
 import com.we.elearning.playgrounds.dtos.PlaygroundMapper;
 import com.we.elearning.playgrounds.entities.Playground;
-import com.we.elearning.playgrounds.exceptions.PlaygroundNotCreatedException;
 import com.we.elearning.playgrounds.repositories.PlaygroundRepository;
+import com.we.elearning.playgrounds.webclients.WorkspaceManagerService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
 @Slf4j
 public class PlaygroundService {
     private final PlaygroundRepository playgroundRepository;
-    private final WebClient workspaceManagerWebClient;
-
+    private final WorkspaceManagerService workspaceService;
     public PlaygroundService(PlaygroundRepository playgroundRepository,
-                             @Qualifier("workspaceManagerWebClient") WebClient workspaceManagerWebClient) {
+                             WorkspaceManagerService workspaceService) {
         this.playgroundRepository = playgroundRepository;
-        this.workspaceManagerWebClient = workspaceManagerWebClient;
+        this.workspaceService = workspaceService;
     }
 
     /**
@@ -37,7 +33,7 @@ public class PlaygroundService {
      *
      * @return
      */
-    public ApiResponse<List<PlaygroundDto>, ?> getAllPlaygrounds() {
+    public ApiResponse getAllPlaygrounds() {
         List<PlaygroundDto> playgroundDtos = playgroundRepository.findAll()
                 .stream()
                 .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
@@ -51,7 +47,7 @@ public class PlaygroundService {
      * @param playgroundId
      * @return
      */
-    public ApiResponse<PlaygroundDto, ?> getPlaygroundById(Long playgroundId) {
+    public ApiResponse getPlaygroundById(Long playgroundId) {
         String expectedMessage = String.format("No playground found with id: %d", playgroundId);
         PlaygroundDto playgroundDto = playgroundRepository.findById(playgroundId)
                 .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
@@ -66,43 +62,28 @@ public class PlaygroundService {
      * @param createPlaygroundDto
      * @return
      */
-    public ApiResponse<PlaygroundDto, ?> createPlayground(CreatePlaygroundDto createPlaygroundDto) {
+    public ApiResponse createPlayground(CreatePlaygroundDto createPlaygroundDto) {
         Map<String, Object> createWorkspaceRequest = Map.of(
                 "githubRepoUrl", createPlaygroundDto.getGithubRepoUrl()
         );
-        ResponseEntity<ApiResponse<Map<String, Object>, Object>> createWorkspaceResponse;
-        try {
-            createWorkspaceResponse = workspaceManagerWebClient.post()
-                    .uri("/api/v1/workspacemanager/workspaces")
-                    .bodyValue(createWorkspaceRequest)
-                    .retrieve()
-                    .toEntity(new ParameterizedTypeReference<ApiResponse<Map<String, Object>, Object>>() {
-                    })
-                    .block();
-        } catch (Exception e) {
-            log.error("Failed to create workspace", e);
-            throw new PlaygroundNotCreatedException("Failed to create workspace");
-        }
-        if (Objects.nonNull(createWorkspaceResponse) && createWorkspaceResponse.getStatusCode().is2xxSuccessful()) {
-            String workspaceHost = (String) createWorkspaceResponse.getBody().getData().get("host");
-            int workspacePort = (int) createWorkspaceResponse.getBody().getData().get("port");
-            String workspaceInstanceUrl = String.format("http://%s:%s", workspaceHost, workspacePort);
-            Long workspaceId = createWorkspaceResponse.getBody().getData().get("id") instanceof Integer ?
-                    ((Integer) createWorkspaceResponse.getBody().getData().get("id")).longValue() :
-                    (Long) createWorkspaceResponse.getBody().getData().get("id");
-
-            Playground playground = Playground.builder()
-                    .name(createPlaygroundDto.getName())
-                    .description(createPlaygroundDto.getDescription())
-                    .githubRepoUrl(createPlaygroundDto.getGithubRepoUrl())
-                    .workspaceId(workspaceId)
-                    .instanceUrl(workspaceInstanceUrl)
-                    .build();
-            PlaygroundDto playgroundDto = PlaygroundMapper.INSTANCE.toPlaygroundDto(playgroundRepository.save(playground));
-            return ResponseBuilder.success(playgroundDto);
-        }else {
-            throw new PlaygroundNotCreatedException("Failed to create workspace");
-        }
+        return workspaceService.createWorkspace(createWorkspaceRequest)
+                .map(response -> {
+                    JsonNode responseBody = new ObjectMapper().valueToTree(response.getData());
+                    String workspaceHost = responseBody.get("host").asText();
+                    int workspacePort = responseBody.get("port").asInt();
+                    String workspaceInstanceUrl = String.format("http://%s:%s", workspaceHost, workspacePort);
+                    Long workspaceId = responseBody.get("id").asLong();
+                    Playground playground = Playground.builder()
+                            .name(createPlaygroundDto.getName())
+                            .description(createPlaygroundDto.getDescription())
+                            .githubRepoUrl(createPlaygroundDto.getGithubRepoUrl())
+                            .workspaceId(workspaceId)
+                            .instanceUrl(workspaceInstanceUrl)
+                            .build();
+                    Playground savedPlayground = playgroundRepository.save(playground);
+                    return ResponseBuilder.success(PlaygroundMapper.INSTANCE.toPlaygroundDto(savedPlayground));
+                })
+                .block();
     }
 
 
@@ -112,28 +93,24 @@ public class PlaygroundService {
      * @param playgroundId
      * @return
      */
-    public ApiResponse<?, ?> deletePlayground(Long playgroundId) {
+    public ApiResponse deletePlayground(Long playgroundId) {
         String exceptionMessage = String.format("No playground found with id: %d", playgroundId);
         return playgroundRepository.findById(playgroundId)
-                .stream().map(playground -> {
-                    ResponseEntity<Map<String, Object>> deleteWorkspaceResponse = workspaceManagerWebClient.delete()
-                            .uri("/api/v1/workspacemanager/workspaces/{workspaceId}", playground.getWorkspaceId())
-                            .retrieve()
-                            .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {
-                            })
-                            .block();
-                    if (Objects.nonNull(deleteWorkspaceResponse) && deleteWorkspaceResponse.getStatusCode().is2xxSuccessful()) {
-                        playgroundRepository.delete(playground);
-                        return ResponseBuilder.success();
-                    } else {
-                        throw new RuntimeException("Failed to delete workspace");
-                    }
-                })
+                .stream().map(playground -> workspaceService.deleteWorkspace(playground.getWorkspaceId())
+                        .map(response -> {
+                            if(response.isSuccess()) {
+                                playgroundRepository.delete(playground);
+                                return ResponseBuilder.success();
+                            } else {
+                                throw new RuntimeException("Failed to delete workspace");
+                            }
+                        })
+                        .block())
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException(exceptionMessage));
     }
 
-    public ApiResponse<PlaygroundDto, ?> restorePlayground(Long playgroundId) {
+    public ApiResponse restorePlayground(Long playgroundId) {
         return null;
     }
 }

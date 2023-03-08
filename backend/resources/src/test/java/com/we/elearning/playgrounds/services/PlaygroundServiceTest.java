@@ -10,6 +10,7 @@ import com.we.elearning.playgrounds.dtos.PlaygroundMapper;
 import com.we.elearning.playgrounds.entities.Playground;
 import com.we.elearning.playgrounds.exceptions.PlaygroundNotCreatedException;
 import com.we.elearning.playgrounds.repositories.PlaygroundRepository;
+import com.we.elearning.playgrounds.webclients.WorkspaceManagerService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -18,6 +19,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.support.WebClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -55,7 +58,11 @@ class PlaygroundServiceTest {
     void beforeEach() {
         String baseUrl = String.format("http://localhost:%s", mockWorkspacemanagerServer.getPort());
         WebClient webClient = WebClient.create(baseUrl);
-        playgroundService = new PlaygroundService(playgroundRepository, webClient);
+        WorkspaceManagerService workspaceService = HttpServiceProxyFactory
+                .builder(WebClientAdapter.forClient(webClient))
+                .build()
+                .createClient(WorkspaceManagerService.class);
+        playgroundService = new PlaygroundService(playgroundRepository, workspaceService);
     }
 
     @Test
@@ -84,11 +91,11 @@ class PlaygroundServiceTest {
                 .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
                 .toList();
 
-        ApiResponse<List<PlaygroundDto>, ?> expected = ResponseBuilder.success(playgroundDtos);
+        ApiResponse expected = ResponseBuilder.success(playgroundDtos);
         // when
         when(playgroundRepository.findAll()).thenReturn(playgrounds);
         // then
-        ApiResponse<List<PlaygroundDto>, ?> result = playgroundService.getAllPlaygrounds();
+        ApiResponse result = playgroundService.getAllPlaygrounds();
         assertThat(result).isEqualTo(expected);
         verify(playgroundRepository).findAll();
     }
@@ -99,11 +106,11 @@ class PlaygroundServiceTest {
         // given
         List<PlaygroundDto> playgroundDtos = List.of();
         List<Playground> playgrounds = List.of();
-        ApiResponse<List<PlaygroundDto>, ?> expected = ResponseBuilder.success(playgroundDtos);
+        ApiResponse expected = ResponseBuilder.success(playgroundDtos);
         // when
         when(playgroundRepository.findAll()).thenReturn(playgrounds);
         // then
-        ApiResponse<List<PlaygroundDto>, ?> result = playgroundService.getAllPlaygrounds();
+        ApiResponse result = playgroundService.getAllPlaygrounds();
         assertThat(result).isEqualTo(expected);
         verify(playgroundRepository).findAll();
     }
@@ -119,11 +126,11 @@ class PlaygroundServiceTest {
                 .instanceUrl("https://instance1.com")
                 .build();
         PlaygroundDto playgroundDto = PlaygroundMapper.INSTANCE.toPlaygroundDto(playground);
-        ApiResponse<PlaygroundDto, ?> expected = ResponseBuilder.success(playgroundDto);
+        ApiResponse expected = ResponseBuilder.success(playgroundDto);
         // when
         when(playgroundRepository.findById(1L)).thenReturn(java.util.Optional.of(playground));
         // then
-        ApiResponse<PlaygroundDto, ?> result = playgroundService.getPlaygroundById(1L);
+        ApiResponse result = playgroundService.getPlaygroundById(1L);
         assertThat(result).isEqualTo(expected);
         verify(playgroundRepository).findById(1L);
     }
@@ -159,7 +166,7 @@ class PlaygroundServiceTest {
                 "githubRepoUrl", createPlaygroundDto.getGithubRepoUrl()
         );
 
-        ApiResponse<Map<String, Object>, Object> createWorkspaceResponse = ResponseBuilder.success(
+        ApiResponse createWorkspaceResponse = ResponseBuilder.success(
                 Map.of(
                         "id", expectedWorkspaceId,
                         "runnerId", "runner1",
@@ -186,7 +193,7 @@ class PlaygroundServiceTest {
         savedPlayground.setId(1L);
         PlaygroundDto playgroundDto = PlaygroundMapper.INSTANCE.toPlaygroundDto(savedPlayground);
         playgroundDto.setId(1L);
-        ApiResponse<PlaygroundDto, ?> expected = ResponseBuilder.success(playgroundDto);
+        ApiResponse expected = ResponseBuilder.success(playgroundDto);
         // when
         mockWorkspacemanagerServer.enqueue(new MockResponse()
                 .setResponseCode(201)
@@ -196,8 +203,8 @@ class PlaygroundServiceTest {
 
         when(playgroundRepository.save(playground)).thenReturn(savedPlayground);
         // then
-        ApiResponse<PlaygroundDto, ?> result = playgroundService.createPlayground(createPlaygroundDto);
-         assertThat(result).isEqualTo(expected);
+        ApiResponse result = playgroundService.createPlayground(createPlaygroundDto);
+        assertThat(result).isEqualTo(expected);
 
         RecordedRequest recordedRequest = mockWorkspacemanagerServer.takeRequest();
         assertThat(recordedRequest.getMethod()).isEqualTo("POST");
@@ -221,7 +228,7 @@ class PlaygroundServiceTest {
                 "githubRepoUrl", createPlaygroundDto.getGithubRepoUrl()
         );
 
-        ApiResponse<Map<String, Object>, Object> createWorkspaceResponse = ResponseBuilder.error(
+        ApiResponse createWorkspaceResponse = ResponseBuilder.error(
                 Map.of("error", List.of("github"))
         );
         // when
@@ -266,7 +273,7 @@ class PlaygroundServiceTest {
         );
         when(playgroundRepository.findById(playgroundId)).thenReturn(Optional.of(playground));
         // then
-        ApiResponse<?, ?> result = playgroundService.deletePlayground(playgroundId);
+        ApiResponse result = playgroundService.deletePlayground(playgroundId);
         assertThat(result).isEqualTo(ResponseBuilder.success());
         RecordedRequest recordedRequest = mockWorkspacemanagerServer.takeRequest();
         assertThat(recordedRequest.getMethod()).isEqualTo("DELETE");
@@ -302,7 +309,7 @@ class PlaygroundServiceTest {
         );
         when(playgroundRepository.findById(playgroundId)).thenReturn(Optional.of(playground));
         // then
-        assertThatExceptionOfType(RuntimeException.class).isThrownBy(()->playgroundService.deletePlayground(playgroundId));
+        assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> playgroundService.deletePlayground(playgroundId));
         RecordedRequest recordedRequest = mockWorkspacemanagerServer.takeRequest();
         assertThat(recordedRequest.getMethod()).isEqualTo("DELETE");
         assertThat(recordedRequest.getPath()).isEqualTo(String.format("/api/v1/workspacemanager/workspaces/%s",
@@ -310,6 +317,7 @@ class PlaygroundServiceTest {
         verify(playgroundRepository).findById(playgroundId);
         verify(playgroundRepository, never()).delete(any());
     }
+
     @Test
     @DisplayName("Should Throw when playground does not exists")
     void deletePlayground_playgroundWithIdDoesNotExists() {
@@ -317,7 +325,7 @@ class PlaygroundServiceTest {
         long playgroundId = 1L;
         when(playgroundRepository.findById(playgroundId)).thenReturn(Optional.empty());
         // then
-        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(()->playgroundService.deletePlayground(playgroundId));
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> playgroundService.deletePlayground(playgroundId));
         verify(playgroundRepository).findById(playgroundId);
         verify(playgroundRepository, never()).delete(any());
     }

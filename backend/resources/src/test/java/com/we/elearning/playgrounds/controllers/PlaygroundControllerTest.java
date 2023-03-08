@@ -57,7 +57,7 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<List<PlaygroundDto>, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(playgroundDtos));
         verify(playgroundService).getAllPlaygrounds();
@@ -75,7 +75,7 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<List<PlaygroundDto>, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(List.of()));
         verify(playgroundService).getAllPlaygrounds();
@@ -101,7 +101,7 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<PlaygroundDto, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(playgroundDto));
         verify(playgroundService).getPlaygroundById(playgroundId);
@@ -120,7 +120,7 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isNotFound()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<PlaygroundDto, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.error(expectedMessage, expectedMessage));
         verify(playgroundService).getPlaygroundById(playgroundId);
@@ -154,7 +154,7 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isCreated()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<PlaygroundDto, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(playgroundDto));
         verify(playgroundService).createPlayground(createPlaygroundDto);
@@ -179,10 +179,10 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isBadRequest()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<?, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .consumeWith(response -> {
-                    ApiResponse<?, ?> responseBody = response.getResponseBody();
+                    ApiResponse responseBody = response.getResponseBody();
                     assertThat(responseBody).isNotNull();
                     assertThat(responseBody.isSuccess()).isFalse();
                     assertThat(responseBody.getData()).isNull();
@@ -210,10 +210,10 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .is5xxServerError()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<?, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .consumeWith(response -> {
-                    ApiResponse<?, ?> responseBody = response.getResponseBody();
+                    ApiResponse responseBody = response.getResponseBody();
                     assertThat(responseBody).isNotNull();
                     assertThat(responseBody.isSuccess()).isFalse();
                     assertThat(responseBody.getData()).isNull();
@@ -236,7 +236,7 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<?, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success());
         verify(playgroundService).deletePlayground(playgroundId);
@@ -257,7 +257,7 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .isNotFound()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<?, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.error(exceptionMessage, exceptionMessage));
         verify(playgroundService).deletePlayground(playgroundId);
@@ -277,10 +277,10 @@ class PlaygroundControllerTest {
                 .exchange()
                 .expectStatus()
                 .is5xxServerError()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<?, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .consumeWith(response -> {
-                    ApiResponse<?, ?> responseBody = response.getResponseBody();
+                    ApiResponse responseBody = response.getResponseBody();
                     assertThat(responseBody).isNotNull();
                     assertThat(responseBody.isSuccess()).isFalse();
                     assertThat(responseBody.getData()).isNull();

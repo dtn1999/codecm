@@ -44,7 +44,7 @@ class TemplatesControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<List<TemplateDto>, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(List.of()));
         verify(templatesService).getAllTemplates();
@@ -80,7 +80,7 @@ class TemplatesControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<List<TemplateDto>, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(templateDtos));
         verify(templatesService).getAllTemplates();
@@ -106,7 +106,7 @@ class TemplatesControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<TemplateDto, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(templateDto));
         verify(templatesService).getTemplateById(1L);
@@ -127,10 +127,10 @@ class TemplatesControllerTest {
                 .exchange()
                 .expectStatus()
                 .isNotFound()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<TemplateDto, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .consumeWith(response -> {
-                    ApiResponse<TemplateDto, ?> responseBody = response.getResponseBody();
+                    ApiResponse responseBody = response.getResponseBody();
                     assertThat(responseBody).isNotNull();
                     assertThat(responseBody.isSuccess()).isFalse();
                     assertThat(responseBody.getData()).isNull();
@@ -164,7 +164,7 @@ class TemplatesControllerTest {
                 .exchange()
                 .expectStatus()
                 .isCreated()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<TemplateDto, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .isEqualTo(ResponseBuilder.success(TemplateMapper.INSTANCE.toTemplateDto(template)));
         verify(templatesService).createTemplate(templateDto);
@@ -188,10 +188,10 @@ class TemplatesControllerTest {
                 .exchange()
                 .expectStatus()
                 .isBadRequest()
-                .expectBody(new ParameterizedTypeReference<ApiResponse<TemplateDto, ?>>() {
+                .expectBody(new ParameterizedTypeReference<ApiResponse>() {
                 })
                 .consumeWith(response -> {
-                            ApiResponse<TemplateDto, ?> responseBody = response.getResponseBody();
+                            ApiResponse responseBody = response.getResponseBody();
                             assertThat(responseBody).isNotNull();
                             assertThat(responseBody.isSuccess()).isFalse();
                             assertThat(responseBody.getData()).isNull();
