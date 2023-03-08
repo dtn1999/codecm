@@ -50,14 +50,14 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     Auth0Provider({
-      clientId: String(process.env.AUTH0_CLIENT_ID),
-      clientSecret: String(process.env.AUTH0_CLIENT_SECRET),
-      issuer: String(process.env.AUTH0_ISSUER),
+      clientId: env.AUTH0_CLIENT_ID,
+      clientSecret: env.AUTH0_CLIENT_SECRET,
+      issuer: env.AUTH0_ISSUER,
       authorization: {
-        url: "https://dev-8qocg6o6c1fu6cxj.us.auth0.com/authorize",
+        url: env.AUTH0_AUTHORIZATION_URL,
         params: {
           scope: "openid profile email",
-          audience: process.env.AUTH0_AUDIENCE,
+          audience: env.AUTH0_AUDIENCE,
         },
       },
     }),

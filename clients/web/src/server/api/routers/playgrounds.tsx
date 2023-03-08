@@ -5,13 +5,15 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@we/server/api/trpc";
+import { CreatePlaygroundInputSchema } from "@we/types/schemas";
 
 export const playgroundsRouter = createTRPCRouter({
-  getAll: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
+  getAll: protectedProcedure 
+    .input(CreatePlaygroundInputSchema)
+    .query(({ input, ctx:{ resourceClient, session} }) => {
+      resourceClient.getAll({ resourceType: "playgrounds", path: "/playgrounds" });
       return {
-        greeting: `Hello ${input.text}`,
+        greeting: `Hello ${input}`,
       };
     }),
   getById: publicProcedure
