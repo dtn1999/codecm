@@ -5,8 +5,6 @@ plugins {
 apply from: '../dependencies.gradle'
 
 dependencies {
-    // TODO: Investigate why introducing this dependency leads to error with lombok
-    // java.lang.IllegalAccessError: class lombok.javac.apt.LombokProcessor cannot access class com.sun.tools.javac.processing.JavacProcessingEnvironment
      implementation project(':common')
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
