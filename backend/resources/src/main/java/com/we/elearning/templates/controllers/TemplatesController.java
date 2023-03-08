@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/resources/templates")
+@RequestMapping("/api/v1/templates")
 @CrossOrigin(origins = "${we.elearning.security.cors.origins}")
 @RequiredArgsConstructor
 @Slf4j

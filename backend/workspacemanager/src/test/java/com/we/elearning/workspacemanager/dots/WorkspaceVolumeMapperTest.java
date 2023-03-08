@@ -3,6 +3,10 @@ package com.we.elearning.workspacemanager.dots;
 import com.we.elearning.workspacemanager.entities.WorkspaceVolume;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,5 +38,16 @@ class WorkspaceVolumeMapperTest {
         assertThat(workspaceVolume.getId()).isEqualTo(id);
         assertThat(workspaceVolume.getName()).isEqualTo(name);
         assertThat(workspaceVolume.getSize()).isEqualTo(size);
+    }
+
+    @Test
+    void testRepeat() {
+        AtomicInteger count = new AtomicInteger();
+        AtomicBoolean flag = new AtomicBoolean();
+        Mono.fromCallable(count::incrementAndGet)
+                .repeat()
+                .takeUntil(i -> i == 10)
+                .last()
+                .subscribe(System.out::println);
     }
 }

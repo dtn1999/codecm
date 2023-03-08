@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @Service
 public class WorkspaceVolumeService {
     private final WorkspaceVolumeRepository workspaceVolumeRepository;
@@ -20,15 +22,16 @@ public class WorkspaceVolumeService {
     }
 
     public Mono<WorkspaceVolume> createWorkspaceVolume(int size) {
-        return Flux.generate(() -> HashUtils.getHash(String.valueOf(System.currentTimeMillis()), volumeNameLength),
-                        (state, sink) -> {
-                    Boolean isNameInUse = workspaceVolumeRepository.existsByName(state).block();
-                    return Boolean.TRUE.equals(isNameInUse) ?
-                            HashUtils.getHash(String.valueOf(System.currentTimeMillis()), volumeNameLength) : state;
+        AtomicBoolean isNameInUse = new AtomicBoolean(true);
+        return Mono.fromCallable(() -> HashUtils.getHash(String.valueOf(System.currentTimeMillis()), volumeNameLength))
+                .repeat()
+                .map(name -> {
+                    isNameInUse.set(workspaceVolumeRepository.existsByName(name));
+                    return name;
                 })
-                .cast(String.class)
+                .takeUntil(name -> !isNameInUse.get())
                 .last()
-                .flatMap(name -> workspaceVolumeRepository.save(
+                .map(name -> workspaceVolumeRepository.save(
                         WorkspaceVolume.builder()
                                 .name(name)
                                 .size(size)

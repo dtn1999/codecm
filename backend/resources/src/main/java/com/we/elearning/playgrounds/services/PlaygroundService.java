@@ -11,6 +11,8 @@ import com.we.elearning.playgrounds.entities.Playground;
 import com.we.elearning.playgrounds.repositories.PlaygroundRepository;
 import com.we.elearning.playgrounds.webclients.WorkspaceManagerService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,9 +31,10 @@ public class PlaygroundService {
     }
 
     /**
-     * TODO: Implement this method
+     * Retrieve all playgrounds not matter the authenticated user
+     * TODO: Make this method only works for user with admin role
      *
-     * @return
+     * @return List of playgrounds
      */
     public ApiResponse getAllPlaygrounds() {
         List<PlaygroundDto> playgroundDtos = playgroundRepository.findAll()
@@ -41,6 +44,20 @@ public class PlaygroundService {
         return ResponseBuilder.success(playgroundDtos);
     }
 
+    /**
+     * Retrieve all playgrounds for the authenticated user
+     *
+     * @param principal
+     * @return List of playgrounds
+     */
+    public ApiResponse getAllPlaygroundsForAuthenticatedUser(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
+        String userId = principal.getAttribute("sub");
+        List<PlaygroundDto> playgroundDtos = playgroundRepository.findAllByUserId(userId)
+                .stream()
+                .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
+                .toList();
+        return ResponseBuilder.success(playgroundDtos);
+    }
     /**
      * TODO: Implement this method
      *

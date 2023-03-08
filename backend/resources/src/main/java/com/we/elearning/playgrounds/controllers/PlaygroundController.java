@@ -2,24 +2,18 @@ package com.we.elearning.playgrounds.controllers;
 
 import com.we.elearning.common.dtos.ApiResponse;
 import com.we.elearning.playgrounds.dtos.CreatePlaygroundDto;
-import com.we.elearning.playgrounds.dtos.PlaygroundDto;
 import com.we.elearning.playgrounds.services.PlaygroundService;
-import com.we.elearning.security.Auth0UserInfoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/resources/playgrounds")
+@RequestMapping("/api/v1/playgrounds")
 @RequiredArgsConstructor
 @Slf4j
 public class PlaygroundController {
@@ -27,7 +21,7 @@ public class PlaygroundController {
     @GetMapping("")
     public ResponseEntity<ApiResponse> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal){
         log.info("getting all playgrounds");
-        return ResponseEntity.ok(playgroundService.getAllPlaygrounds());
+        return ResponseEntity.ok(playgroundService.getAllPlaygroundsForAuthenticatedUser(principal));
     }
 
     @GetMapping("/{playgroundId}")

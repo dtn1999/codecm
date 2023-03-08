@@ -1,6 +1,7 @@
 package com.we.elearning.playgrounds.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,10 @@ public class Playground {
     private String githubRepoUrl;
     private String description;
     private String instanceUrl;
+
+    // (Service) cross reference
     @Column(unique = true)
     private Long workspaceId;
+    @NotNull
+    private String userId;
 }

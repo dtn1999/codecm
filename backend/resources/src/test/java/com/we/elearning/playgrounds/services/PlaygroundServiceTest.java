@@ -208,7 +208,7 @@ class PlaygroundServiceTest {
 
         RecordedRequest recordedRequest = mockWorkspacemanagerServer.takeRequest();
         assertThat(recordedRequest.getMethod()).isEqualTo("POST");
-        assertThat(recordedRequest.getPath()).isEqualTo("/api/v1/workspacemanager/workspaces");
+        assertThat(recordedRequest.getPath()).isEqualTo("/v1/workspacemanager/workspaces");
         String requestBody = new String(recordedRequest.getBody().readByteArray(), StandardCharsets.UTF_8);
         assertThat(requestBody).isEqualTo(objectMapper.writeValueAsString(createWorkspaceRequest));
         verify(playgroundRepository).save(playground);

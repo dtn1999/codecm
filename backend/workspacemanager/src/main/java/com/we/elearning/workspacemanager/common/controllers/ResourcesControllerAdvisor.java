@@ -16,14 +16,14 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class ResourcesControllerAdvisor {
     @ExceptionHandler({NoSuchElementException.class})
-    public ResponseEntity<ApiResponse<?, ?>> handleElementNotFoundException(NoSuchElementException exception) {
+    public ResponseEntity<ApiResponse> handleElementNotFoundException(NoSuchElementException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ResponseBuilder.error(exception.getMessage(), exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?, ?>> handleBadRequestException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ApiResponse> handleBadRequestException(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
         exception.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();

@@ -22,26 +22,26 @@ public class WorkspaceManagerController {
     private final WorkspaceManagerService workspaceManagerService;
 
     @PostMapping("/workspaces")
-    public ResponseEntity<Mono<ApiResponse<WorkspaceDto, ?>>> createWorkspace(@Valid @RequestBody final CreateWorkspaceDto createWorkspaceDto) {
+    public Mono<ResponseEntity<ApiResponse>> createWorkspace(@Valid @RequestBody final CreateWorkspaceDto createWorkspaceDto) {
         log.info("createWorkspace: {}", createWorkspaceDto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(workspaceManagerService.createWorkspace(createWorkspaceDto.getGithubRepoUrl()));
+        return workspaceManagerService
+                .createWorkspace(createWorkspaceDto.getGithubRepoUrl())
+                .map(ResponseEntity::ok);
     }
 
     @PostMapping("/workspaces/{workspaceId}")
-    public ResponseEntity<Mono<ApiResponse<?,?>>> deleteWorkspace(@PathVariable("workspaceId") final Long workspaceId) {
+    public Mono<ResponseEntity<ApiResponse>> deleteWorkspace(@PathVariable("workspaceId") final Long workspaceId) {
         log.info("deleteWorkspace: {}", workspaceId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(workspaceManagerService.deleteWorkspace(workspaceId));
+        return workspaceManagerService.deleteWorkspace(workspaceId)
+                .map(ResponseEntity::ok);
+
+
     }
 
     @GetMapping("/workspaces")
-    public ResponseEntity<Mono<ApiResponse<List<WorkspaceDto>, ?>>> getAllWorkspaces() {
+    public Mono<ResponseEntity<ApiResponse>> getAllWorkspaces() {
         log.info("getAllWorkspaces");
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(workspaceManagerService.getAllWorkspaces());
+        return workspaceManagerService.getAllWorkspaces()
+                .map(ResponseEntity::ok);
     }
 }

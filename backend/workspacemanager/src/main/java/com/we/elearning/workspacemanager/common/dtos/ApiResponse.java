@@ -1,4 +1,4 @@
-package com.we.elearning.common.dtos;
+package com.we.elearning.workspacemanager.common.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

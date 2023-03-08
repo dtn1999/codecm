@@ -2,7 +2,6 @@ package com.we.elearning.workspacemanager.services;
 
 import com.we.elearning.workspacemanager.common.dtos.ApiResponse;
 import com.we.elearning.workspacemanager.common.dtos.ResponseBuilder;
-import com.we.elearning.workspacemanager.dots.WorkspaceDto;
 import com.we.elearning.workspacemanager.dots.WorkspaceMapper;
 import com.we.elearning.workspacemanager.entities.Workspace;
 import com.we.elearning.workspacemanager.entities.WorkspaceStatus;
@@ -12,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,19 +28,17 @@ public class WorkspaceManagerService {
      * @param githubRepoUrl the GitHub repo url
      * @return an ApiResponse containing the newly created workspace dto
      */
-    public Mono<ApiResponse<WorkspaceDto, Object>> createWorkspace(String githubRepoUrl) {
-        return Flux.zip(
-                        workspacePortService.getAvailableWorkspacePort(),
-                        workspaceVolumeService.createWorkspaceVolume(100)
-                ).flatMap(tuple -> {
-                    Workspace workspace = resourceProvider
-                            .createWorkspace(tuple.getT1(), tuple.getT2().getName(), githubRepoUrl);
-                    workspace.setStatus(WorkspaceStatus.RUNNING);
-                    return workspaceRepository.save(workspace);
-                })
-                .map(WorkspaceMapper.INSTANCE::toWorkspaceDto)
-                .map(ResponseBuilder::success)
-                .last();
+    public Mono<ApiResponse> createWorkspace(String githubRepoUrl) {
+        return Mono.zip(
+                workspacePortService.getAvailableWorkspacePort(),
+                workspaceVolumeService.createWorkspaceVolume(100)
+        ).map(tuple -> {
+            Workspace workspace = resourceProvider
+                    .createWorkspace(tuple.getT1(), tuple.getT2().getName(), githubRepoUrl);
+            workspace.setStatus(WorkspaceStatus.RUNNING);
+            Workspace savedWorkspace = workspaceRepository.save(workspace);
+            return ResponseBuilder.success(WorkspaceMapper.INSTANCE.toWorkspaceDto(savedWorkspace));
+        });
     }
 
     /**
@@ -53,8 +48,8 @@ public class WorkspaceManagerService {
      * @param workspaceId the workspace id
      * @return a successful ApiResponse with no data
      */
-    public Mono<ApiResponse<?, ?>> deleteWorkspace(Long workspaceId) {
-        return workspaceRepository.findById(workspaceId)
+    public Mono<ApiResponse> deleteWorkspace(Long workspaceId) {
+        return Mono.justOrEmpty(workspaceRepository.findById(workspaceId)
                 .map(workspace -> {
                     //1. Get workspace by workspaceId
                     workspace.setStatus(WorkspaceStatus.STOPPED);
@@ -63,7 +58,7 @@ public class WorkspaceManagerService {
                     //3. Delete workspace
                     workspaceRepository.delete(workspace);
                     return ResponseBuilder.success();
-                })
+                }))
                 ;
     }
 
@@ -72,8 +67,8 @@ public class WorkspaceManagerService {
      *
      * @return a successful ApiResponse with a list of workspace dtos
      */
-    public Mono<ApiResponse<List<WorkspaceDto>, ?>> getAllWorkspaces() {
-        return workspaceRepository.findAll()
+    public Mono<ApiResponse> getAllWorkspaces() {
+        return Flux.fromIterable(workspaceRepository.findAll())
                 .map(WorkspaceMapper.INSTANCE::toWorkspaceDto)
                 .collectList()
                 .map(ResponseBuilder::success);

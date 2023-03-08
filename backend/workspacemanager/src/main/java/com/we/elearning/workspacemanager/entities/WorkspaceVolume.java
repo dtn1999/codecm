@@ -25,6 +25,6 @@ public class WorkspaceVolume {
     private int size;
 
     // Foreign Entity
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "workspaceVolume")
-    private Workspace workspace;
+    //@OneToOne(fetch = FetchType.LAZY, mappedBy = "workspaceVolume")
+    //private Workspace;
 }
