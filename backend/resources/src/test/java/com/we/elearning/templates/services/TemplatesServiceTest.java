@@ -39,11 +39,11 @@ class TemplatesServiceTest {
     void getAllTemplates_emptyList() {
         // given
         List<Template> templates = List.of();
-        ApiResponse<List<TemplateDto>, ?> expected = ResponseBuilder.success(List.of());
+        ApiResponse expected = ResponseBuilder.success(List.of());
         // when
         when(templateRepository.findAll()).thenReturn(templates);
         // then
-        ApiResponse<List<TemplateDto>, ?> result = templatesService.getAllTemplates();
+        ApiResponse result = templatesService.getAllTemplates();
         assertThat(result).isEqualTo(expected);
         verify(templateRepository).findAll();
     }
@@ -68,12 +68,12 @@ class TemplatesServiceTest {
                         .imageUrl("imageUrl2")
                         .build()
         );
-        ApiResponse<List<TemplateDto>, ?> expected = ResponseBuilder
+        ApiResponse expected = ResponseBuilder
                 .success(templates.stream().map(TemplateMapper.INSTANCE::toTemplateDto).toList());
         // when
         when(templateRepository.findAll()).thenReturn(templates);
         // then
-        ApiResponse<List<TemplateDto>, ?> result = templatesService.getAllTemplates();
+        ApiResponse result = templatesService.getAllTemplates();
         assertThat(result).isEqualTo(expected);
         verify(templateRepository).findAll();
     }
@@ -89,12 +89,12 @@ class TemplatesServiceTest {
                 .githubRepoUrl("githubUrl1")
                 .imageUrl("imageUrl1")
                 .build();
-        ApiResponse<TemplateDto, ?> expected = ResponseBuilder
+        ApiResponse expected = ResponseBuilder
                 .success(TemplateMapper.INSTANCE.toTemplateDto(template));
         // when
         when(templateRepository.findById(1L)).thenReturn(Optional.of(template));
         // then
-        ApiResponse<TemplateDto, ?> result = templatesService.getTemplateById(1L);
+        ApiResponse result = templatesService.getTemplateById(1L);
         assertThat(result).isEqualTo(expected);
         verify(templateRepository).findById(1L);
     }
@@ -126,12 +126,12 @@ class TemplatesServiceTest {
                 .imageUrl("imageUrl1")
                 .build();
         TemplateDto templateDto = TemplateMapper.INSTANCE.toTemplateDto(template);
-        ApiResponse<TemplateDto, ?> expected = ResponseBuilder
+        ApiResponse expected = ResponseBuilder
                 .success(templateDto);
         // when
         when(templateRepository.save(template)).thenReturn(template);
         // then
-        ApiResponse<TemplateDto, ?> result = templatesService.createTemplate(templateDto);
+        ApiResponse result = templatesService.createTemplate(templateDto);
         assertThat(result).isEqualTo(expected);
         verify(templateRepository).save(template);
     }
@@ -171,12 +171,12 @@ class TemplatesServiceTest {
                 .build();
         Template updatedTemplate = TemplateMapper.INSTANCE.toTemplate(updatedTemplateDto);
         BeanUtils.copyProperties(updatedTemplate, template);
-        ApiResponse<TemplateDto, ?> expected = ResponseBuilder.success();
+        ApiResponse expected = ResponseBuilder.success();
         // when
         when(templateRepository.findById(id)).thenReturn(Optional.of(template));
         when(templateRepository.save(template)).thenReturn(template);
         // then
-        ApiResponse<?, ?> result = templatesService.updateTemplate(id, updatedTemplateDto);
+        ApiResponse result = templatesService.updateTemplate(id, updatedTemplateDto);
         assertThat(result).isEqualTo(expected);
         verify(templateRepository).findById(id);
         verify(templateRepository).save(template);
@@ -188,10 +188,10 @@ class TemplatesServiceTest {
     void deleteTemplate() {
         // given
         Long id = 1L;
-        ApiResponse<?,?> expected = ResponseBuilder.success();
+        ApiResponse expected = ResponseBuilder.success();
         // when
         // then
-        ApiResponse<?, ?> result = templatesService.deleteTemplate(id);
+        ApiResponse result = templatesService.deleteTemplate(id);
         assertThat(result).isEqualTo(expected);
         verify(templateRepository).deleteById(id);
     }

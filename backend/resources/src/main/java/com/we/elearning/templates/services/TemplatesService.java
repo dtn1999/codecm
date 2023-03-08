@@ -24,7 +24,7 @@ public class TemplatesService {
      * TODO: Add documentation
      * @return
      */
-    public ApiResponse<List<TemplateDto>, ?> getAllTemplates() {
+    public ApiResponse getAllTemplates() {
         List<TemplateDto> templateDtos = templateRepository.findAll()
                 .stream()
                 .map(TemplateMapper.INSTANCE::toTemplateDto)
@@ -38,7 +38,7 @@ public class TemplatesService {
      * @param templateId
      * @return
      */
-    public ApiResponse<TemplateDto, ?> getTemplateById(Long templateId) {
+    public ApiResponse getTemplateById(Long templateId) {
         TemplateDto templateDto = templateRepository.findById(templateId).stream()
                 .map(TemplateMapper.INSTANCE::toTemplateDto)
                 .findFirst()
@@ -51,7 +51,7 @@ public class TemplatesService {
      *
      * @return
      */
-    public ApiResponse<TemplateDto, ?> createTemplate(TemplateDto templateDto) {
+    public ApiResponse createTemplate(TemplateDto templateDto) {
         Template template = templateRepository.save(TemplateMapper.INSTANCE.toTemplate(templateDto));
         return ResponseBuilder.success(TemplateMapper.INSTANCE.toTemplateDto(template));
     }
@@ -62,7 +62,7 @@ public class TemplatesService {
      * @param templateId
      * @return
      */
-    public ApiResponse<?, ?> updateTemplate(Long templateId, @NotNull TemplateDto templateDto) {
+    public ApiResponse updateTemplate(Long templateId, @NotNull TemplateDto templateDto) {
         Template currentTemplate = templateRepository.findById(templateId)
                 .orElseThrow(() -> new NoSuchElementException(String.format("Template with id %d not found", templateId)));
         Template updatedTemplate = TemplateMapper.INSTANCE.toTemplate(templateDto);
@@ -78,7 +78,7 @@ public class TemplatesService {
      * @param templateId
      * @return
      */
-    public ApiResponse<?, ?> deleteTemplate(Long templateId) {
+    public ApiResponse deleteTemplate(Long templateId) {
         templateRepository.deleteById(templateId);
         return ResponseBuilder.success();
     }
