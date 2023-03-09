@@ -13,10 +13,11 @@ public class GitUtils {
     public void cloneRepository(String url, String path) {
         log.info("Cloning repository from {} to {}", url, path);
         try {
-            Git.cloneRepository()
+            Git call = Git.cloneRepository()
                     .setURI(url)
                     .setDirectory(new File(path))
                     .call();
+            log.info("Repository cloned successfully. {}", call);
         } catch (Exception e) {
             log.error("Error while cloning repository from {} to {}", url, path);
             throw new GitException(String.format("The repository %s could not be cloned to %s. Failed with the following" +

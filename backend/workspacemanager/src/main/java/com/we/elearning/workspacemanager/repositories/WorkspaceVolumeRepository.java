@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkspaceVolumeRepository extends JpaRepository<WorkspaceVolume, Long> {
     Boolean existsByName(String name);
+    int countAllBy();
 }

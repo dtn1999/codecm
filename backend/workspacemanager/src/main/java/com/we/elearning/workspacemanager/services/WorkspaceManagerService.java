@@ -6,6 +6,7 @@ import com.we.elearning.workspacemanager.dots.WorkspaceMapper;
 import com.we.elearning.workspacemanager.entities.Workspace;
 import com.we.elearning.workspacemanager.entities.WorkspaceStatus;
 import com.we.elearning.workspacemanager.repositories.WorkspaceRepository;
+import com.we.elearning.workspacemanager.services.providers.CreateWorkspaceRequest;
 import com.we.elearning.workspacemanager.services.providers.ResourceProvider;
 import com.we.elearning.workspacemanager.services.providers.Runner;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,7 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class WorkspaceManagerService {
     private final ResourceProvider resourceProvider;
-    private final WorkspacePortService workspacePortService;
-    private final WorkspaceVolumeService workspaceVolumeService;
+    private final WorkspaceRandomService workspaceRandomService;
     private final WorkspaceRepository workspaceRepository;
 
 
@@ -37,20 +37,25 @@ public class WorkspaceManagerService {
     public Mono<ApiResponse> createWorkspace(String githubRepoUrl) {
         log.info("Creating workspace for repo: {}", githubRepoUrl);
         return Mono.zip(
-                workspacePortService.getAvailableWorkspacePort(),
-                workspaceVolumeService.createWorkspaceVolume(100)
+                workspaceRandomService.getAvailableWorkspacePort(),
+                workspaceRandomService.getAvailableWorkspaceVolumeName()
         ).flatMap(tuple -> {
-            Runner runner= resourceProvider
-                    .createWorkspace(null);
+            CreateWorkspaceRequest createRequest = CreateWorkspaceRequest.builder()
+                    .githubRepoUrl(githubRepoUrl)
+                    .codeServerPort(tuple.getT1())
+                    .volumeName(tuple.getT2())
+                    .build();
+            Runner runner = resourceProvider.createWorkspace(createRequest);
+            runner.getDetails();
             Workspace workspace = new Workspace();
-            workspace.setWorkspaceVolume(tuple.getT2());
+//            workspace.setWorkspaceVolume(tuple.getT2());
             workspace.setStatus(WorkspaceStatus.RUNNING);
             log.info("Workspace created successfully");
             return Mono.fromCallable(() -> workspaceRepository.save(workspace))
                     .subscribeOn(Schedulers.boundedElastic())
                     .map(savedWorkspace -> {
                         log.info("Workspace saved successfully");
-                        tuple.getT2().setWorkspace(workspace);
+//                        tuple.getT2().setWorkspace(workspace);
                         return ResponseBuilder.success(WorkspaceMapper.INSTANCE.toWorkspaceDto(savedWorkspace));
                     })
                     ;

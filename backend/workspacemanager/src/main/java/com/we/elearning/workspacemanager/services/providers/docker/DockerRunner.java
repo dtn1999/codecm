@@ -79,8 +79,9 @@ public class DockerRunner implements Runner {
                     dockerClient.killContainerCmd(details.getId()).exec();
                     dockerClient.removeContainerCmd(details.getId()).exec();
                     // delete volumes and workspace files
-//                    dockerClient.listVolumesCmd().withFilter()
-                    File workspace = new File(details.getVolumeDetails().getWorkspacePath());
+                    // TODO: Eventually add this
+                    // dockerClient.listVolumesCmd().withFilter();
+                    File workspace = new File(details.getVolume().getMountPath());
                     log.info("Deleting workspace directory: {}", workspace.getAbsolutePath());
                     FileUtils.deleteQuietly(workspace);
                 });

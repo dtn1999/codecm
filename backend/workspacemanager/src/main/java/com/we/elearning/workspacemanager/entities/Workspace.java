@@ -20,7 +20,6 @@ public class Workspace {
     private String runnerId;
     private String host;
     private int port;
-
     @Enumerated(EnumType.STRING)
     private WorkspaceStatus status;
 

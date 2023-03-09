@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class VolumeDetails {
-    private String id;
+    private long id;
     private String name;
-    private String workspacePath;
+    private String mountPath;
+    private long size;
 }

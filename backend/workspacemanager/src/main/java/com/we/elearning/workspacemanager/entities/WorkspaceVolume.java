@@ -20,7 +20,7 @@ public class WorkspaceVolume {
     @Column(unique = true)
     private String name;
     private String mountPath;
-    private int size;
+    private long size;
 
     // Foreign Entity
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "workspaceVolume")

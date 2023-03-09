@@ -2,8 +2,14 @@ package com.we.elearning.workspacemanager.services.providers.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.InspectVolumeResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
+import com.we.elearning.workspacemanager.entities.WorkspaceVolume;
+import com.we.elearning.workspacemanager.repositories.WorkspaceVolumeRepository;
+import com.we.elearning.workspacemanager.services.providers.CreateWorkspaceRequest;
+import com.we.elearning.workspacemanager.services.providers.Runner;
+import com.we.elearning.workspacemanager.utils.GitUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,22 +22,30 @@ import static org.junit.jupiter.api.Assertions.*;
 class DockerProviderTest {
 
     @Autowired
-    DockerClient dockerClient;
+    DockerProvider dockerProvider;
+    @Autowired
+    WorkspaceVolumeRepository workspaceVolumeRepository;
 
     @Test
     void createWorkspace() {
-        CreateContainerResponse exec = dockerClient.createContainerCmd("hello-world").exec();
-        Container containerNotFound = dockerClient.listContainersCmd().withShowAll(true)
-                .withIdFilter(List.of(exec.getId()))
-                .exec()
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("Container not found"));
-
-        System.out.println(containerNotFound);
+        Runner runner = dockerProvider.createWorkspace(CreateWorkspaceRequest.builder()
+                .volumeName("test")
+                .codeServerPort(9888)
+                .githubRepoUrl("https://github.com/dtn1999/pomodoro.git")
+                .build());
+        assertNotNull(runner);
+        runner.start();
     }
 
     @Test
     void deleteWorkspace() {
+        int count = workspaceVolumeRepository.countAllBy();
+        System.out.println(count);
+        workspaceVolumeRepository.save(WorkspaceVolume.builder()
+                .name("test")
+                        .size(0)
+                .build());
+        count = workspaceVolumeRepository.countAllBy();
+        System.out.println(count);
     }
 }
