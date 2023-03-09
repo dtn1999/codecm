@@ -5,14 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.we.elearning.common.dtos.ApiResponse;
 import com.we.elearning.common.dtos.ResponseBuilder;
 import com.we.elearning.playgrounds.dtos.CreatePlaygroundDto;
-import com.we.elearning.playgrounds.dtos.PlaygroundDto;
 import com.we.elearning.playgrounds.dtos.PlaygroundMapper;
 import com.we.elearning.playgrounds.entities.Playground;
+import com.we.elearning.playgrounds.exceptions.PlaygroundManagementException;
 import com.we.elearning.playgrounds.repositories.PlaygroundRepository;
 import com.we.elearning.playgrounds.webclients.WorkspaceManagerService;
-import com.we.elearning.security.Auth0UserInfoDto;
-import com.we.elearning.security.OAuth2AuthenticatedPrincipalImpl;
-import com.we.elearning.security.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -21,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -43,49 +39,62 @@ public class PlaygroundService {
      *
      * @return List of playgrounds
      */
-    public ApiResponse getAllPlaygrounds() {
-        List<PlaygroundDto> playgroundDtos = playgroundRepository.findAll()
-                .stream()
-                .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
-                .toList();
-        return ResponseBuilder.success(playgroundDtos);
+    public Mono<ApiResponse> getAllPlaygrounds() {
+        return Mono.fromCallable(playgroundRepository::findAll)
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(playgrounds -> playgrounds
+                        .stream()
+                        .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
+                        .toList()
+                )
+                .map(ResponseBuilder::success);
     }
 
     /**
      * Retrieve all playgrounds for the authenticated user
      *
-     * @param principal
+     * @param principal Authenticated user
      * @return List of playgrounds
      */
-    public ApiResponse getAllPlaygroundsForAuthenticatedUser(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
+    public Mono<ApiResponse> getAllPlaygroundsForAuthenticatedUser(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
         String userId = principal.getAttribute("sub");
-        List<PlaygroundDto> playgroundDtos = playgroundRepository.findAllByUserId(userId)
-                .stream()
-                .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
-                .toList();
-        return ResponseBuilder.success(playgroundDtos);
+        return Mono.fromCallable(() -> playgroundRepository.findAllByUserId(userId))
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(playgrounds -> playgrounds
+                        .stream()
+                        .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
+                        .toList()
+                )
+                .map(ResponseBuilder::success);
     }
 
     /**
-     * TODO: Implement this method
+     * Retrieve a playground by id
      *
-     * @param playgroundId
-     * @return
+     * @param playgroundId ID of the playground
+     * @return Playground
      */
-    public ApiResponse getPlaygroundById(Long playgroundId) {
+    public Mono<ApiResponse> getPlaygroundById(Long playgroundId) {
         String expectedMessage = String.format("No playground found with id: %d", playgroundId);
-        PlaygroundDto playgroundDto = playgroundRepository.findById(playgroundId)
-                .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
-                .orElseThrow(() -> new NoSuchElementException(expectedMessage));
-        return ResponseBuilder.success(playgroundDto);
+        return Mono.just(playgroundId)
+                .map(playgroundRepository::findById)
+                .subscribeOn(Schedulers.boundedElastic())
+                .switchIfEmpty(Mono.error(new NoSuchElementException(expectedMessage)))
+                .map(playground -> playground.stream()
+                        .map(PlaygroundMapper.INSTANCE::toPlaygroundDto)
+                        .map(ResponseBuilder::success)
+                        .findAny()
+                        .orElseThrow()
+                );
     }
 
 
     /**
-     * TODO: Implement this method
+     * Create a new playground for the authenticated user
      *
-     * @param createPlaygroundDto
-     * @return
+     * @param createPlaygroundDto Playground data
+     * @param principal           Authenticated user
+     * @return created Playground
      */
     @Transactional
     public Mono<ApiResponse> createPlayground(CreatePlaygroundDto createPlaygroundDto,
@@ -94,51 +103,49 @@ public class PlaygroundService {
                 "githubRepoUrl", createPlaygroundDto.getGithubRepoUrl()
         );
         return workspaceService.createWorkspace(createWorkspaceRequest)
-                .publishOn(Schedulers.boundedElastic())
-                .map(response -> {
+                .flatMap(response -> {
                     if (response.isSuccess()) {
-                        return handleSuccessResponse((OAuth2AuthenticatedPrincipalImpl) principal, createPlaygroundDto, response);
+                        return handleSuccessResponse(principal, createPlaygroundDto, response);
                     } else {
-                        throw new RuntimeException("Failed to create workspace");
+                        return Mono.error(new PlaygroundManagementException("Failed to create workspace"));
                     }
                 })
-                .onErrorMap(throwable -> {
-                    return new RuntimeException("Failed to create workspace");
-                })
+                .onErrorMap(throwable -> new PlaygroundManagementException("Failed to create workspace"))
                 ;
     }
 
 
     /**
-     * TODO: Implement this method
+     * Delete a playground by id
      *
-     * @param playgroundId
-     * @return
+     * @param playgroundId ID of the playground
+     * @return ApiResponse
      */
-    public ApiResponse deletePlayground(Long playgroundId) {
+    public Mono<ApiResponse> deletePlayground(Long playgroundId) {
         String exceptionMessage = String.format("No playground found with id: %d", playgroundId);
-        return playgroundRepository.findById(playgroundId)
-                .stream().map(playground -> workspaceService.deleteWorkspace(playground.getWorkspaceId())
-                        .map(response -> {
-                            if (response.isSuccess()) {
-                                playgroundRepository.delete(playground);
-                                return ResponseBuilder.success();
-                            } else {
-                                throw new RuntimeException("Failed to delete workspace");
-                            }
-                        })
-                        .block())
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException(exceptionMessage));
+        return Mono.fromCallable(() -> playgroundRepository.findById(playgroundId))
+                .subscribeOn(Schedulers.boundedElastic())
+                .switchIfEmpty(Mono.error(new NoSuchElementException(exceptionMessage)))
+                .flatMap(playground -> workspaceService.deleteWorkspace(playground.orElseThrow().getWorkspaceId()))
+                .map(response -> {
+                    if (response.isSuccess()) {
+                        playgroundRepository.deleteById(playgroundId);
+                        return ResponseBuilder.success();
+                    } else {
+                        throw new RuntimeException("Failed to delete workspace");
+                    }
+                })
+                .onErrorMap(throwable -> new PlaygroundManagementException("Failed to delete workspace"));
     }
 
     public ApiResponse restorePlayground(Long playgroundId) {
+        log.info("Restore playground with id: {}", playgroundId);
         return null;
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public ApiResponse handleSuccessResponse(OAuth2AuthenticatedPrincipalImpl principal,
-                                             CreatePlaygroundDto request, ApiResponse response) {
+    public Mono<ApiResponse> handleSuccessResponse(OAuth2AuthenticatedPrincipal principal,
+                                                   CreatePlaygroundDto request, ApiResponse response) {
         JsonNode responseBody = new ObjectMapper().valueToTree(response.getData());
         String workspaceHost = responseBody.get("host").asText();
         int workspacePort = responseBody.get("port").asInt();
@@ -150,10 +157,16 @@ public class PlaygroundService {
                 .githubRepoUrl(request.getGithubRepoUrl())
                 .workspaceId(workspaceId)
                 .instanceUrl(workspaceInstanceUrl)
+                .imageUrl(request.getImageUrl())
                 .userId(principal.getAttribute("sub"))
                 .build();
-        Playground savedPlayground = playgroundRepository.save(playground);
-        return ResponseBuilder.success(PlaygroundMapper.INSTANCE.toPlaygroundDto(savedPlayground));
+        return Mono.fromCallable(() -> playgroundRepository.save(playground))
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(savedPlayground ->
+                        ResponseBuilder.success(PlaygroundMapper
+                                .INSTANCE
+                                .toPlaygroundDto(savedPlayground))
+                );
     }
 
 }

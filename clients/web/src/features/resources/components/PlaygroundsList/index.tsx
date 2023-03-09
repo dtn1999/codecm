@@ -4,7 +4,11 @@ import { PlaygroundCard } from "../PlaygroundCard";
 
 export const PlaygroundsList: React.FC = React.memo(() => {
   const { data, error } = trpc.playgroundsRouter.getAll.useQuery();
-  const handleCardClick = () => {};
+  const { mutateAsync } = trpc.playgroundsRouter.delete.useMutation();
+  const handleDeleteClick = async (playgroundId: number) => {
+    const { data } = await mutateAsync({ playgroundId });
+    console.log(data);
+  };
   console.log(data, error);
   return !data || data.playgrounds.length === 0 ? (
     <div className="mx-auto w-full max-w-screen-2xl py-5">
@@ -17,11 +21,12 @@ export const PlaygroundsList: React.FC = React.memo(() => {
       </div>
     </div>
   ) : (
-    <div className="grid grid-cols-1 gap-4 mt-4">
+    <div className="mt-4 grid grid-cols-1 gap-4">
       {data?.playgrounds.map((playground) => (
         <PlaygroundCard
           key={playground.id}
-          onClick={handleCardClick}
+          handleDelete={handleDeleteClick}
+          handleEdit={() => {}}
           {...playground}
         />
       ))}

@@ -20,6 +20,7 @@ export const PlaygroundSchema = z.object({
   description: z.string(),
   instanceUrl: z.string(),
   githubRepoUrl: z.string(),
+  imageUrl: z.string(),
   workspaceId: z.number(),
 });
 
@@ -27,6 +28,7 @@ export const CreatePlaygroundInputSchema = z.object({
   name: z.string(),
   description: z.string(),
   githubRepoUrl: z.string(),
+  imageUrl: z.string(),
 });
 
 export const GetAllTemplatesResponseSchema = z.object({

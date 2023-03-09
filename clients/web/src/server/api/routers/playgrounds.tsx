@@ -80,6 +80,24 @@ export const playgroundsRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
+  delete: protectedProcedure
+    .input(z.object({ playgroundId: z.number() }))
+    .mutation(
+      async ({ input: { playgroundId }, ctx: { resourceClient, session } }) => {
+        const { data, error, success, message } = await resourceClient.delete(
+          {
+            resourceType: "playgrounds",
+            id: playgroundId,
+            path: ``,
+          },
+          session.accessToken
+        );
+        console.log(data, error, success, message);
+        return {
+          data,
+        };
+      }
+    ),
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),

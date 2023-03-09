@@ -29,7 +29,7 @@ public class WorkspaceManagerController {
                 .map(ResponseEntity::ok);
     }
 
-    @PostMapping("/workspaces/{workspaceId}")
+    @DeleteMapping("/workspaces/{workspaceId}")
     public Mono<ResponseEntity<ApiResponse>> deleteWorkspace(@PathVariable("workspaceId") final Long workspaceId) {
         log.info("deleteWorkspace: {}", workspaceId);
         return workspaceManagerService.deleteWorkspace(workspaceId)

@@ -3,5 +3,5 @@ package com.we.elearning.playgrounds.exceptions;
 import lombok.experimental.StandardException;
 
 @StandardException
-public class PlaygroundNotCreatedException extends RuntimeException{
+public class PlaygroundManagementException extends RuntimeException{
 }

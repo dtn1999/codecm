@@ -19,6 +19,7 @@ public class CreatePlaygroundDto {
     @NotNull
     @Pattern(regexp = "^(http|https)://github.com/.*$")
     private String githubRepoUrl;
+    private String imageUrl;
     @NotNull
     @Size(min = 3, max = 100)
     private String description;

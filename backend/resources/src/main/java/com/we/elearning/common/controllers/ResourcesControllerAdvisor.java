@@ -2,7 +2,7 @@ package com.we.elearning.common.controllers;
 
 import com.we.elearning.common.dtos.ApiResponse;
 import com.we.elearning.common.dtos.ResponseBuilder;
-import com.we.elearning.playgrounds.exceptions.PlaygroundNotCreatedException;
+import com.we.elearning.playgrounds.exceptions.PlaygroundManagementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class ResourcesControllerAdvisor {
                 .body(ResponseBuilder.error(exception.getMessage(), exception.getMessage()));
     }
 
-    @ExceptionHandler({PlaygroundNotCreatedException.class})
+    @ExceptionHandler({PlaygroundManagementException.class})
     public ResponseEntity<ApiResponse> handlePlaygroundNotCreatedException(NoSuchElementException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

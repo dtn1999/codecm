@@ -9,7 +9,7 @@ interface TemplateCardProps extends Template {
 export const TemplateCard: React.FC<TemplateCardProps> = React.memo(
   ({ name, description, imageUrl, onClick, githubRepoUrl }) => (
     <div
-      onClick={() => onClick({ name, description, githubRepoUrl })}
+      onClick={() => onClick({ name, description, githubRepoUrl, imageUrl })}
       className="group flex cursor-pointer flex-col justify-between rounded-lg border bg-white p-3 transition duration-150 ease-in-out hover:border-indigo-500 hover:shadow"
     >
       <div className="flex items-center gap-4 truncate">

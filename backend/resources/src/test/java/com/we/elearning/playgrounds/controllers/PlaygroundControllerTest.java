@@ -4,7 +4,7 @@ import com.we.elearning.common.dtos.ApiResponse;
 import com.we.elearning.common.dtos.ResponseBuilder;
 import com.we.elearning.playgrounds.dtos.CreatePlaygroundDto;
 import com.we.elearning.playgrounds.dtos.PlaygroundDto;
-import com.we.elearning.playgrounds.exceptions.PlaygroundNotCreatedException;
+import com.we.elearning.playgrounds.exceptions.PlaygroundManagementException;
 import com.we.elearning.playgrounds.services.PlaygroundService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ class PlaygroundControllerTest {
                         .build()
         );
         // when
-        when(playgroundService.getAllPlaygrounds()).thenReturn(ResponseBuilder.success(playgroundDtos));
+        when(playgroundService.getAllPlaygrounds()).thenReturn(Mono.just(ResponseBuilder.success(playgroundDtos)));
         // then
         webTestClient.get().uri("/api/v1/resources/playgrounds")
                 .exchange()
@@ -70,7 +70,7 @@ class PlaygroundControllerTest {
         // given
 
         // when
-        when(playgroundService.getAllPlaygrounds()).thenReturn(ResponseBuilder.success(List.of()));
+        when(playgroundService.getAllPlaygrounds()).thenReturn(Mono.just(ResponseBuilder.success(List.of())));
         // then
         webTestClient.get().uri("/api/v1/resources/playgrounds")
                 .exchange()
@@ -96,7 +96,7 @@ class PlaygroundControllerTest {
                 .workspaceId(1L)
                 .build();
         // when
-        when(playgroundService.getPlaygroundById(playgroundId)).thenReturn(ResponseBuilder.success(playgroundDto));
+        when(playgroundService.getPlaygroundById(playgroundId)).thenReturn(Mono.just(ResponseBuilder.success(playgroundDto)));
         // then
         webTestClient.get().uri(String.format("/api/v1/resources/playgrounds/%s", playgroundId))
                 .exchange()
@@ -193,7 +193,7 @@ class PlaygroundControllerTest {
     }
 
     @Test
-    @DisplayName("Should not create playground because service throw exception PlaygroundNotCreatedException")
+    @DisplayName("Should not create playground because service throw exception PlaygroundManagementException")
     void createPlayground_playgroundNotCreatedException(){
         // given
         CreatePlaygroundDto createPlaygroundDto = CreatePlaygroundDto.builder()
@@ -202,7 +202,7 @@ class PlaygroundControllerTest {
                 .githubRepoUrl("https://github.com/username/repo1.git")
                 .build();
         // when
-        when(playgroundService.createPlayground(createPlaygroundDto, null)).thenThrow(new PlaygroundNotCreatedException("Playground not created"));
+        when(playgroundService.createPlayground(createPlaygroundDto, null)).thenThrow(new PlaygroundManagementException("Playground not created"));
         // then
         webTestClient
                 .post()
@@ -229,7 +229,7 @@ class PlaygroundControllerTest {
         // given
         long playgroundId = 1L;
         // when
-        when(playgroundService.deletePlayground(playgroundId)).thenReturn(ResponseBuilder.success());
+        when(playgroundService.deletePlayground(playgroundId)).thenReturn(Mono.just(ResponseBuilder.success()));
         // then
         webTestClient
                 .delete()

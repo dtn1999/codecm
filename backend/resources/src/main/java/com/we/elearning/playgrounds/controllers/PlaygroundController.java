@@ -20,15 +20,17 @@ import reactor.core.publisher.Mono;
 public class PlaygroundController {
     private final PlaygroundService playgroundService;
     @GetMapping("")
-    public ResponseEntity<ApiResponse> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal){
+    public Mono<ResponseEntity<ApiResponse>> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal){
         log.info("getting all playgrounds");
-        return ResponseEntity.ok(playgroundService.getAllPlaygroundsForAuthenticatedUser(principal));
+        return playgroundService.getAllPlaygroundsForAuthenticatedUser(principal)
+                .map(ResponseEntity::ok);
     }
 
     @GetMapping("/{playgroundId}")
-    public ResponseEntity<ApiResponse> getPlaygroundById(@PathVariable("playgroundId") final Long playgroundId) {
+    public Mono<ResponseEntity<ApiResponse>> getPlaygroundById(@PathVariable("playgroundId") final Long playgroundId) {
         log.info("getting playground by id: {}", playgroundId);
-        return ResponseEntity.ok(playgroundService.getPlaygroundById(playgroundId));
+        return playgroundService.getPlaygroundById(playgroundId)
+                .map(ResponseEntity::ok);
     }
 
     @PostMapping("")
@@ -40,9 +42,10 @@ public class PlaygroundController {
     }
 
     @DeleteMapping("/{playgroundId}")
-    public ResponseEntity<ApiResponse> deletePlayground(@PathVariable("playgroundId") final Long playgroundId) {
+    public Mono<ResponseEntity<ApiResponse>> deletePlayground(@PathVariable("playgroundId") final Long playgroundId) {
         log.info("deleting playground with id: {}", playgroundId);
-        return ResponseEntity.ok(playgroundService.deletePlayground(playgroundId));
+        return playgroundService.deletePlayground(playgroundId)
+                .map(ResponseEntity::ok);
     }
 
     public ResponseEntity<ApiResponse> restorePlayground(@PathVariable("playgroundId") final Long playgroundId) {

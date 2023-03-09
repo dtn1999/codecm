@@ -7,10 +7,8 @@ export const TemplatesList: React.FC = React.memo(() => {
   const { data, error } = trpc.templatesRouter.getAll.useQuery();
   const { mutateAsync } = trpc.playgroundsRouter.create.useMutation();
   const handleCardClick = async (request: CreatePlaygroundInput) => {
-    const { playground } = await mutateAsync(request);
-    window.open(playground.instanceUrl, "_blank", "noopener,noreferrer");
+    await mutateAsync(request);
   };
-  console.log(data, error);
   return (
     <div className="grid gap-4 pt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       {data?.templates.map((template) => (

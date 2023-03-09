@@ -1,5 +1,6 @@
 ext.ver = [
         //
+        'springCloudVersion': '2022.0.1',
         'dockerJavaVersion': '3.2.14',
         'jGitVersion': '6.4.0.202211300538-r',
         // utils

@@ -54,6 +54,7 @@ public class DockerProvider implements ResourceProvider {
 
     @Override
     public void deleteWorkspace(String runnerId) {
+        dockerClient.killContainerCmd(runnerId).exec();
         dockerClient.removeContainerCmd(runnerId).exec();
     }
 }

@@ -21,6 +21,7 @@ public class Playground {
     private String githubRepoUrl;
     private String description;
     private String instanceUrl;
+    private String imageUrl;
 
     // (Service) cross reference
     @Column(unique = true)

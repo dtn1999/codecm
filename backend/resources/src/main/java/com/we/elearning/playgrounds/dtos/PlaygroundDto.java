@@ -15,5 +15,6 @@ public class PlaygroundDto {
     private String githubRepoUrl;
     private String description;
     private String instanceUrl;
+    private String imageUrl;
     private Long workspaceId;
 }
