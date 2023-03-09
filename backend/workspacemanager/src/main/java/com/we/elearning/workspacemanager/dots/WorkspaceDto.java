@@ -1,11 +1,12 @@
 package com.we.elearning.workspacemanager.dots;
 
 import com.we.elearning.workspacemanager.entities.WorkspaceStatus;
-import com.we.elearning.workspacemanager.entities.WorkspaceVolume;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -19,4 +20,6 @@ public class WorkspaceDto {
 
     private WorkspaceStatus status;
     private WorkspaceVolumeDto workspaceVolume;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 }

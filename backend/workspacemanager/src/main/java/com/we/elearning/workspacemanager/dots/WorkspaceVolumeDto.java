@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,4 +16,6 @@ public class WorkspaceVolumeDto {
     private Long id;
     private String name;
     private int size;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 }

@@ -7,10 +7,12 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @UtilityClass
 @Slf4j
 public class GitUtils {
+    private AtomicInteger counter = new AtomicInteger(0);
     public void cloneRepository(String url, String path) {
         log.info("Cloning repository from {} to {}", url, path);
         try {
@@ -23,7 +25,12 @@ public class GitUtils {
             log.error("Error while cloning repository from {} to {}", url, path);
             if(e.getMessage().contains("already exists and is not an empty directory")){
                 FileUtils.deleteQuietly(new File(path));
-                cloneRepository(url, path);
+                if(counter.get() < 3) {
+                    cloneRepository(url, path);
+                    counter.incrementAndGet();
+                }else {
+                   counter.set(0);
+                }
                 return;
             }
             throw new GitException(String.format("The repository %s could not be cloned. Failed with the following " +
