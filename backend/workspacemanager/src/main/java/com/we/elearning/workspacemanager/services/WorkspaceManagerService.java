@@ -81,7 +81,7 @@ public class WorkspaceManagerService {
                             Runner runner = resourceProvider.deleteWorkspace(details);
                             runner.clean();
                             return ResponseBuilder.success();
-                        }).orElseThrow(()-> new NoSuchElementException("Workspace not found"))
+                        }).orElseThrow(() -> new NoSuchElementException("Workspace not found"))
                 );
     }
 
@@ -95,6 +95,25 @@ public class WorkspaceManagerService {
                 .map(WorkspaceMapper.INSTANCE::toWorkspaceDto)
                 .collectList()
                 .map(ResponseBuilder::success);
+    }
+
+    /**
+     * This method is used to restore a workspace. It takes as input the workspace id and will restore the workspace
+     *
+     * @param workspaceId the workspace id
+     * @return a successful ApiResponse with no data
+     */
+    public Mono<ApiResponse> restoreWorkspace(Long workspaceId) {
+        return Mono.fromCallable(() -> workspaceRepository.findById(workspaceId))
+                .subscribeOn(Schedulers.boundedElastic())
+                .switchIfEmpty(Mono.error(new NoSuchElementException("Workspace not found")))
+                .map(workspace -> workspace.map(foundWorkspace -> {
+                    RunnerDetails details = RunnerDetailsMapper.INSTANCE.toRunnerDetails(foundWorkspace);
+                    Runner runner = resourceProvider.restoreWorkspace(details);
+                    runner.restart();
+                    return ResponseBuilder.success();
+                }).orElseThrow(
+                        () -> new NoSuchElementException("Workspace not found")));
     }
 
 }

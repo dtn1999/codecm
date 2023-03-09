@@ -22,39 +22,44 @@ public class PlaygroundController {
 
     @GetMapping("")
     public Mono<ResponseEntity<ApiResponse>> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
-        log.info("getting all playgrounds");
+        log.info("========================[ start:getting all playgrounds ]========================");
         return playgroundService.getAllPlaygroundsForAuthenticatedUser(principal)
-                .map(ResponseEntity::ok);
+                .map(ResponseEntity::ok)
+                .doOnSuccess(responseEntity -> log.info("========================[ end:getting all playgrounds ]========================"));
     }
 
     @GetMapping("/{playgroundId}")
     public Mono<ResponseEntity<ApiResponse>> getPlaygroundById(@PathVariable("playgroundId") final Long playgroundId) {
-        log.info("getting playground by id: {}", playgroundId);
+        log.info("========================[ start:getting playground with id: {} ]===========================", playgroundId);
         return playgroundService.getPlaygroundById(playgroundId)
-                .map(ResponseEntity::ok);
+                .map(ResponseEntity::ok)
+                .doOnSuccess(responseEntity -> log.info("========================[ end:getting playground with id: {} ]===========================", playgroundId));
     }
 
     @PostMapping("")
     public Mono<ResponseEntity<ApiResponse>> createPlayground(@Valid @RequestBody final CreatePlaygroundDto createPlaygroundDto,
                                                               @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
-        log.info("creating playground with the following properties: {}", createPlaygroundDto);
+        log.info("=========================[ start:creating playground with name: {} ]=================================", createPlaygroundDto.getName());
         return playgroundService.createPlayground(createPlaygroundDto, principal)
                 .map(response -> ResponseEntity
                         .status(HttpStatus.CREATED)
-                        .body(response));
+                        .body(response))
+                .doOnSuccess(responseEntity -> log.info("=========================[ end:creating playground with name: {} ]=================================", createPlaygroundDto.getName()));
     }
 
     @DeleteMapping("/{playgroundId}")
     public Mono<ResponseEntity<ApiResponse>> deletePlayground(@PathVariable("playgroundId") final Long playgroundId) {
-        log.info("deleting playground with id: {}", playgroundId);
+        log.info("================================[ start:deleting playground with id: {} ]================================", playgroundId);
         return playgroundService.deletePlayground(playgroundId)
-                .map(ResponseEntity::ok);
+                .map(ResponseEntity::ok)
+                .doOnSuccess(responseEntity -> log.info("================================[ end:deleting playground with id: {} ]================================", playgroundId));
     }
 
     @PutMapping("/{playgroundId}/restore")
     public Mono<ResponseEntity<ApiResponse>> restorePlayground(@PathVariable("playgroundId") final Long playgroundId) {
-        log.info("restoring playground with id: {}", playgroundId);
+        log.info("================================[ start:restoring playground with id: {} ]================================", playgroundId);
         return playgroundService.restorePlayground(playgroundId)
-                .map(ResponseEntity::ok);
+                .map(ResponseEntity::ok)
+                .doOnSuccess(responseEntity -> log.info("================================[ end:restoring playground with id: {} ]================================", playgroundId));
     }
 }

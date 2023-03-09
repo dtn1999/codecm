@@ -8,9 +8,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Table(name = "TEMPLATES")
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +39,11 @@ public class Template {
     @Column(unique = true,name = "GITHUB_URL")
     @NotNull
     private String githubRepoUrl;
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    @CreatedDate
+    private LocalDateTime createdDate;
+    @Column(name = "last_modified_date")
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 }

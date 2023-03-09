@@ -37,12 +37,6 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="w-full">
-            <img
-              src="https://codesandbox.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.2b1cff1a.gif&w=1920&q=75"
-              className="h-full w-full object-contain"
-            />
-          </div>
         </div>
       </div>
     </>

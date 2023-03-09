@@ -44,4 +44,12 @@ public class WorkspaceManagerController {
                 .map(ResponseEntity::ok)
                 .doOnTerminate(() -> log.info("======================[ end:getAllWorkspaces ]=========================="));
     }
+
+    @PutMapping("/workspaces/{workspaceId}/restore")
+    public Mono<ResponseEntity<ApiResponse>> restoreWorkspace(@PathVariable("workspaceId") final Long workspaceId) {
+        log.info("======================[ start:restoreWorkspace: {} ]==========================", workspaceId);
+        return workspaceManagerService.restoreWorkspace(workspaceId)
+                .map(ResponseEntity::ok)
+                .doOnTerminate(() -> log.info("======================[ end:restoreWorkspace: {} ]==========================", workspaceId));
+    }
 }

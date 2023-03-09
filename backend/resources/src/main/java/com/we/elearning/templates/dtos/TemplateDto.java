@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,4 +25,6 @@ public class TemplateDto {
     private String imageUrl;
     @NotNull
     private String githubRepoUrl;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 }

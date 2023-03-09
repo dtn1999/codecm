@@ -140,9 +140,25 @@ public class PlaygroundService {
                 });
     }
 
+    /**
+     * Restore a playground by id
+     * @param playgroundId ID of the playground
+     * @return ApiResponse
+     */
     public Mono<ApiResponse> restorePlayground(Long playgroundId) {
         log.info("Restore playground with id: {}", playgroundId);
-        return Mono.fromCallable(ResponseBuilder::success);
+        return Mono.fromCallable(() -> playgroundRepository.findById(playgroundId))
+                .subscribeOn(Schedulers.boundedElastic())
+                .switchIfEmpty(Mono.error(new NoSuchElementException("No playground found with id: " + playgroundId)))
+                .flatMap(playground -> workspaceService.restoreWorkspace(playground.orElseThrow().getWorkspaceId()))
+                .map(response -> {
+                    if (response.isSuccess()) {
+                        return ResponseBuilder.success();
+                    } else {
+                        throw new RuntimeException("Failed to restore workspace");
+                    }
+                })
+                .onErrorMap(throwable -> new PlaygroundManagementException("Failed to restore workspace"));
     }
 
     @Transactional(rollbackFor = RuntimeException.class)

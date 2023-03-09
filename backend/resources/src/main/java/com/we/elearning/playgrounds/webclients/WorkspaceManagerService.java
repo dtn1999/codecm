@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.PostExchange;
+import org.springframework.web.service.annotation.PutExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -16,6 +17,6 @@ public interface WorkspaceManagerService {
     Mono<ApiResponse> createWorkspace(@RequestBody Map<String, Object> request);
     @DeleteExchange("api/v1/workspaces/{workspaceId}")
     Mono<ApiResponse> deleteWorkspace(@PathVariable("workspaceId") final Long workspaceId);
-    @PostExchange("api/v1/workspaces/{workspaceId}/restore")
+    @PutExchange("api/v1/workspaces/{workspaceId}/restore")
     Mono<ApiResponse> restoreWorkspace(@PathVariable("workspaceId") final Long workspaceId);
 }
