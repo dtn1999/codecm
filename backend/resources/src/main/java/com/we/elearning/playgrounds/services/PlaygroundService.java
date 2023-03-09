@@ -135,12 +135,14 @@ public class PlaygroundService {
                         throw new RuntimeException("Failed to delete workspace");
                     }
                 })
-                .onErrorMap(throwable -> new PlaygroundManagementException("Failed to delete workspace"));
+                .onErrorMap(throwable -> {
+                    return new PlaygroundManagementException("Failed to delete workspace");
+                });
     }
 
-    public ApiResponse restorePlayground(Long playgroundId) {
+    public Mono<ApiResponse> restorePlayground(Long playgroundId) {
         log.info("Restore playground with id: {}", playgroundId);
-        return null;
+        return Mono.fromCallable(ResponseBuilder::success);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)

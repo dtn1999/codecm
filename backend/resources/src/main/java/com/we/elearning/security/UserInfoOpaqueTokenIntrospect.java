@@ -1,6 +1,7 @@
 package com.we.elearning.security;
 
 import lombok.SneakyThrows;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import reactor.core.publisher.Mono;

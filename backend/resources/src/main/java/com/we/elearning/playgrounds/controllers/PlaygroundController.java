@@ -19,8 +19,9 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class PlaygroundController {
     private final PlaygroundService playgroundService;
+
     @GetMapping("")
-    public Mono<ResponseEntity<ApiResponse>> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal){
+    public Mono<ResponseEntity<ApiResponse>> getAllPlaygrounds(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
         log.info("getting all playgrounds");
         return playgroundService.getAllPlaygroundsForAuthenticatedUser(principal)
                 .map(ResponseEntity::ok);
@@ -38,7 +39,9 @@ public class PlaygroundController {
                                                               @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal) {
         log.info("creating playground with the following properties: {}", createPlaygroundDto);
         return playgroundService.createPlayground(createPlaygroundDto, principal)
-                .map(ResponseEntity::ok);
+                .map(response -> ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(response));
     }
 
     @DeleteMapping("/{playgroundId}")
@@ -48,8 +51,10 @@ public class PlaygroundController {
                 .map(ResponseEntity::ok);
     }
 
-    public ResponseEntity<ApiResponse> restorePlayground(@PathVariable("playgroundId") final Long playgroundId) {
+    @PutMapping("/{playgroundId}/restore")
+    public Mono<ResponseEntity<ApiResponse>> restorePlayground(@PathVariable("playgroundId") final Long playgroundId) {
         log.info("restoring playground with id: {}", playgroundId);
-        return ResponseEntity.ok(playgroundService.restorePlayground(playgroundId));
+        return playgroundService.restorePlayground(playgroundId)
+                .map(ResponseEntity::ok);
     }
 }

@@ -19,12 +19,10 @@ public class WorkspaceVolume {
     private Long id;
     @Column(unique = true)
     private String name;
-
-    @Transient
     private String mountPath;
     private int size;
 
     // Foreign Entity
-    //@OneToOne(fetch = FetchType.LAZY, mappedBy = "workspaceVolume")
-    //private Workspace;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "workspaceVolume")
+    private Workspace workspace;
 }
