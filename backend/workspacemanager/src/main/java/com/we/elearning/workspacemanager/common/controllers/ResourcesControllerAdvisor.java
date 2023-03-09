@@ -47,6 +47,6 @@ public class ResourcesControllerAdvisor {
         log.error("Exception: {}", exception.getMessage());
         return Mono.just(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ResponseBuilder.error(exception.getMessage(), exception.getMessage())));
+                .body(ResponseBuilder.error(null, exception.getMessage())));
     }
 }

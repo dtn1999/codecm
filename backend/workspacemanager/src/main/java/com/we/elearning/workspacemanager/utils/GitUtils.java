@@ -26,8 +26,8 @@ public class GitUtils {
                 cloneRepository(url, path);
                 return;
             }
-            throw new GitException(String.format("The repository %s could not be cloned to %s. Failed with the following" +
-                    "error message %s", url, path, e.getMessage()));
+            throw new GitException(String.format("The repository %s could not be cloned. Failed with the following " +
+                    "error message %s", url, e.getMessage()));
         }
     }
 

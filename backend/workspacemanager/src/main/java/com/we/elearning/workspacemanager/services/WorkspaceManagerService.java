@@ -81,7 +81,7 @@ public class WorkspaceManagerService {
                             Runner runner = resourceProvider.deleteWorkspace(details);
                             runner.clean();
                             return ResponseBuilder.success();
-                        }).orElseThrow()
+                        }).orElseThrow(()-> new NoSuchElementException("Workspace not found"))
                 );
     }
 
