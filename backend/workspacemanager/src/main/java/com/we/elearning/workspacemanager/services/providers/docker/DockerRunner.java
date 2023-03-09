@@ -71,11 +71,7 @@ public class DockerRunner implements Runner {
                 .stream()
                 .findAny()
                 .ifPresent(container -> {
-                    if (container.getState().equals("running")) {
-                        log.info("Container with id: {} and name: {} is running, stopping it", details.getId(), details.getName());
-                        stop();
-                    }
-                    log.info("Killing and removing container with id: {} and name: {}", details.getId(), details.getName());
+                    log.info("removing container with id: {} and name: {}", details.getId(), details.getName());
                     dockerClient.killContainerCmd(details.getId()).exec();
                     dockerClient.removeContainerCmd(details.getId()).exec();
                     // delete volumes and workspace files

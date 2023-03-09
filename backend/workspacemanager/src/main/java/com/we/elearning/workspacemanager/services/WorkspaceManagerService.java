@@ -9,9 +9,12 @@ import com.we.elearning.workspacemanager.repositories.WorkspaceRepository;
 import com.we.elearning.workspacemanager.services.providers.CreateWorkspaceRequest;
 import com.we.elearning.workspacemanager.services.providers.ResourceProvider;
 import com.we.elearning.workspacemanager.services.providers.Runner;
+import com.we.elearning.workspacemanager.services.providers.RunnerDetails;
+import com.we.elearning.workspacemanager.services.providers.mappers.RunnerDetailsMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -34,6 +37,7 @@ public class WorkspaceManagerService {
      * @param githubRepoUrl the GitHub repo url
      * @return an ApiResponse containing the newly created workspace dto
      */
+    @Transactional(rollbackFor = Exception.class)
     public Mono<ApiResponse> createWorkspace(String githubRepoUrl) {
         log.info("Creating workspace for repo: {}", githubRepoUrl);
         return Mono.zip(
@@ -46,19 +50,17 @@ public class WorkspaceManagerService {
                     .volumeName(tuple.getT2())
                     .build();
             Runner runner = resourceProvider.createWorkspace(createRequest);
-            runner.getDetails();
-            Workspace workspace = new Workspace();
-//            workspace.setWorkspaceVolume(tuple.getT2());
+            Workspace workspace = RunnerDetailsMapper.INSTANCE.toWorkspace(runner.getDetails());
             workspace.setStatus(WorkspaceStatus.RUNNING);
             log.info("Workspace created successfully");
+            workspace.getWorkspaceVolume().setId(null);
             return Mono.fromCallable(() -> workspaceRepository.save(workspace))
                     .subscribeOn(Schedulers.boundedElastic())
                     .map(savedWorkspace -> {
                         log.info("Workspace saved successfully");
-//                        tuple.getT2().setWorkspace(workspace);
+                        runner.start();
                         return ResponseBuilder.success(WorkspaceMapper.INSTANCE.toWorkspaceDto(savedWorkspace));
-                    })
-                    ;
+                    });
         });
     }
 
@@ -75,13 +77,9 @@ public class WorkspaceManagerService {
                 .subscribeOn(Schedulers.boundedElastic())
                 .switchIfEmpty(Mono.error(new NoSuchElementException("Workspace not found")))
                 .map(workspace -> workspace.map(foundWorkspace -> {
-                            //1. Get workspace by workspaceId
-                            foundWorkspace.setStatus(WorkspaceStatus.STOPPED);
-                            //2. Delete workspace
-//                            resourceProvider.deleteWorkspace(foundWorkspace.getRunnerId(), foundWorkspace.getWorkspaceVolume().getName());
-                            //3. Delete workspace
-                            workspaceRepository.delete(foundWorkspace);
-                            log.info("Workspace deleted successfully");
+                            RunnerDetails details = RunnerDetailsMapper.INSTANCE.toRunnerDetails(foundWorkspace);
+                            Runner runner = resourceProvider.deleteWorkspace(details);
+                            runner.clean();
                             return ResponseBuilder.success();
                         }).orElseThrow()
                 );
@@ -98,4 +96,5 @@ public class WorkspaceManagerService {
                 .collectList()
                 .map(ResponseBuilder::success);
     }
+
 }

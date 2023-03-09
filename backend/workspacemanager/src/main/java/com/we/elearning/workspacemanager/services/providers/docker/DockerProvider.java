@@ -2,7 +2,9 @@ package com.we.elearning.workspacemanager.services.providers.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
 import com.we.elearning.workspacemanager.services.providers.*;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 @Service("dockerProvider")
 @Slf4j
@@ -69,26 +72,25 @@ public class DockerProvider implements ResourceProvider {
     }
 
     @Override
-    public void deleteWorkspace(Runner runner) {
-        String runnerId = "";
-        String volumeName = "";
+    public Runner deleteWorkspace(RunnerDetails runnerDetails) {
+        String runnerId = runnerDetails.getId();
         log.info("Deleting workspace with runner id: {}", runnerId);
-        dockerClient.listContainersCmd()
+        Optional<Container> existingContainer = dockerClient.listContainersCmd()
                 .exec()
                 .stream()
                 .filter(container -> container.getId().equals(runnerId))
-                .findFirst()
-                .ifPresent(container -> {
-                    if (container.getState().equals("running")) {
-                        //1. Kill the container
-                        dockerClient.killContainerCmd(container.getId()).exec();
-                    }
-                    //2. Remove the container
-                    dockerClient.removeContainerCmd(container.getId()).exec();
-                    //3. Remove the volume
-                    String volumeMountPath = String.format("%s/%s", dockerVolumesPath, volumeName);
-                    FileUtils.deleteQuietly(new File(volumeMountPath));
-                });
+                .findFirst();
+        if (existingContainer.isPresent()) {
+            return new DockerRunner(runnerDetails, dockerClient);
+        }else {
+            log.info("No container with id: {} found", runnerId);
+            throw new NotFoundException(String.format("No container with id: %s found", runnerId));
+        }
+    }
+
+    @Override
+    public Runner getRunner(RunnerDetails runnerDetails) {
+        return new DockerRunner(runnerDetails, dockerClient);
     }
 
     /**

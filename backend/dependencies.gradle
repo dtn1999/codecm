@@ -3,6 +3,7 @@ ext.ver = [
         'springCloudVersion': '2022.0.1',
         'dockerJavaVersion': '3.2.14',
         'jGitVersion': '6.4.0.202211300538-r',
+        'camelVersion': '4.0.0-M1',
         // utils
         'mapstructVersion': '1.5.3.Final',
         'mapstructProcessorVersion': '1.5.3.Final',

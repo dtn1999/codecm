@@ -41,4 +41,12 @@ public class ResourcesControllerAdvisor {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ResponseBuilder.error(errors, message)));
     }
+
+    @ExceptionHandler(Exception.class)
+    public Mono<ResponseEntity<ApiResponse>> handleException(Exception exception) {
+        log.error("Exception: {}", exception.getMessage());
+        return Mono.just(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseBuilder.error(exception.getMessage(), exception.getMessage())));
+    }
 }

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Workspace {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String runnerId;
     private String host;
@@ -25,6 +25,6 @@ public class Workspace {
 
     // Foreign Entity
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "workspace_volume_id", referencedColumnName = "id")
+    @JoinColumn(name = "workspace_volume_id", referencedColumnName = "id", nullable = false)
     private WorkspaceVolume workspaceVolume;
 }

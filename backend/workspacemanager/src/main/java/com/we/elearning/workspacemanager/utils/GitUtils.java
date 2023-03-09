@@ -3,6 +3,7 @@ package com.we.elearning.workspacemanager.utils;
 import com.we.elearning.workspacemanager.exceptions.GitException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 
 import java.io.File;
@@ -20,6 +21,11 @@ public class GitUtils {
             log.info("Repository cloned successfully. {}", call);
         } catch (Exception e) {
             log.error("Error while cloning repository from {} to {}", url, path);
+            if(e.getMessage().contains("already exists and is not an empty directory")){
+                FileUtils.deleteQuietly(new File(path));
+                cloneRepository(url, path);
+                return;
+            }
             throw new GitException(String.format("The repository %s could not be cloned to %s. Failed with the following" +
                     "error message %s", url, path, e.getMessage()));
         }

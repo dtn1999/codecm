@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class WorkspaceVolume {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String name;
