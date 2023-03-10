@@ -26,7 +26,7 @@ public class ResourcesControllerAdvisor {
     }
 
     @ExceptionHandler({PlaygroundManagementException.class})
-    public ResponseEntity<ApiResponse> handlePlaygroundNotCreatedException(NoSuchElementException exception) {
+    public ResponseEntity<ApiResponse> handlePlaygroundNotCreatedException(PlaygroundManagementException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ResponseBuilder.error(exception.getMessage(),

@@ -36,7 +36,7 @@ public class WorkspaceCleanUpService {
     public void cleanUp() {
         log.info("=======================[ Start:Stopping idle workspaces ]========================");
         workspaceRepository.findAll().forEach(workspace -> {
-            log.info("Checking workspace {}", workspace);
+            log.info("Checking workspace {}", workspace.getId());
             String mountPath = workspace.getWorkspaceVolume().getMountPath();
             String heartbeatPath = String.format("%s/%s", mountPath, "/user-data/heartbeat");
             BasicFileAttributeView fileAttributeView = Files.getFileAttributeView(Path.of(heartbeatPath), BasicFileAttributeView.class);
@@ -52,9 +52,10 @@ public class WorkspaceCleanUpService {
                     workspaceRepository.save(workspace);
                     return;
                 }
-                log.info("Workspace {} is still active", workspace);
+                log.info("Workspace {} is still active", workspace.getId());
             }catch (IOException e){
-                e.printStackTrace();
+                log.error("Error while checking workspace {} status", workspace.getId());
+                log.error(e.getMessage());
             }
         });
         log.info("=======================[ End:Stopping idle workspaces ]========================");

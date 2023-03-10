@@ -135,9 +135,7 @@ public class PlaygroundService {
                         throw new RuntimeException("Failed to delete workspace");
                     }
                 })
-                .onErrorMap(throwable -> {
-                    return new PlaygroundManagementException("Failed to delete workspace");
-                });
+                .onErrorMap(throwable -> new PlaygroundManagementException("Failed to delete workspace"));
     }
 
     /**

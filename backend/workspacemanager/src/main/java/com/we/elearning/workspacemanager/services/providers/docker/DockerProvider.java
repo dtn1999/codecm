@@ -89,6 +89,11 @@ public class DockerProvider implements ResourceProvider {
     }
 
     @Override
+    public Runner restoreWorkspace(RunnerDetails runnerDetails) {
+        return null;
+    }
+
+    @Override
     public Runner getRunner(RunnerDetails runnerDetails) {
         return new DockerRunner(runnerDetails, dockerClient);
     }
