@@ -1,13 +1,24 @@
+import { LoadingScreen } from "@we/components";
 import { CreatePlaygroundInput } from "@we/types/schemas";
 import { trpc } from "@we/utils/api";
+import { useRouter } from "next/router";
 import React from "react";
 import { TemplateCard } from "../TemplateCard";
 
 export const TemplatesList: React.FC = React.memo(() => {
-  const { data, error } = trpc.templatesRouter.getAll.useQuery();
-  const { mutateAsync } = trpc.playgroundsRouter.create.useMutation();
+  const { data } = trpc.templatesRouter.getAll.useQuery();
+  const router = useRouter();
+  const { mutateAsync, isLoading } =
+    trpc.playgroundsRouter.create.useMutation();
   const handleCardClick = async (request: CreatePlaygroundInput) => {
-    await mutateAsync(request);
+    const response = await mutateAsync(request);
+    console.log("creation terminated with the following response", response);
+    router.push({
+      pathname: "/playgrounds/code-server",
+      query: {
+        codeServerSrc: response.playground.instanceUrl,
+      },
+    });
   };
   return (
     <div className="grid gap-4 pt-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
@@ -50,6 +61,7 @@ export const TemplatesList: React.FC = React.memo(() => {
           </div>
         </div>
       </div>
+      {isLoading && <LoadingScreen />}
     </div>
   );
 });

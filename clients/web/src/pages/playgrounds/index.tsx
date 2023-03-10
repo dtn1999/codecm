@@ -1,4 +1,4 @@
-import { Layout } from "@we/components";
+import { Layout, LoadingScreen } from "@we/components";
 import { TemplatesList } from "@we/features/resources/components";
 import { PlaygroundsList } from "@we/features/resources/components/PlaygroundsList";
 import { NextPageWithLayout } from "@we/types/ui";
