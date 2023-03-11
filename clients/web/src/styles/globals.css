@@ -3,15 +3,7 @@ body,
 body > div:first-child,
 div#__next,
 div#__next > div {
-  font-family: "Montserrat", sans-serif;
-}
-
-body,
-body > div:first-child,
-div#__next,
-div#__next > div {
-  height: 100%;
-  background-color: #0F0F0F;
+  font-family: "Inter", sans-serif;
 }
 
 @tailwind base;

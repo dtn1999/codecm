@@ -10,6 +10,9 @@ const config = {
         background: {
           DEFAULT: "#151515",
         },
+        placeholder: {
+          DEFAULT: "#2A2A2A",
+        },
       },
     },
   },

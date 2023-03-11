@@ -1,4 +1,4 @@
-import { DialogWrapper, Form, FormInput } from "@we/components";
+import { DialogWrapper, Form, FormInput, FormTextarea } from "@we/components";
 import { DialogProps } from "@we/types/ui";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -25,11 +25,14 @@ export const CreatePlaygroundDialog: React.FC<
           console.log(data);
         }}
       >
-        <FormInput name="title" placeholder="Test Playground" />
-        <FormInput
-          name="description"
-          placeholder="Test Playground Description"
-        />
+        <div className="p-4">
+          <FormInput name="title" placeholder="Test Playground" />
+          <FormTextarea
+            name="description"
+            placeholder="Test Playground Description"
+            row={5}
+          />
+        </div>
       </Form>
     </DialogWrapper>
   );

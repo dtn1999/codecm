@@ -11,7 +11,7 @@ interface Props extends ComponentBaseProps {
   row?: number;
 }
 
-const FormTextarea: React.FC<Props> = ({
+export const FormTextarea: React.FC<Props> = ({
   name,
   label,
   placeholder,
@@ -26,15 +26,12 @@ const FormTextarea: React.FC<Props> = ({
   }
   return (
     <div className={cn("flex w-full flex-col")}>
-      <label htmlFor={name} className="capitalize text-black">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
       <textarea
         {...register(name, { required })}
         rows={4}
         placeholder={placeholder}
         className={cn(
-          "my-2 w-full border border-black py-3 px-4 text-sm placeholder:font-light placeholder:text-black focus:rounded-none focus:border-black focus:outline-none",
+          "my-2 w-full border border-black py-3 px-4 text-sm bg-placeholder placeholder:font-extralight placeholder:text-white focus:rounded-none focus:border-black focus:outline-none",
           className
         )}
       />

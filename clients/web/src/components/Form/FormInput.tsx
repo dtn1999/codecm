@@ -24,17 +24,14 @@ export const FormInput: React.FC<Props> = ({
   }
 
   return (
-    <div className={cn("w-full flex flex-col")}>
-      <label htmlFor={name} className="capitalize text-black">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
+    <div className={cn("flex w-full flex-col")}>
       <input
         {...register(name, { required: required ? true : false })}
         name={name}
         type={type?.toString().toLowerCase()}
         placeholder={placeholder || ""}
         className={cn(
-          "w-full focus:outline-none placeholder:text-black placeholder:font-light text-sm py-3 px-4 border border-black my-2 text-black",
+          "my-2 w-full border border-black bg-placeholder py-3 px-4 text-sm text-white placeholder:font-light placeholder:text-white focus:outline-none"
         )}
       />
       {error && <p className="font-extralight text-red-500">{error.message}</p>}
