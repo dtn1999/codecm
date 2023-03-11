@@ -3,8 +3,8 @@ import React from "react";
 import { PlaygroundCard } from "../PlaygroundCard";
 
 export const PlaygroundsList: React.FC = React.memo(() => {
-  const { data, error } = trpc.playgroundsRouter.getAll.useQuery();
-  const { mutateAsync } = trpc.playgroundsRouter.delete.useMutation();
+  const { data, error } = trpc.playgrounds.getAll.useQuery();
+  const { mutateAsync } = trpc.playgrounds.delete.useMutation();
   const handleDeleteClick = async (playgroundId: number) => {
     const { data } = await mutateAsync({ playgroundId });
     console.log(data);

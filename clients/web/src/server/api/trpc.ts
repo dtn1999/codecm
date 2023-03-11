@@ -17,7 +17,7 @@
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 
-import { getServerAuthSession } from "@we/server/auth";
+import { ResourceClient, getServerAuthSession } from "@we/server/features";
 
 type CreateContextOptions = {
   session: Session & {
@@ -67,7 +67,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { ResourceClient } from "../../features/resources/services/resources";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

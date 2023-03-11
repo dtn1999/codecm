@@ -9,7 +9,7 @@ function classNames(...classes) {
 }
 
 export default function TabComponent() {
-  const { data, error } = trpc.templatesRouter.getAll.useQuery();
+  const { data, error } = trpc.templates.getAll.useQuery();
   let [categories] = useState({
     "Quick start": data ? data.templates : [],
     "Import from GiHub": [],

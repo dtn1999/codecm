@@ -24,6 +24,7 @@ const server = z.object({
   AUTH0_CLIENT_ID: z.string().min(1),
   AUTH0_CLIENT_SECRET: z.string().min(1),
   AUTH0_AUDIENCE: z.string().min(1),
+  OPENAI_SECRET_KEY: z.string().min(1),
 });
 
 /**
@@ -51,6 +52,7 @@ const processEnv = {
   AUTH0_SECRET: process.env.AUTH0_SECRET,
   AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
   AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
+  OPENAI_SECRET_KEY: process.env.OPENAI_SECRET_KEY,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 

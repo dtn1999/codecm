@@ -6,10 +6,9 @@ import React from "react";
 import { TemplateCard } from "../TemplateCard";
 
 export const TemplatesList: React.FC = React.memo(() => {
-  const { data } = trpc.templatesRouter.getAll.useQuery();
+  const { data } = trpc.templates.getAll.useQuery();
   const router = useRouter();
-  const { mutateAsync, isLoading } =
-    trpc.playgroundsRouter.create.useMutation();
+  const { mutateAsync, isLoading } = trpc.playgrounds.create.useMutation();
   const handleCardClick = async (request: CreatePlaygroundInput) => {
     const response = await mutateAsync(request);
     console.log("creation terminated with the following response", response);
