@@ -22,7 +22,7 @@ export const Header: React.FC = React.memo(() => {
                   className="flex items-center gap-1 text-xl font-semibold"
                   href="/"
                 >
-                  <span className="hidden dark:text-white sm:block">we</span>
+                  <span className="hidden dark:text-white sm:block">lescoudeursnelagerpas</span>
                 </Link>
               </div>
             </div>

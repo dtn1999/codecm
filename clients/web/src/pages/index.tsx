@@ -1,9 +1,19 @@
+import React from "react";
 import { type NextPage } from "next";
 import Link from "next/link";
 import Head from "next/head";
 import { Header } from "@we/components";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const { data } = useSession();
+  const router = useRouter();
+  React.useEffect(() => {
+    if (data) {
+      router.push("/dashboard");
+    }
+  }, []);
   return (
     <>
       <Head>
