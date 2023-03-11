@@ -5,8 +5,8 @@ import { PlaygroundCard } from "../Cards/PlaygroundCard";
 
 interface Props {
   playgrounds: Playground[];
-  handleDelete: (playgroundId: number) => void;
-  handleEdit: () => void;
+  handleDelete: (playgroundId: number) => Promise<void>;
+  handleEdit: (playgroundId: number) => Promise<void>;
   isFetching: boolean;
 }
 export const PlaygroundsGrid: React.FC<Props> = React.memo(

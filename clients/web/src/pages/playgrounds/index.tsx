@@ -1,7 +1,12 @@
 import React from "react";
 import { NextPageWithLayout } from "@we/types/ui";
 import { Layout } from "@we/components";
-import { TemplatesGrid, useTemplates } from "@we/features/resources";
+import {
+  PlaygroundsGrid,
+  TemplatesGrid,
+  usePlaygrounds,
+  useTemplates,
+} from "@we/features/resources";
 
 const PlaygroundPage: NextPageWithLayout = () => {
   const {
@@ -9,7 +14,7 @@ const PlaygroundPage: NextPageWithLayout = () => {
     createPlayground,
     fetchLoading: isFetching,
   } = useTemplates();
-  const playgrounds = [];
+  const { playgrounds, deletePlayground, editTemplate } = usePlaygrounds();
   return (
     <div className="h-full bg-background px-20">
       <section className="pt-4 sm:mx-auto">
@@ -31,7 +36,12 @@ const PlaygroundPage: NextPageWithLayout = () => {
           <h1 className="border-b border-gray-200 text-left text-lg font-semibold uppercase">
             Manage playgrounds
           </h1>
-          {/* <PlaygroundsGrid /> */}
+          <PlaygroundsGrid
+            playgrounds={playgrounds}
+            handleDelete={deletePlayground}
+            handleEdit={editTemplate}
+            isFetching={isFetching}
+          />
         </div>
       </section>
     </div>
