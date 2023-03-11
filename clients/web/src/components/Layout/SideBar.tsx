@@ -1,15 +1,20 @@
 import React from "react";
 import Link from "next/link";
+import { FcDonate } from "react-icons/fc";
+import { BiHelpCircle } from "react-icons/bi";
+import { MdOutlineFeedback } from "react-icons/md";
 import { NAV_SECTIONS as SIDEBAR_SECTIONS } from "./config";
+import meta from "@we/meta/site.json";
+import { SearchIcon } from "@we/components/Icons";
 
 export const SideBar = React.memo(() => (
-  <aside className="sticky top-0 flex h-screen w-64 flex-1 flex-col overflow-hidden border-r border-gray-200 bg-gray-100 text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 lg:w-16 xl:w-64">
+  <aside className="sticky top-0 flex h-screen w-64 flex-1 flex-col overflow-hidden border-r border-gray-200 bg-background text-gray-900 dark:border-gray-700 dark:text-gray-100 lg:w-16 xl:w-64">
     <a
       className="inline-flex h-14 items-center gap-1 px-3 text-2xl font-bold lg:justify-center xl:justify-start"
       href="/"
     >
       <div className="inline-flex items-center gap-2 lg:hidden xl:inline-flex">
-        <span className="text-xl font-semibold">we</span>
+        <span className="text-xl font-semibold">{meta.name}</span>
       </div>
     </a>
     <form className="relative mb-1 px-3 md:hidden">
@@ -24,19 +29,7 @@ export const SideBar = React.memo(() => (
         type="submit"
         className="absolute inset-y-0 right-3 flex items-center px-3 dark:bg-gray-500/10"
       >
-        <svg
-          stroke="currentColor"
-          fill="currentColor"
-          strokeWidth="0"
-          viewBox="0 0 16 16"
-          className="h-3 w-3 text-gray-500"
-          aria-hidden="true"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-        </svg>
+        <SearchIcon />
       </button>
     </form>
     <nav
@@ -65,7 +58,20 @@ export const SideBar = React.memo(() => (
           </div>
         </div>
       ))}
-      <div className="flex-1"></div>
     </nav>
+    <div className="flex w-full flex-col items-start p-2">
+      <button className="flex w-full items-center space-x-2 px-2 py-2 capitalize">
+        <FcDonate className="text-lg" />
+        <span>donate</span>
+      </button>
+      <button className="flex w-full items-center space-x-2 px-2 py-2 capitalize">
+        <BiHelpCircle className="text-lg" />
+        <span>help</span>
+      </button>
+      <button className="flex w-full items-center space-x-2 px-2 py-2 capitalize">
+        <MdOutlineFeedback className="text-lg" />
+        <span>Feedback</span>
+      </button>
+    </div>
   </aside>
 ));

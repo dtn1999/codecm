@@ -7,7 +7,7 @@ import { UserProfileButton } from "@we/features/users/components";
 export const DashboardHeader: React.FC = React.memo(() => {
   const { data: sessionData } = useSession();
   return (
-    <header className="relative z-40 h-14 w-full border-b border-gray-200 bg-white px-2.5 text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 md:px-20">
+    <header className="relative z-40 h-14 w-full border-b bg-background px-2.5 text-gray-900 dark:border-gray-700 dark:text-gray-100 md:px-20">
       <div className="3xl:px-4 mx-auto flex h-full w-full max-w-screen-2xl items-center">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-2 lg:hidden">

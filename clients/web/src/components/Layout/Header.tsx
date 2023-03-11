@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { MenuIcon } from "@we/components/Icons";
 import { signIn } from "next-auth/react";
+import meta from "@we/meta/site.json";
 
 export const Header: React.FC = React.memo(() => {
   return (
@@ -22,7 +23,9 @@ export const Header: React.FC = React.memo(() => {
                   className="flex items-center gap-1 text-xl font-semibold"
                   href="/"
                 >
-                  <span className="hidden dark:text-white sm:block">lescoudeursnelagerpas</span>
+                  <span className="hidden dark:text-white sm:block">
+                    {meta.name}
+                  </span>
                 </Link>
               </div>
             </div>
