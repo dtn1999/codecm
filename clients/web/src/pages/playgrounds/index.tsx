@@ -11,6 +11,8 @@ import { useSession } from "next-auth/react";
 import { CreatePlaygroundDialog } from "@we/features/resources";
 
 const PlaygroundPage: NextPageWithLayout = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const closeModal = React.useCallback(() => setIsOpen(false), []);
   const {
     templates,
     createPlayground,
@@ -21,8 +23,8 @@ const PlaygroundPage: NextPageWithLayout = () => {
   return (
     <div className="h-full bg-background px-20">
       <CreatePlaygroundDialog
-        isOpen
-        closeModal={() => {}}
+        isOpen={isOpen}
+        closeModal={closeModal}
         title="Create Playground"
       />
       <section className="pt-4 sm:mx-auto">
