@@ -1,8 +1,8 @@
 import { trpc } from "@we/utils/api";
 import React from "react";
-import { PlaygroundCard } from "../PlaygroundCard";
+import { PlaygroundCard } from "../Cards/PlaygroundCard";
 
-export const PlaygroundsList: React.FC = React.memo(() => {
+export const PlaygroundsGrid: React.FC = React.memo(() => {
   const { data, error } = trpc.playgrounds.getAll.useQuery();
   const { mutateAsync } = trpc.playgrounds.delete.useMutation();
   const handleDeleteClick = async (playgroundId: number) => {

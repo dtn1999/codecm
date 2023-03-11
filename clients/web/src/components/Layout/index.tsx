@@ -20,7 +20,7 @@ export const Layout: React.FC<ContainerComponentProps> = React.memo(
             socials: [],
           }}
         />
-        <div className="relative bg-[#0E0E0E] text-black dark:bg-gray-900 dark:text-white">
+        <div className="relative bg-background text-black dark:bg-gray-900 dark:text-white">
           <div className="relative flex flex-1">
             <div
               id="layout-desktop-sidebar-container"

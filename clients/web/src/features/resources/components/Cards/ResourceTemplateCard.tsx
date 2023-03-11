@@ -6,7 +6,7 @@ interface TemplateCardProps extends Template {
   onClick: (requestPayload: CreatePlaygroundInput) => void;
 }
 
-export const TemplateCard: React.FC<TemplateCardProps> = React.memo(
+export const ResourceTemplateCard: React.FC<TemplateCardProps> = React.memo(
   ({ name, description, imageUrl, onClick, githubRepoUrl }) => (
     <div
       onClick={() => onClick({ name, description, githubRepoUrl, imageUrl })}

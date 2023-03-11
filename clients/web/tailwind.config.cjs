@@ -8,7 +8,7 @@ const config = {
           DEFAULT: "#595959",
         },
         background: {
-          DEFAULT: "#0F0F0F",
+          DEFAULT: "#151515",
         },
       },
     },

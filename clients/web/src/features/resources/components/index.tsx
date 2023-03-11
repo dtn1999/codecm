@@ -1,4 +1,3 @@
-import { TemplateCard } from "./TemplateCard";
-import { TemplatesList } from "./TemplatesList";
-
-export { TemplatesList, TemplateCard };
+export * from "./Cards";
+export * from "./Grids";
+export * from "./Dialogs";
