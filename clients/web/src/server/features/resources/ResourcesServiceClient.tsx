@@ -106,7 +106,9 @@ export class ResourceClient {
     const { data } = await this.octokit.request("GET /users/{username}/repos", {
       username,
     });
-    return data.map(this.mapRepoToTemplate);
+    return {
+      data: data.map(this.mapRepoToTemplate),
+    };
   }
 
   private mapRepoToTemplate({

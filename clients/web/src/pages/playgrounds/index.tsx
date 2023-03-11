@@ -9,7 +9,7 @@ import {
 
 const PlaygroundPage: NextPageWithLayout = () => (
   <div className="h-full bg-background px-20">
-    <GitHubTemplateDialog isOpen closeModal={() => {}} />
+    
     <section className="pt-4 sm:mx-auto">
       <div className="">
         <h1 className="border-b border-gray-200 text-left text-lg font-semibold uppercase">

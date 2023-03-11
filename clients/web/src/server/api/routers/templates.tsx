@@ -5,7 +5,11 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@we/server/api/trpc";
-import { GetAllTemplatesResponseSchema, Template } from "@we/types/schemas";
+import {
+  GetAllTemplatesResponseSchema,
+  Template,
+  TemplateSchema,
+} from "@we/types/schemas";
 
 export const templatesRouter = createTRPCRouter({
   getAll: publicProcedure
@@ -20,36 +24,15 @@ export const templatesRouter = createTRPCRouter({
         templates,
       };
     }),
-  getById: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
+  gitHubTemplates: publicProcedure
+    .input(z.object({ username: z.string() }))
+    .output(z.object({ templates: z.array(TemplateSchema) }))
+    .query(async ({ ctx: { resourceClient } }): Promise<any> => {
+      const { data: templates } = await resourceClient.gitHubTemplates(
+        "dtn1999"
+      );
       return {
-        greeting: `Hello ${input.text}`,
+        templates,
       };
     }),
-  create: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-  update: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-  gitHubTemplates: publicProcedure.query(
-    async ({ ctx: { resourceClient } }) => {
-      const response = await resourceClient.gitHubTemplates("dtn1999");
-      return {
-        templates: response,
-      };
-    }
-  ),
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
 });

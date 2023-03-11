@@ -22,19 +22,12 @@ export const Layout: React.FC<ContainerComponentProps> = React.memo(
         />
         <div className="relative bg-background text-black dark:bg-gray-900 dark:text-white">
           <div className="relative flex flex-1">
-            <div
-              id="layout-desktop-sidebar-container"
-              className="z-40 hidden lg:block"
-            >
+            <div className="z-40 hidden lg:block">
               <SideBar />
             </div>
-            <div
-              id="layout-content-container"
-              className="flex w-full flex-1 flex-col"
-            >
+            <div className="flex w-full flex-1 flex-col">
               <DashboardHeader />
               {children}
-              <div className=""></div>
             </div>
           </div>
         </div>
