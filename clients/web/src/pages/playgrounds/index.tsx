@@ -7,6 +7,7 @@ import {
   usePlaygrounds,
   useTemplates,
 } from "@we/features/resources";
+import { useSession } from "next-auth/react";
 
 const PlaygroundPage: NextPageWithLayout = () => {
   const {
@@ -15,6 +16,7 @@ const PlaygroundPage: NextPageWithLayout = () => {
     fetchLoading: isFetching,
   } = useTemplates();
   const { playgrounds, deletePlayground, editTemplate } = usePlaygrounds();
+  const { data: sessionData } = useSession();
   return (
     <div className="h-full bg-background px-20">
       <section className="pt-4 sm:mx-auto">
@@ -31,19 +33,21 @@ const PlaygroundPage: NextPageWithLayout = () => {
           </div>
         </div>
       </section>
-      <section className="pb-8 sm:mx-auto">
-        <div className="mt-12">
-          <h1 className="border-b border-gray-200 text-left text-lg font-semibold uppercase">
-            Manage playgrounds
-          </h1>
-          <PlaygroundsGrid
-            playgrounds={playgrounds}
-            handleDelete={deletePlayground}
-            handleEdit={editTemplate}
-            isFetching={isFetching}
-          />
-        </div>
-      </section>
+      {sessionData && sessionData.user && (
+        <section className="pb-8 sm:mx-auto">
+          <div className="mt-12">
+            <h1 className="border-b border-gray-200 text-left text-lg font-semibold uppercase">
+              Manage playgrounds
+            </h1>
+            <PlaygroundsGrid
+              playgrounds={playgrounds}
+              handleDelete={deletePlayground}
+              handleEdit={editTemplate}
+              isFetching={isFetching}
+            />
+          </div>
+        </section>
+      )}
     </div>
   );
 };

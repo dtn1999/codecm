@@ -1,5 +1,6 @@
 import { Spinner } from "@we/components";
 import { Playground } from "@we/types/schemas";
+import { useSession } from "next-auth/react";
 import React from "react";
 import { PlaygroundCard } from "../Cards/PlaygroundCard";
 
