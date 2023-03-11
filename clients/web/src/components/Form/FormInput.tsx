@@ -31,7 +31,7 @@ export const FormInput: React.FC<Props> = ({
         type={type?.toString().toLowerCase()}
         placeholder={placeholder || ""}
         className={cn(
-          "my-2 w-full border border-black bg-placeholder py-3 px-4 text-sm text-white placeholder:font-light placeholder:text-white focus:outline-none"
+          "my-2 w-full border border-transparent rounded bg-placeholder py-3 px-2 text-sm text-white placeholder:font-thin placeholder:text-white focus:outline-none"
         )}
       />
       {error && <p className="font-extralight text-red-500">{error.message}</p>}

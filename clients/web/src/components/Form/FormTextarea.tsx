@@ -31,7 +31,7 @@ export const FormTextarea: React.FC<Props> = ({
         rows={4}
         placeholder={placeholder}
         className={cn(
-          "my-2 w-full border border-black py-3 px-4 text-sm bg-placeholder placeholder:font-extralight placeholder:text-white focus:rounded-none focus:border-black focus:outline-none",
+          "my-2 w-full rounded border border-transparent bg-placeholder py-3 px-2 text-sm text-white placeholder:font-thin placeholder:text-white focus:rounded-none focus:border-black focus:outline-none",
           className
         )}
       />

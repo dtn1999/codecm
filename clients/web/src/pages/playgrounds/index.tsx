@@ -20,13 +20,9 @@ const PlaygroundPage: NextPageWithLayout = () => {
   } = useTemplates();
   const { playgrounds, deletePlayground, editTemplate } = usePlaygrounds();
   const { data: sessionData } = useSession();
+
   return (
     <div className="h-full bg-background px-20">
-      <CreatePlaygroundDialog
-        isOpen={isOpen}
-        closeModal={closeModal}
-        title="Create Playground"
-      />
       <section className="pt-4 sm:mx-auto">
         <div className="">
           <h1 className="border-b border-gray-200 text-left text-lg font-semibold uppercase">

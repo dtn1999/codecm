@@ -29,7 +29,7 @@ export const DialogWrapper: React.FC<DialogProps> = React.memo(
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="max-h-[60%] w-full max-w-3xl transform overflow-hidden rounded bg-background py-3 text-left align-middle transition-all">
+              <Dialog.Panel className="max-h-[80%] w-full max-w-3xl transform overflow-hidden rounded bg-background py-3 text-left align-middle transition-all">
                 <Dialog.Title
                   as="h3"
                   className="flex items-center justify-between px-3 py-2 text-lg font-medium leading-6 text-white"
