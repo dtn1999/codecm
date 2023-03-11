@@ -5,6 +5,7 @@ import Head from "next/head";
 import { Header } from "@we/components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Seo } from "@we/features/seo";
 
 const Home: NextPage = () => {
   const { data } = useSession();
@@ -15,12 +16,8 @@ const Home: NextPage = () => {
     }
   }, []);
   return (
-    <>
-      <Head>
-        <title>We</title>
-        <meta name="description" content="e-learning website for programmer" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <React.Fragment>
+
       <div className="h-full bg-background">
         <Header />
         <div className="flex h-full flex-col items-center justify-center overflow-hidden py-20 px-20">
@@ -49,7 +46,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </React.Fragment>
   );
 };
 
