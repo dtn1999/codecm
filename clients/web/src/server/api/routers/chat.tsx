@@ -6,7 +6,7 @@ import { completionConfig, openai } from "@we/server/features";
 
 export const chatRouter = createTRPCRouter({
   getHelp: publicProcedure
-    // .input(z.object({ prompt: z.string().nullable() }))
+    .input(z.object({ prompt: z.string() }))
     .query(async ({ input }) => {
       try {
         const response = await openai.createCompletion({

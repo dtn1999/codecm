@@ -8,10 +8,11 @@ import {
   UpdateRequest,
 } from "@we/types/schemas";
 import axios, { AxiosInstance } from "axios";
+import { Octokit } from "octokit";
 
 export class ResourceClient {
   private readonly axiosClient: AxiosInstance;
-
+  private readonly octokit: Octokit;
   constructor(accessToken?: string) {
     this.axiosClient = axios.create({
       baseURL: String(env.RESOURCES_SERVER_URL),
@@ -19,6 +20,7 @@ export class ResourceClient {
         Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
       },
     });
+    this.octokit = new Octokit({});
   }
 
   public async getAll<O>(
@@ -96,6 +98,13 @@ export class ResourceClient {
         },
       }
     );
+    return data;
+  }
+
+  public async gitHubTemplates(username: string): Promise<any> {
+    const { data } = await this.octokit.request("GET /users/{username}/repos", {
+      username,
+    });
     return data;
   }
 }
