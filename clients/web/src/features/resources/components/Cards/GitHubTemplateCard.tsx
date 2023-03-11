@@ -20,7 +20,7 @@ export const GitHubTemplateCard: React.FC<Props> = React.memo(({}) => {
       <GitHubTemplateDialog isOpen={isOpen} closeModal={closeModal} />
       <div
         onClick={openModal}
-        className="relative rounded bg-[#2A2A2A] p-3 hover:bg-[#1A1A1A]"
+        className="pointer-events-none relative cursor-not-allowed rounded bg-[#2A2A2A] p-3 hover:bg-[#1A1A1A]"
       >
         <Image
           src="https://w7.pngwing.com/pngs/914/758/png-transparent-github-social-media-computer-icons-logo-android-github-logo-computer-wallpaper-banner-thumbnail.png"

@@ -28,11 +28,11 @@ export const templatesRouter = createTRPCRouter({
     .input(z.object({ username: z.string() }))
     .output(z.object({ templates: z.array(TemplateSchema) }))
     .query(async ({ ctx: { resourceClient } }): Promise<any> => {
-      // const { data: templates } = await resourceClient.gitHubTemplates(
-      //   "dtn1999"
-      // );
+      const { data: templates } = await resourceClient.gitHubTemplates(
+        "dtn1999"
+      );
       return {
-        templates: [],
+        templates,
       };
     }),
 });

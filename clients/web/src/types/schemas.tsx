@@ -7,7 +7,7 @@ export const GetByIdInputSchema = z.object({
 });
 
 export const TemplateSchema = z.object({
-  id: z.number(),
+  id: z.number().nullable().optional(),
   name: z.string(),
   description: z.string(),
   imageUrl: z.string(),
@@ -49,10 +49,16 @@ export const CreatePlaygroundResponseSchema = z.object({
 // From schemas
 export type Template = z.infer<typeof TemplateSchema>;
 export type Playground = z.infer<typeof PlaygroundSchema>;
-export type GetAllTemplatesResponse = z.infer<typeof GetAllTemplatesResponseSchema>;
-export type GetAllPlaygroundsResponse = z.infer<typeof GetAllPlaygroundsResponseSchema>;
+export type GetAllTemplatesResponse = z.infer<
+  typeof GetAllTemplatesResponseSchema
+>;
+export type GetAllPlaygroundsResponse = z.infer<
+  typeof GetAllPlaygroundsResponseSchema
+>;
 export type CreatePlaygroundInput = z.infer<typeof CreatePlaygroundInputSchema>;
-export type CreatePlaygroundResponse = z.infer<typeof CreatePlaygroundResponseSchema>;
+export type CreatePlaygroundResponse = z.infer<
+  typeof CreatePlaygroundResponseSchema
+>;
 
 // Services Types
 export type ResourceType = "templates" | "playgrounds";
