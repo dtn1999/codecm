@@ -21,3 +21,10 @@ type AppPropsWithLayout = AppProps & {
 export type AppPropsWithLayoutAndSession = AppPropsWithLayout & {
   session?: Session;
 };
+
+export interface DialogProps {
+  isOpen: boolean;
+  closeModal: () => void;
+  title: string;
+  children: React.ReactNode;
+}

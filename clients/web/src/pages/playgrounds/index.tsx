@@ -8,6 +8,7 @@ import {
   useTemplates,
 } from "@we/features/resources";
 import { useSession } from "next-auth/react";
+import { CreatePlaygroundDialog } from "@we/features/resources";
 
 const PlaygroundPage: NextPageWithLayout = () => {
   const {
@@ -19,6 +20,11 @@ const PlaygroundPage: NextPageWithLayout = () => {
   const { data: sessionData } = useSession();
   return (
     <div className="h-full bg-background px-20">
+      <CreatePlaygroundDialog
+        isOpen
+        closeModal={() => {}}
+        title="Create Playground"
+      />
       <section className="pt-4 sm:mx-auto">
         <div className="">
           <h1 className="border-b border-gray-200 text-left text-lg font-semibold uppercase">
