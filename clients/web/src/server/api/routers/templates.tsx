@@ -41,6 +41,14 @@ export const templatesRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
+  gitHubTemplates: publicProcedure.query(
+    async ({ ctx: { resourceClient } }) => {
+      const response = await resourceClient.gitHubTemplates("dtn1999");
+      return {
+        templates: response,
+      };
+    }
+  ),
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),

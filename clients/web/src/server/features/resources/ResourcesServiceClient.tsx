@@ -5,6 +5,7 @@ import {
   DeleteRequest,
   GetAllRequest,
   GetByIdRequest,
+  Template,
   UpdateRequest,
 } from "@we/types/schemas";
 import axios, { AxiosInstance } from "axios";
@@ -105,6 +106,22 @@ export class ResourceClient {
     const { data } = await this.octokit.request("GET /users/{username}/repos", {
       username,
     });
-    return data;
+    return data.map(this.mapRepoToTemplate);
+  }
+
+  private mapRepoToTemplate({
+    id,
+    name,
+    description,
+    clone_url,
+  }: any): Template {
+    return {
+      id,
+      name,
+      description,
+      githubRepoUrl: clone_url,
+      imageUrl:
+        "https://w7.pngwing.com/pngs/914/758/png-transparent-github-social-media-computer-icons-logo-android-github-logo-computer-wallpaper-banner-thumbnail.png",
+    };
   }
 }
