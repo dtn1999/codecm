@@ -27,6 +27,7 @@ const config = {
       "i0.wp.com",
       "a.storyblok.com",
       "isotropic.co",
+      "w7.pngwing.com",
     ],
   },
 };

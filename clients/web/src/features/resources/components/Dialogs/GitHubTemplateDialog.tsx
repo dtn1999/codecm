@@ -17,7 +17,6 @@ export const GitHubTemplateDialog: React.FC<Props> = React.memo(
       username: "dtn1999",
     });
 
-    console.log(data, error);
     return (
       <Transition appear show={isOpen} as={React.Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -30,7 +29,7 @@ export const GitHubTemplateDialog: React.FC<Props> = React.memo(
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black opacity-10" />
+            <div className="fixed inset-0 bg-black opacity-60" />
           </Transition.Child>
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex h-full items-center justify-center p-4 text-center">
@@ -51,7 +50,7 @@ export const GitHubTemplateDialog: React.FC<Props> = React.memo(
                     <div className="flex w-[40%] items-center space-x-2">
                       <input
                         placeholder="search templates"
-                        className="w-full bg-[#2A2A2A] p-1 placeholder:text-sm placeholder:font-light placeholder:capitalize"
+                        className="w-full bg-[#2A2A2A] p-1 placeholder:text-sm placeholder:font-light placeholder:capitalize focus:outline-none"
                       />
                       <button onClick={closeModal}>
                         <CloseIcon />
