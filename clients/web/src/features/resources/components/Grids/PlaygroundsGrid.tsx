@@ -32,7 +32,7 @@ export const PlaygroundsGrid: React.FC<Props> = React.memo(
         )}
         {/* playgrounds grid */}
         {playgrounds.length > 0 && (
-          <div className="mt-4 grid grid-cols-1 gap-4">
+          <div className="mt-4 grid grid-cols-3 gap-4">
             {playgrounds.map((playground) => (
               <PlaygroundCard
                 key={playground.id}

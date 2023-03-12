@@ -1,8 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import Skeleton from "react-loading-skeleton";
-import axios from "axios";
 import { LoadingScreen } from "@we/components";
 
 const SinglePlaygroundPage: NextPage = () => {
@@ -10,10 +8,9 @@ const SinglePlaygroundPage: NextPage = () => {
   const { codeServerSrc } = query;
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
-    let retry = 0;
     setInterval(async () => {
       setIsLoading(false);
-    }, 3000);
+    }, 7000);
   }, [isLoading]);
 
   return (

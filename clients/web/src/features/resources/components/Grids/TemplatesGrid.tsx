@@ -1,10 +1,9 @@
 import { Spinner } from "@we/components";
 import { CreatePlaygroundInput, Template } from "@we/types/schemas";
-import { trpc } from "@we/utils/api";
-import { useRouter } from "next/router";
 import React from "react";
 import { ResourceTemplateCard } from "../Cards";
 import { GitHubTemplateCard } from "../Cards";
+import { CreatePlaygroundDialog } from "../Dialogs";
 
 interface Props {
   templates: Template[];
@@ -13,8 +12,11 @@ interface Props {
 }
 export const TemplatesGrid: React.FC<Props> = React.memo(
   ({ templates, createPlayground, isFetching }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+    const closeModal = React.useCallback(() => setIsOpen(false), []);
+    const openModal = React.useCallback(() => setIsOpen(true), []);
     return isFetching ? (
-      <div className="py-10 flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center py-10">
         <Spinner />
       </div>
     ) : (
@@ -22,7 +24,7 @@ export const TemplatesGrid: React.FC<Props> = React.memo(
         {templates.map((template) => (
           <ResourceTemplateCard
             key={template.id}
-            onClick={createPlayground}
+            createPlayground={createPlayground}
             {...template}
           />
         ))}

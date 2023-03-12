@@ -17,7 +17,7 @@ import {
 
 export const playgroundsRouter = createTRPCRouter({
   getAll: protectedProcedure
-    .output(GetAllPlaygroundsResponseSchema)
+    // .output(GetAllPlaygroundsResponseSchema)
     .query(
       async ({
         input,

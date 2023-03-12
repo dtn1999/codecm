@@ -22,6 +22,7 @@ export const PlaygroundSchema = z.object({
   githubRepoUrl: z.string(),
   imageUrl: z.string(),
   workspaceId: z.number(),
+  createdDate: z.string(),
 });
 
 export const CreatePlaygroundInputSchema = z.object({

@@ -12,15 +12,16 @@ export const usePlaygrounds = () => {
   const editTemplate = React.useCallback(async (id: number) => {}, []);
   const { data, isLoading: fetchingPlaygrounds } =
     trpc.playgrounds.getAll.useQuery(undefined, {
-      enabled: fetchPlaygroundEnabled,
       placeholderData: [],
+      retry: false,
     });
-
+  console.log("data", data);
   React.useEffect(() => {
     if (!sessionData || !sessionData.user) {
       setPlaygrounds([]);
-    } else {
+      return;
     }
+    setFetchPlaygroundEnabled(true);
   }, [sessionData]);
 
   React.useEffect(() => {

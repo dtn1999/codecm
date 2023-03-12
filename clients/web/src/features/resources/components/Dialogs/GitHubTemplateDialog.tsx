@@ -12,9 +12,15 @@ interface Props {
 
 export const GitHubTemplateDialog: React.FC<Props> = React.memo(
   ({ isOpen, closeModal }) => {
-    const { data, isLoading, error } = trpc.templates.gitHubTemplates.useQuery({
-      username: "dtn1999",
-    });
+    const { data, isLoading, error } = trpc.templates.gitHubTemplates.useQuery(
+      {
+        username: "dtn1999",
+      },
+      {
+        enabled: isOpen,
+        retry: false,
+      }
+    );
     console.log("github templates are the following => ", data);
     return (
       <DialogWrapper
@@ -33,7 +39,7 @@ export const GitHubTemplateDialog: React.FC<Props> = React.memo(
         <div className="grid w-full grid-cols-3 gap-10">
           {data?.templates.map((template) => (
             <ResourceTemplateCard
-              onClick={() => console.log("clicked")}
+              //onClick={() => console.log("clicked")}
               key={template.id}
               {...template}
             />

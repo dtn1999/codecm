@@ -1,4 +1,10 @@
-import { DialogWrapper, Form, FormInput, FormTextarea } from "@we/components";
+import {
+  DialogWrapper,
+  Form,
+  FormInput,
+  FormTextarea,
+  LoadingDots,
+} from "@we/components";
 import { DialogProps } from "@we/types/ui";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -12,7 +18,8 @@ import {
 } from "@we/types/schemas";
 
 interface Props extends Omit<DialogProps, "children"> {
-  template: Omit<Template, "id">;
+  template: Template;
+  createPlayground: (request: CreatePlaygroundInput) => Promise<void>;
 }
 
 export const CreatePlaygroundDialog: React.FC<Props> = ({
@@ -20,12 +27,22 @@ export const CreatePlaygroundDialog: React.FC<Props> = ({
   closeModal,
   title,
   template,
+  createPlayground,
 }) => {
+  const [loading, setLoading] = React.useState(false);
   const methods = useForm<CreatePlaygroundInput>({
     resolver: zodResolver(CreatePlaygroundInputSchema),
     mode: "all",
+    defaultValues: {
+      name: template.name,
+      imageUrl: template.imageUrl,
+      githubRepoUrl: template.githubRepoUrl,
+      description: "simple description of what this playground is about",
+    },
   });
-
+  const {
+    formState: { isSubmitting },
+  } = methods;
   return (
     <DialogWrapper isOpen={isOpen} closeModal={closeModal} title={title}>
       {template && (
@@ -46,22 +63,39 @@ export const CreatePlaygroundDialog: React.FC<Props> = ({
       <Form
         methods={methods}
         onSubmit={async (data) => {
-          console.log(data);
+          setLoading(true);
+          await createPlayground(data);
+          setLoading(false);
         }}
       >
         <div className="p-4">
           <FormInput
-            name="title"
+            name="name"
+            required
             placeholder="enter a title for the playground"
           />
-          <FormTextarea name="description" placeholder="description" row={5} />
+          <FormTextarea
+            name="description"
+            required
+            placeholder="description"
+            row={5}
+          />
         </div>
         <div className="flex w-full items-center justify-end px-4 py-4">
           <button
             type="submit"
-            className="rounded bg-sky-700 py-2 px-3 font-light capitalize text-white hover:bg-sky-600"
+            disabled={loading}
+            className={cn(
+              "space-x-2 rounded border py-2 px-3 font-light capitalize text-white",
+              {
+                "border-transparent bg-sky-700 hover:bg-sky-600": !loading,
+                "pointer-events-none cursor-not-allowed border-gray-200 bg-background":
+                  loading,
+              }
+            )}
           >
-            create playground
+            {loading && <LoadingDots />}
+            <span>create playground</span>
           </button>
         </div>
       </Form>

@@ -33,8 +33,8 @@ export const ExploreLearningPathsIcon: React.FC = React.memo(() => (
       stroke="#F4F4F5"
       strokeWidth="2"
       stroke-miterlimit="10"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></path>
     <path
       d="M14.2718 40.477C15.9831 40.477 17.3225 39.1426 17.3225 37.4375C17.3225 35.7324 15.9831 34.398 14.2718 34.398C12.5604 34.398 11.2211 35.7324 11.2211 37.4375C11.2211 39.1426 12.6348 40.477 14.2718 40.477Z"
