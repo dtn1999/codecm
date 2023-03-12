@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreatePlaygroundDto {
     @NotNull
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 200)
     private String name;
     @NotNull
     @Pattern(regexp = "^(http|https)://github.com/.*$")
     private String githubRepoUrl;
     private String imageUrl;
     @NotNull
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 500)
     private String description;
 }

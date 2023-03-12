@@ -53,7 +53,7 @@ public class WorkspaceCleanUpService {
                     return;
                 }
                 log.info("Workspace {} is still active", workspace.getId());
-            }catch (IOException e){
+            }catch (Exception e){
                 log.error("Error while checking workspace {} status", workspace.getId());
                 log.error(e.getMessage());
             }

@@ -22,6 +22,6 @@ public class PlaygroundDto {
     private String instanceUrl;
     private String imageUrl;
     private Long workspaceId;
-    private LocalDateTime createdDate;
-    private LocalDateTime lastModifiedDate;
+    private String createdDate;
+    private String lastModifiedDate;
 }
