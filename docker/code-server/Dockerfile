@@ -45,12 +45,12 @@ USER coder
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 ENV NVM_DIR=/home/coder/.nvm
 ENV NODE_VERSION=18.14.2
-RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
-ENV PATH="/home/coder/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+RUN . "$NVM_DIR/nvm.sh" && nvm install node
+# RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+# RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+# ENV PATH="/home/coder/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 # install yarn
-RUN npm install --global yarn
+# RUN npm install --global yarn
 
 # install oh-my-zsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -64,4 +64,5 @@ USER 1000
 WORKDIR /home/coder/workspace
 RUN mkdir -p /home/coder/.local/share/code-server/User
 COPY ./vscode/tasks.json  /home/coder/.local/share/code-server/User/tasks.json
-ENTRYPOINT ["/usr/bin/code-server","--app-name", "codergen","--auth", "none", "--bind-addr", "0.0.0.0:8080", "."]
+COPY ./vscode/settings.json  /home/coder/.local/share/code-server/Machine/settings.json
+ENTRYPOINT ["/usr/bin/code-server","--app-name", "codergen","--auth", "none", "--disable-workspace-trust","--disable-getting-started-override","--proxy-domain","localhost.com","-an","we.oportunity","--bind-addr", "0.0.0.0:8080", "."]
